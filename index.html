@@ -222,7 +222,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-07-12 15:28:15 / 修改时间：15:28:17" itemprop="dateCreated datePublished" datetime="2020-07-12T15:28:15+08:00">2020-07-12</time>
+              <time title="创建时间：2020-07-12 15:28:15 / 修改时间：15:31:20" itemprop="dateCreated datePublished" datetime="2020-07-12T15:28:15+08:00">2020-07-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -278,22 +278,6 @@
 </ul>
 </li>
 </ul>
-<!-- /TOC -->
-
-<h1 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h1><h3 id="判断对象存活的方法"><a href="#判断对象存活的方法" class="headerlink" title="判断对象存活的方法"></a>判断对象存活的方法</h3><p>在垃圾回收器对堆内存回收前，需要判断对象是否存活。</p>
-<ul>
-<li><p>引用计数算法: 给每个对象添加一个引用计数器,每当对象被引用,<br>对象的引用计数器就加1,当引用失效时,引用计数器就减1。<br>直到引用计数器为0,就代表对象不再被引用。</p>
-</li>
-<li><p>可达性算法: 通过GC ROOT的对象节点往下搜索,节点走过的路径被称为引用链。<br>如果一个对象不处于任何引用链,那么就可以判断此对象是不可达的。</p>
-</li>
-</ul>
-<h4 id="引用计数法缺点"><a href="#引用计数法缺点" class="headerlink" title="引用计数法缺点"></a>引用计数法缺点</h4><p>引用计数的主要缺陷是很难解决<strong>循环引用</strong>的问题:<br>也就是当2个对象互相引用的时候,除了彼此,<br>没有其它对象再引用这2个对象,那么他们的引用计数都为1,就无法被回收。<br>jvm实现一般不采用这种方式          </p>
-<h4 id="什么是GC-Root"><a href="#什么是GC-Root" class="headerlink" title="什么是GC Root ?"></a>什么是GC Root ?</h4><p>上面说通过GC Root对象搜索引用链,那么GC Root对象是什么对象,<br>或者说什么样的对象是GC Root对象。<br>可以作为GC Root对象的有: </p>
-<ol>
-<li>虚拟机栈和本地方法栈区中的引用对象(stack)</li>
-<li>方法区中类的静态属性引用的对象(static)</li>
-<li>方法区中的常量引用的对象(final)   </li>
-</ol>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/07/12/GC/#more" rel="contents">
