@@ -22,30 +22,40 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="选择有时候比努力更重要">
-<meta property="og:type" content="website">
-<meta property="og:title" content="焱燚">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="JVM JVM运行时内存分区 程序计数器 程序计数器的特点 Java虚拟机栈 栈帧 局部变量表 操作数栈 动态连接 方法出口 本地方法栈 堆 方法区   JavaVirtualMachineError StackOverflowError OutOfMemoryError        JVMPS:JVM部分参考了《深入理解Java虚拟机 - 第二版》(周志明).个人认为《深入理解Java虚">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM">
+<meta property="og:url" content="http://yoursite.com/2020/07/12/JVM/index.html">
 <meta property="og:site_name" content="焱燚">
-<meta property="og:description" content="选择有时候比努力更重要">
+<meta property="og:description" content="JVM JVM运行时内存分区 程序计数器 程序计数器的特点 Java虚拟机栈 栈帧 局部变量表 操作数栈 动态连接 方法出口 本地方法栈 堆 方法区   JavaVirtualMachineError StackOverflowError OutOfMemoryError        JVMPS:JVM部分参考了《深入理解Java虚拟机 - 第二版》(周志明).个人认为《深入理解Java虚">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/jdk8%E4%B9%8B%E5%89%8D%E7%9A%84JVM%E5%86%85%E5%AD%98%E5%88%86%E5%8C%BA.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/jdk8%E4%B9%8B%E5%90%8E%E7%9A%84jvm%E5%86%85%E5%AD%98%E5%88%86%E5%8C%BA.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/JVM%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/Class%E6%96%87%E4%BB%B6%E5%B8%B8%E9%87%8F%E6%B1%A0.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E5%8C%BA.png">
+<meta property="article:published_time" content="2020-07-12T06:47:30.164Z">
+<meta property="article:modified_time" content="2020-07-04T08:53:23.000Z">
 <meta property="article:author" content="naive">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/12/img/jdk-jvm-juc/jdk8%E4%B9%8B%E5%89%8D%E7%9A%84JVM%E5%86%85%E5%AD%98%E5%88%86%E5%8C%BA.png">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/07/12/JVM/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>焱燚</title>
+  <title>JVM | 焱燚</title>
   
 
 
@@ -191,9 +201,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -209,10 +220,9 @@
       <meta itemprop="name" content="焱燚">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/12/JVM/" class="post-title-link" itemprop="url">JVM</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          JVM
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -232,6 +242,13 @@
               </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -242,7 +259,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <!-- TOC -->
+        <!-- TOC -->
 
 <ul>
 <li><a href="#jvm">JVM</a><ul>
@@ -385,91 +402,30 @@
 </li>
 </ul>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/12/hello-world/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/12/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-12 13:52:22" itemprop="dateCreated datePublished" datetime="2020-07-12T13:52:22+08:00">2020-07-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/12/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -522,6 +478,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM"><span class="nav-number">1.</span> <span class="nav-text">JVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM运行时内存分区"><span class="nav-number">1.0.1.</span> <span class="nav-text">JVM运行时内存分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器的特点"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">程序计数器的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栈帧"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">栈帧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#局部变量表"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">局部变量表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作数栈"><span class="nav-number">1.0.1.6.</span> <span class="nav-text">操作数栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态连接"><span class="nav-number">1.0.1.7.</span> <span class="nav-text">动态连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法出口"><span class="nav-number">1.0.1.8.</span> <span class="nav-text">方法出口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.0.1.9.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆"><span class="nav-number">1.0.1.10.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法区"><span class="nav-number">1.0.1.11.</span> <span class="nav-text">方法区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaVirtualMachineError"><span class="nav-number">1.0.2.</span> <span class="nav-text">JavaVirtualMachineError</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#StackOverflowError"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">StackOverflowError</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OutOfMemoryError"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">OutOfMemoryError</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
