@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="多线程 进程和线程 并发和并行 多线程的利弊 什么是上下文切换? 线程的优先级 线程的几种状态 sleep方法和wait方法的区别 stop,suspend,resume等方法为什么会被遗弃 interrupt,interrupted,isInterrupted方法区别 join方法 yield方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程">
+<meta property="og:url" content="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:site_name" content="焱燚">
+<meta property="og:description" content="多线程 进程和线程 并发和并行 多线程的利弊 什么是上下文切换? 线程的优先级 线程的几种状态 sleep方法和wait方法的区别 stop,suspend,resume等方法为什么会被遗弃 interrupt,interrupted,isInterrupted方法区别 join方法 yield方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-12T07:27:18.000Z">
+<meta property="article:modified_time" content="2020-07-12T07:27:29.732Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>多线程 | 焱燚</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">焱燚</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多线程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-12 15:27:18 / 修改时间：15:27:29" itemprop="dateCreated datePublished" datetime="2020-07-12T15:27:18+08:00">2020-07-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li><a href="#多线程">多线程</a><ul>
+<li><a href="#进程和线程">进程和线程</a></li>
+<li><a href="#并发和并行">并发和并行</a></li>
+<li><a href="#多线程的利弊">多线程的利弊</a></li>
+<li><a href="#什么是上下文切换">什么是上下文切换?</a></li>
+<li><a href="#线程的优先级">线程的优先级</a></li>
+<li><a href="#线程的几种状态">线程的几种状态</a></li>
+<li><a href="#sleep方法和wait方法的区别">sleep方法和wait方法的区别</a></li>
+<li><a href="#stopsuspendresume等方法为什么会被遗弃">stop,suspend,resume等方法为什么会被遗弃</a></li>
+<li><a href="#interruptinterruptedisinterrupted方法区别">interrupt,interrupted,isInterrupted方法区别</a></li>
+<li><a href="#join方法">join方法</a></li>
+<li><a href="#yield方法">yield方法</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><h4 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h4><p><strong>进程与线程最主要的区别是它们是操作系统管理资源的不同方式的体现。</strong><br>准确来说进程与线程属于衍生关系。<br>进程是操作系统执行程序的一次过程,在这个过程中可能会产生多个线程。</p>
+<blockquote>
+<p>比如在使用QQ时，有窗口线程，<br>文字发送的线程，语音输入的线程，可能不是很恰当，但是就是这个意思。</p>
+</blockquote>
+<p><strong>由于系统在线程之间的切换比在进程之间的切换更高效率，所以线程也被成为轻量级进程。</strong></p>
+<h4 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h4><ol>
+<li><p>并发: 多个线程任务被一个cpu轮流执行。注意，这里并不是只允许一个cpu执行多任务，多个cpu执行也是可以的。<br><strong>并发强调的是计算机应用程序有处理多个任务的能力。</strong></p>
+</li>
+<li><p>并行:多个线程被多个cpu同时执行。这里也并不是只允许多个cpu处理多任务，一个cpu也是可以的，<br>只要cpu能在同一时刻处理多任务。<strong>并行强调的是计算机应用程序拥有同时处理多任务的能力。</strong></p>
+</li>
+</ol>
+<h4 id="多线程的利弊"><a href="#多线程的利弊" class="headerlink" title="多线程的利弊"></a>多线程的利弊</h4><ul>
+<li><p>利:</p>
+<ul>
+<li><p>线程可以比作轻量级的进程，cpu在线程之间的切换比在进程之间的切换，耗费的资源要少的多。</p>
+</li>
+<li><p>现在是多核cpu时代，意味着多个线程可以被多个cpu同时运行(并行)，如果可以利用好多线程，那么可以编写出高并发的程序。</p>
+</li>
+</ul>
+</li>
+<li><p>弊:</p>
+<ul>
+<li>虽然线程带来的好处很多，但是并发编程并不容易，如果控制不好线程，那么就可能造成死锁，资源闲置，内存泄露等问题。</li>
+</ul>
+</li>
+</ul>
+<h4 id="什么是上下文切换"><a href="#什么是上下文切换" class="headerlink" title="什么是上下文切换?"></a>什么是上下文切换?</h4><p>cpu是采用时间片的轮转制度，在多个线程之间来回切换运行的。<br>当cpu切换到另一个线程的时候，它会先保存当前线程执行的状态，<br>以便在下次切换回来执行时，可以重新加载状态，继续运行。<br><strong>从保存线程的状态再到重新加载回线程的状态的这个过程就叫做上下文切换。</strong></p>
+<h4 id="线程的优先级"><a href="#线程的优先级" class="headerlink" title="线程的优先级"></a>线程的优先级</h4><p>在Java中可以通过Thread类的setPriority方法来设置线程的优先级，<br>虽然可以通过这样的方式来设置线程的优先级，但是线程执行的先后顺序并不依赖与线程的优先级。<br>换句话说就是，<strong>线程的优先级不保证线程执行的顺序。</strong></p>
+<h4 id="线程的几种状态"><a href="#线程的几种状态" class="headerlink" title="线程的几种状态"></a>线程的几种状态</h4><p>见:jdk Thread类源码中的state枚举类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NEW,RUNNABLE,BLOCKED,WAITING,TIMED_WAITING,TERMINATED</span><br></pre></td></tr></table></figure>
+
+<h4 id="sleep方法和wait方法的区别"><a href="#sleep方法和wait方法的区别" class="headerlink" title="sleep方法和wait方法的区别"></a>sleep方法和wait方法的区别</h4><ol>
+<li><p>sleep方法是Thread类的方法；而wait方法是Object类的方法。</p>
+</li>
+<li><p>sleep方法会<strong>使当前线程让出cpu的调度资源</strong>，从而让其他线程有获得被执行的机会，</p>
+</li>
+</ol>
+<p><strong>但是并不会让当前线程释放锁对象。</strong><br>而wait方法是<strong>让当前线程释放锁并进入wait状态，</strong><br>不参与获取锁的争夺，从而让其他等待资源的线程有机会获取锁，<br>只有当其他线程调用notify或notifyAll方法是，被wait的线程才能重新与其他线程一起争夺资源。</p>
+<h4 id="stop-suspend-resume等方法为什么会被遗弃"><a href="#stop-suspend-resume等方法为什么会被遗弃" class="headerlink" title="stop,suspend,resume等方法为什么会被遗弃"></a>stop,suspend,resume等方法为什么会被遗弃</h4><ul>
+<li><p>stop: stop方法被弃用很好理解，因为stop方法是强行终止线程的执行，<br>不管线程的run方法是否执行完，资源是否释放完，它都会终止线程的运行，并释放锁。<br>显然，这在设计上就不合理。  </p>
+</li>
+<li><p>suspend和resume: suspend方法用于阻塞一个线程,但并不释放锁，<br>而resume方法的作用只是为了恢复被suspend的线程。<br>假设A，B线程都争抢同一把锁，A线程成功的获得了锁，<br>然后被suspend阻塞了，却并没有释放锁，它需要其他线程来唤醒，<br>但此时B线程需要获得这把锁才能唤醒A，所以此时就陷入了死锁。</p>
+</li>
+</ul>
+<h4 id="interrupt-interrupted-isInterrupted方法区别"><a href="#interrupt-interrupted-isInterrupted方法区别" class="headerlink" title="interrupt,interrupted,isInterrupted方法区别"></a>interrupt,interrupted,isInterrupted方法区别</h4><ul>
+<li><p>interrupt: 这个方法并不是中断当前线程，而是给当前线程设置一个中断状态。</p>
+</li>
+<li><p>isInterrupted: 当线程调用interrupt方法后，线程就有了一个中断状态，<br>而使用isInterrupted方法就可以检测到线程的中断状态。</p>
+</li>
+<li><p>interrupted: 这个方法用于清除interrupt方法设置的中断状态。<br>如果一个线程之前调用了interrupt方法设置了中断状态，<br>那么interrupted方法就可以清除这个中断状态。          </p>
+</li>
+</ul>
+<h4 id="join方法"><a href="#join方法" class="headerlink" title="join方法"></a>join方法</h4><p>join方法的作用是让指定线程加入到当前线程中执行。</p>
+<p>假如在main方法里面创建一个线程A执行，并调用A的join方法，<br>那么当前线程就是main，指定的A线程就会在main之前执行，<br>等A执行完后，才会继续执行main。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public static void main(String[] args) throws Exception</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    Thread a &#x3D; new Thread(()-&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(1);</span><br><span class="line">            </span><br><span class="line">        &#125;catch (Exception e)&#123;&#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;thread join&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    a.start();</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;a会在main线程之前执行</span><br><span class="line">    a.join();</span><br><span class="line"></span><br><span class="line">    System.out.println(&quot;main&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>join方法的底层是wait方法，调用A线程(子线程)的join方法实际上是让main线程wait，<br>等A线程执行完后，才能继续执行后面的代码。</strong></p>
+<h4 id="yield方法"><a href="#yield方法" class="headerlink" title="yield方法"></a>yield方法</h4><p>yield属于Thread的静态方法，<br>它的作用是让当前线程让出cpu调度资源。</p>
+<p>yield方法其实就和线程的优先级一样，你虽然指定了，<br>但是最后的结果不由得你说了算，<br><strong>即使调用了yield方法，最后仍然可能是这个线程先执行，<br>只不过说别的线程可能先执行的机会稍大一些。</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"># 多线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/12/Java%E9%9B%86%E5%90%88/" rel="prev" title="java集合">
+      <i class="fa fa-chevron-left"></i> java集合
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/12/GC/" rel="next" title="GC">
+      GC <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程"><span class="nav-number">1.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发和并行"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">并发和并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程的利弊"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">多线程的利弊</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是上下文切换"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">什么是上下文切换?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的优先级"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">线程的优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的几种状态"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">线程的几种状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep方法和wait方法的区别"><span class="nav-number">1.0.0.7.</span> <span class="nav-text">sleep方法和wait方法的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stop-suspend-resume等方法为什么会被遗弃"><span class="nav-number">1.0.0.8.</span> <span class="nav-text">stop,suspend,resume等方法为什么会被遗弃</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#interrupt-interrupted-isInterrupted方法区别"><span class="nav-number">1.0.0.9.</span> <span class="nav-text">interrupt,interrupted,isInterrupted方法区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#join方法"><span class="nav-number">1.0.0.10.</span> <span class="nav-text">join方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yield方法"><span class="nav-number">1.0.0.11.</span> <span class="nav-text">yield方法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="naive"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">naive</p>
+  <div class="site-description" itemprop="description">选择有时候比努力更重要</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-07 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">naive</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
