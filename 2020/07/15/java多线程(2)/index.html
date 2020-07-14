@@ -25,28 +25,28 @@
   <meta name="description" content="并发synchronized是可重入锁 synchronized是jdk提供的jvm层面的同步机制。它解决的是多线程之间访问共享资源的同步问题,它保证了在被它修饰的方法或代码块同一时间只有一个线程执行。 sync(Object) 不能实验String常量 Integer Long">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程（2）">
-<meta property="og:url" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/index.html">
 <meta property="og:site_name" content="焱燚">
 <meta property="og:description" content="并发synchronized是可重入锁 synchronized是jdk提供的jvm层面的同步机制。它解决的是多线程之间访问共享资源的同步问题,它保证了在被它修饰的方法或代码块同一时间只有一个线程执行。 sync(Object) 不能实验String常量 Integer Long">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%861.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%862.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%863.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%864.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E5%81%8F%E5%90%91%E9%94%81%E5%AE%9E%E7%8E%B0.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%AE%9E%E7%8E%B0.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E6%AD%BB%E9%94%81.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)%5Cunsafe.png">
-<meta property="article:published_time" content="2020-07-12T15:43:52.000Z">
-<meta property="article:modified_time" content="2020-07-14T16:32:34.880Z">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%861.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%862.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%863.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%864.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E5%81%8F%E5%90%91%E9%94%81%E5%AE%9E%E7%8E%B0.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%AE%9E%E7%8E%B0.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E6%AD%BB%E9%94%81.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/unsafe.png">
+<meta property="article:published_time" content="2020-07-14T16:39:47.000Z">
+<meta property="article:modified_time" content="2020-07-14T16:39:49.713Z">
 <meta property="article:author" content="naive">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%861.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%861.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/">
+<link rel="canonical" href="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/">
 
 
 <script id="page-configurations">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -234,16 +234,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-07-12 23:43:52" itemprop="dateCreated datePublished" datetime="2020-07-12T23:43:52+08:00">2020-07-12</time>
+              <time title="创建时间：2020-07-15 00:39:47 / 修改时间：00:39:49" itemprop="dateCreated datePublished" datetime="2020-07-15T00:39:47+08:00">2020-07-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-15 00:32:34" itemprop="dateModified" datetime="2020-07-15T00:32:34+08:00">2020-07-15</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -283,16 +277,16 @@
 <p>java6之后jvm团队对synchronized做出了非常大的优化。</p>
 </blockquote>
 <h4 id="synchronized底层原理"><a href="#synchronized底层原理" class="headerlink" title="synchronized底层原理"></a>synchronized底层原理</h4><p>先看我编写的一段测试代码:</p>
-<p><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%861.png" alt="synchronized底层原理1"></p>
+<p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%861.png" alt="synchronized底层原理1"></p>
 <p>使用 javap -c -v -l 指令反编译 class文件后的 <strong>字节码指令</strong> 如下</p>
-<p><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%862.png" alt="synchronized底层原理2"></p>
+<p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%862.png" alt="synchronized底层原理2"></p>
 <p>可以清楚的看到,在进入synchronized的时候，底层字节码编译出来的指令为<br><strong>monitorenter</strong>,在执行完同步代码块后又有一个<strong>monitorexit</strong>指令.</p>
 <p>想了解synchronized究竟是如何实现的,可以直接进入openjdk:src/share/vm/runtime 目录,<br>这个目录存放的是hotspot虚拟机在运行时所需的代码。</p>
 <p>可以直接锁定其中的 objectMonitor.cpp源文件和objectMonitor.hpp头文件.<br>看到这2个文件，相信各位同学应该就知道，这个就是synchronized锁对象的monitor，它也是<br>一个对象,不过它是一个c++对象(见:objectMonitor.hpp头文件):</p>
-<p><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%863.png" alt="synchronized底层原理3"> </p>
+<p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%863.png" alt="synchronized底层原理3"> </p>
 <p><strong>其实真正的锁应该是这个monitor cpp对象,synchronized锁的那个java对象起到的只是关联monitor的作用,<br>只不过我们身在java层面，无法感知到jvm层面monitor的作用，所以才称synchronized的java锁对象为锁。</strong></p>
 <p>以下是monitorenter指令执行过程(见 InterpreterRuntime.cpp):</p>
-<p><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%864.png" alt="synchronized底层原理4"></p>
+<p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/synchronized%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%864.png" alt="synchronized底层原理4"></p>
 <p>这里做一个总结吧,这个总结可能不太准确，但大致是这样的:<br><strong>每次执行monitorenter指令的时候,是将当前synchronized锁对象<br>关联的</strong>monitor<strong>的_recursions加1,<br>执行monitorexit指令的时候,将当前object对象关联的</strong>monitor<strong>的_recursions减1,<br>当_recursions为0的时候，就说明线程不再持有锁对象。</strong></p>
 <p><strong>如果熟悉AQS原理的同学就知道在AQS内部，<br>有一个被volatile修饰state变量，<br>这个state变量就是AQS的核心，<br>state变量的作用类比到此处就是monitor计数器的作用。</strong></p>
 <p>sync(Object) 系统中记录这个ID （偏向锁）</p>
@@ -353,14 +347,14 @@
 <p>如果设置成功,那么对象偏向当前线程，并将当对象的锁标志位改为01。</p>
 <p>如果设置失败，则说明多线程竞争，将撤销偏向锁，升级为轻量级锁。</p>
 <p><strong>偏向锁适用于单线程无锁竞争环境(单线程环境)。</strong></p>
-<p>hotspot偏向锁实现(faster_enter):<br><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E5%81%8F%E5%90%91%E9%94%81%E5%AE%9E%E7%8E%B0.png" alt="偏向锁实现"></p>
+<p>hotspot偏向锁实现(faster_enter):<br><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E5%81%8F%E5%90%91%E9%94%81%E5%AE%9E%E7%8E%B0.png" alt="偏向锁实现"></p>
 <h4 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h4><p>在线程获取对象锁时，jvm首先会判断对象是否为无锁状态(无锁状态标志位为01)。</p>
 <p>如果对象是无锁状态，那么将在线程的栈帧中开辟一块空间用于存储对象的MarkWord，<br>然后将对象的MarkWord复制到栈帧空间去，并使用CAS更新对象的MarkWord为指向<br>线程栈帧的指针。</p>
 <p>如果更新成功，那么当前线程获取锁成功，并修改对象的MarkWord标志位<br>为 00 。</p>
 <p>如果更新失败，那么jvm会判断对象的MarkWord是否已经指向线程的栈帧。</p>
 <p>如果已经指向，那么线程直接执行同步代码。否则，说明多个线程竞争，将inflate为重量级锁。</p>
 <p><strong>轻量级锁适用于多线程无锁竞争环境(多线程轮流执行,并不会发生冲突)。</strong></p>
-<p>hotspot轻量级锁实现(slow_enter):<br><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%AE%9E%E7%8E%B0.png" alt="轻量级锁实现">   </p>
+<p>hotspot轻量级锁实现(slow_enter):<br><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%AE%9E%E7%8E%B0.png" alt="轻量级锁实现">   </p>
 <h4 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h4><p>在争夺锁的过程中，线程不会停止获取锁，而是通过CAS不断的判断线程是否符合获取锁的条件。</p>
 <p><strong>AQS获取锁的核心就是CAS。</strong></p>
 <h4 id="自适应自旋锁"><a href="#自适应自旋锁" class="headerlink" title="自适应自旋锁"></a>自适应自旋锁</h4><p>自旋锁意味着线程会不断的消耗cpu资源，短时间还行，长时间就意味着而资源的浪费。<br>所以自适应自旋锁会有一个自旋的生命周期,过了这个生命周期,线程将不再自旋。</p>
@@ -381,7 +375,7 @@
 <li>循环等待条件: 在条件3之上,进程1有进程2需要申请的资源,进程2有进程1需要申请的资源。那么这2个线程<br> 不停等待彼此持有的资源,又不能释放已拥有的资源,陷入循环等待。</li>
 </ol>
 <p>死锁:</p>
-<p><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E6%AD%BB%E9%94%81.png" alt="死锁"></p>
+<p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/%E6%AD%BB%E9%94%81.png" alt="死锁"></p>
 <h4 id="如何避免死锁"><a href="#如何避免死锁" class="headerlink" title="如何避免死锁?"></a>如何避免死锁?</h4><p>只要打破死锁产生的4个条件之一就行,但是真正能够被打破的条件只有第3和第4个条件。<br>因为第1和第2个条件都是锁的必要条件。</p>
 <p>所以有如下解决死锁的方案:</p>
 <ul>
@@ -393,7 +387,7 @@
 <p>用对象作为锁的时候 应该加上final 保证锁的对象不变</p>
 <h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>volatile是JVM提供的轻量级的线程同步机制。它可以保证内存的可见性，禁止指令重排序。<br>但是volatile，并<strong>不能保证数据的原子性</strong>，所以它不合适作为线程同步的工具。</p>
 <h4 id="volatile保证内存的可见性"><a href="#volatile保证内存的可见性" class="headerlink" title="volatile保证内存的可见性"></a>volatile保证内存的可见性</h4><p>可见性是指一个线程的对于共享数据的修改对其他线程是可见的。<br>jvm的内存模型是: <strong>线程总是从主内存读取变量到工作内存，然后在工作内存中进行修改，<br>在修改完变量后，才把变量同步到主内存中。</strong><br>如果多个线程同时读取了一个变量到各自的内存中，其中一个线程对变量进行了修改，并同步回了主内存，<br>但其它线程仍然使用的是原来的旧值，这就造成了数据的不一致。</p>
-<p><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png" alt="Java内存模型"></p>
+<p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png" alt="Java内存模型"></p>
 <p>解决这个问题的办法就是给变量加上volatile关键字修饰。<br>volatile使得被它修饰的变量在被线程修改后，那么线程就需要把修改后的变量重新同步到主内存，<br>且其他线程每次使用这个变量，都需要从主内存读取。</p>
 <p>MESI</p>
 <p>缓存一致性协议</p>
@@ -432,7 +426,7 @@
 <p>cas(0,1){<br>while(如果当前m==0;m=1)<br>}</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span> var5;</span><br><span class="line">   <span class="keyword">do</span> &#123;</span><br><span class="line">       var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">   &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> var5;</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<p><img src="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)%5Cunsafe.png" alt="unsafe"></p>
+<p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/unsafe.png" alt="unsafe"></p>
 <p><strong>如果当前的值和内存地址的值一样就加+1</strong></p>
 <p><strong>并且有个重要的细节就是,Atomic原子类内部的value值都是由volatile修饰的,<br>这就使得Atomic的value值是对其他线程可见的。</strong></p>
 <h4 id="CAS的缺点"><a href="#CAS的缺点" class="headerlink" title="CAS的缺点"></a>CAS的缺点</h4><ul>
@@ -556,12 +550,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(3)/" rel="prev" title="多线程（3）">
-      <i class="fa fa-chevron-left"></i> 多线程（3）
+    <a href="/2020/07/12/GC/" rel="prev" title="GC">
+      <i class="fa fa-chevron-left"></i> GC
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/12/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(4)/" rel="next" title="多线程（4）">
-      多线程（4） <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(3)/" rel="next" title="多线程（3）">
+      多线程（3） <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
