@@ -22,19 +22,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="多线程进程和线程进程与线程最主要的区别是它们是操作系统管理资源的不同方式的体现。准确来说进程与线程属于衍生关系。进程是操作系统执行程序的一次过程,在这个过程中可能会产生多个线程。  比如在使用QQ时，有窗口线程，文字发送的线程，语音输入的线程，可能不是很恰当，但是就是这个意思。  由于系统在线程之间的切换比在进程之间的切换更高效率，所以线程也被成为轻量级进程。 并发和并行 并发: 多个线程任务">
+  <meta name="description" content="多线程进程和线程进程与线程最主要的区别是它们是操作系统管理资源的不同方式的体现。准确来说进程与线程属于衍生关系。进程是操作系统执行程序的一次过程,在这个过程中可能会产生多个线程。  比如在使用QQ时，有窗口线程，文字发送的线程，语音输入的线程，可能不是很恰当，但是就是这个意思。  由于系统在线程之间的切换比在进程之间的切换更高效率，所以线程也被成为轻量级进程。 并发和并行 并发: 多个程序可以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程">
 <meta property="og:url" content="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
 <meta property="og:site_name" content="焱燚">
-<meta property="og:description" content="多线程进程和线程进程与线程最主要的区别是它们是操作系统管理资源的不同方式的体现。准确来说进程与线程属于衍生关系。进程是操作系统执行程序的一次过程,在这个过程中可能会产生多个线程。  比如在使用QQ时，有窗口线程，文字发送的线程，语音输入的线程，可能不是很恰当，但是就是这个意思。  由于系统在线程之间的切换比在进程之间的切换更高效率，所以线程也被成为轻量级进程。 并发和并行 并发: 多个线程任务">
+<meta property="og:description" content="多线程进程和线程进程与线程最主要的区别是它们是操作系统管理资源的不同方式的体现。准确来说进程与线程属于衍生关系。进程是操作系统执行程序的一次过程,在这个过程中可能会产生多个线程。  比如在使用QQ时，有窗口线程，文字发送的线程，语音输入的线程，可能不是很恰当，但是就是这个意思。  由于系统在线程之间的切换比在进程之间的切换更高效率，所以线程也被成为轻量级进程。 并发和并行 并发: 多个程序可以">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/Blog/source/_posts/java%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%B9%B6%E5%8F%91.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/Blog/source/_posts/java%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%B9%B6%E8%A1%8C.png">
 <meta property="article:published_time" content="2020-07-12T07:27:18.000Z">
-<meta property="article:modified_time" content="2020-07-12T15:10:18.832Z">
+<meta property="article:modified_time" content="2020-07-19T06:54:00.732Z">
 <meta property="article:author" content="naive">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/Blog/source/_posts/java%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%B9%B6%E5%8F%91.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
 
@@ -224,10 +227,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-07-12 15:27:18 / 修改时间：23:10:18" itemprop="dateCreated datePublished" datetime="2020-07-12T15:27:18+08:00">2020-07-12</time>
+              <time title="创建时间：2020-07-12 15:27:18" itemprop="dateCreated datePublished" datetime="2020-07-12T15:27:18+08:00">2020-07-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-19 14:54:00" itemprop="dateModified" datetime="2020-07-19T14:54:00+08:00">2020-07-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -264,11 +273,20 @@
 </blockquote>
 <p><strong>由于系统在线程之间的切换比在进程之间的切换更高效率，所以线程也被成为轻量级进程。</strong></p>
 <h4 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h4><ol>
-<li><p>并发: 多个线程任务被一个cpu轮流执行。注意，这里并不是只允许一个cpu执行多任务，多个cpu执行也是可以的。<br><strong>并发强调的是计算机应用程序有处理多个任务的能力。</strong></p>
+<li><p>并发: <strong>多个程序可以同时运行的现象</strong>，更细化的是多进程可以同时运行或者多指令可以同时运行。多个线程任务被一个cpu轮流执行。<br><strong>并发强调的是计算机应用程序有处理多个任务的能力。并发的”同时”是经过上下文快速切换，使得看上去多个进程同时都在运行的现象，是一种OS欺骗用户的现象</strong>。</p>
+<img src="/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/Blog\source\_posts\java多线程\并发.png" alt="image-20200719145125356" style="zoom:50%;">
 </li>
-<li><p>并行:多个线程被多个cpu同时执行。这里也并不是只允许多个cpu处理多任务，一个cpu也是可以的，<br>只要cpu能在同一时刻处理多任务。<strong>并行强调的是计算机应用程序拥有同时处理多任务的能力。</strong></p>
+<li><p>并行:多个线程被多个cpu同时执行。这里也并不是只允许多个cpu处理多任务，一个cpu也是可以的，<br>只要cpu能在同一时刻处理多任务。<strong>并行的”同时”是同一时刻可以多个进程在运行(处于running)</strong></p>
+<p><strong>并行强调的是计算机应用程序拥有同时处理多任务的能力。</strong></p>
+<img src="/2020/07/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/Blog\source\_posts\java多线程\并行.png" alt="image-20200719145208852" style="zoom:50%;">
+
 </li>
 </ol>
+<h4 id="并发和并行对比"><a href="#并发和并行对比" class="headerlink" title="并发和并行对比"></a>并发和并行对比</h4><p>并发，指的是多个事情<strong>，在同一时间段内同时发生了。</strong></p>
+<p>并行，指的是多个事情，<strong>在同一时间点上同时发生了。</strong></p>
+<p><strong>并发的多个任务之间是互相抢占资源的。并行的多个任务之间是不互相抢占资源的。</strong></p>
+<p>只有在多CPU或者一个CPU多核的情况中，才会发生并行。</p>
+<p>否则，看似同时发生的事情，其实都是并发执行的。</p>
 <h4 id="多线程的利弊"><a href="#多线程的利弊" class="headerlink" title="多线程的利弊"></a>多线程的利弊</h4><ul>
 <li><p>利:</p>
 <ul>
@@ -400,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程"><span class="nav-number">1.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发和并行"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">并发和并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程的利弊"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">多线程的利弊</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是上下文切换"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">什么是上下文切换?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的优先级"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">线程的优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的几种状态"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">线程的几种状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep方法和wait方法的区别"><span class="nav-number">1.0.0.7.</span> <span class="nav-text">sleep方法和wait方法的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stop-suspend-resume等方法为什么会被遗弃"><span class="nav-number">1.0.0.8.</span> <span class="nav-text">stop,suspend,resume等方法为什么会被遗弃</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#interrupt-interrupted-isInterrupted方法区别"><span class="nav-number">1.0.0.9.</span> <span class="nav-text">interrupt,interrupted,isInterrupted方法区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#join方法"><span class="nav-number">1.0.0.10.</span> <span class="nav-text">join方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yield方法"><span class="nav-number">1.0.0.11.</span> <span class="nav-text">yield方法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程"><span class="nav-number">1.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">进程和线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发和并行"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">并发和并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发和并行对比"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">并发和并行对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程的利弊"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">多线程的利弊</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是上下文切换"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">什么是上下文切换?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的优先级"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">线程的优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程的几种状态"><span class="nav-number">1.0.0.7.</span> <span class="nav-text">线程的几种状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep方法和wait方法的区别"><span class="nav-number">1.0.0.8.</span> <span class="nav-text">sleep方法和wait方法的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stop-suspend-resume等方法为什么会被遗弃"><span class="nav-number">1.0.0.9.</span> <span class="nav-text">stop,suspend,resume等方法为什么会被遗弃</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#interrupt-interrupted-isInterrupted方法区别"><span class="nav-number">1.0.0.10.</span> <span class="nav-text">interrupt,interrupted,isInterrupted方法区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#join方法"><span class="nav-number">1.0.0.11.</span> <span class="nav-text">join方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yield方法"><span class="nav-number">1.0.0.12.</span> <span class="nav-text">yield方法</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -416,7 +434,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
