@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="设计模式面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群] 代码重用性、可扩展性，可读性、可靠性、高内聚低耦合 七大原则单一职责一个类只负责一项职责，如A类负责两个不同职责，职责1需要改变A时，可能造成职责2错误，需要把A分为A1,A2 。 如UserDao应该仅仅操作user一张表。 接口">
+  <meta name="description" content="设计模式面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群] 代码重用性、可扩展性，可读性、可靠性、高内聚低耦合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式">
 <meta property="og:url" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="焱燚">
-<meta property="og:description" content="设计模式面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群] 代码重用性、可扩展性，可读性、可靠性、高内聚低耦合 七大原则单一职责一个类只负责一项职责，如A类负责两个不同职责，职责1需要改变A时，可能造成职责2错误，需要把A分为A1,A2 。 如UserDao应该仅仅操作user一张表。 接口">
+<meta property="og:description" content="设计模式面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群] 代码重用性、可扩展性，可读性、可靠性、高内聚低耦合">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%94%B9%E8%BF%9B%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB.png">
@@ -38,7 +38,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%81%9A%E5%90%88%E5%85%B3%E7%B3%BB.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%84%E5%90%88.png">
 <meta property="article:published_time" content="2020-07-20T15:05:37.000Z">
-<meta property="article:modified_time" content="2020-07-21T12:33:43.544Z">
+<meta property="article:modified_time" content="2020-07-21T13:51:23.547Z">
 <meta property="article:author" content="naive">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
@@ -240,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-21 20:33:43" itemprop="dateModified" datetime="2020-07-21T20:33:43+08:00">2020-07-21</time>
+                <time title="修改时间：2020-07-21 21:51:23" itemprop="dateModified" datetime="2020-07-21T21:51:23+08:00">2020-07-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,6 +272,8 @@
       
         <h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><p>面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群]</p>
 <p>代码重用性、可扩展性，可读性、可靠性、高内聚低耦合</p>
+<a id="more"></a>
+
 <h2 id="七大原则"><a href="#七大原则" class="headerlink" title="七大原则"></a>七大原则</h2><h3 id="单一职责"><a href="#单一职责" class="headerlink" title="单一职责"></a>单一职责</h3><p>一个类只负责一项职责，如A类负责两个不同职责，职责1需要改变A时，可能造成职责2错误，需要把A分为A1,A2 。 如UserDao应该仅仅操作user一张表。</p>
 <h3 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h3><p>客户端不应该依赖它不需要的接口，即一个类对另一个类的依赖应该建立在最小的接口上</p>
 <img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/接口隔离.png" alt="接口隔离" style="zoom:50%;">
@@ -344,9 +346,9 @@
 <p>但是如果在程序中Person实体中定义了对IDCard进行<strong>级联删除</strong>，即删除Person时连同IDCard一起删除，那么IDCard 和 Person 就是组合了</p>
 <img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/组合.png" alt="image-20200721195926231" style="zoom:67%;">
 
-<h2 id="设计模式类型"><a href="#设计模式类型" class="headerlink" title="设计模式类型"></a>设计模式类型</h2><p><strong>1)</strong> <strong>创建型模式</strong>：单例模式、抽象工厂模式、原型模式、建造者模式、<strong>工厂模式</strong>。</p>
+<h2 id="设计模式类型"><a href="#设计模式类型" class="headerlink" title="设计模式类型"></a>设计模式类型</h2><p><strong>1)</strong> <strong>创建型模式</strong>：<strong>单例模式</strong>、抽象工厂模式、原型模式、建造者模式、<strong>工厂模式</strong>。</p>
 <p><strong>2)</strong> <strong>结构型模式</strong>：适配器模式、桥接模式、<strong>装饰模式</strong>、组合模式、外观模式、享元模式、<strong>代理模式</strong>。</p>
-<p><strong>3)</strong> <strong>行为型模式</strong>：模版方法模式、命令模式、访问者模式、迭代器模式、观察者模式、中介者模式、备忘录模式、解释器模式（Interpreter模式）、状态模式、策略模式、职责链模式(责任链模式)。</p>
+<p><strong>3)</strong> <strong>行为型模式</strong>：模版方法模式、命令模式、访问者模式、迭代器模式、<strong>观察者模式</strong>、中介者模式、备忘录模式、解释器模式（Interpreter模式）、状态模式、策略模式、职责链模式(责任链模式)。</p>
 
     </div>
 
@@ -368,7 +370,10 @@
     <a href="/2020/07/20/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="prev" title="网络编程">
       <i class="fa fa-chevron-left"></i> 网络编程
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/21/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式-单例模式">
+      设计模式-单例模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -443,20 +448,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
