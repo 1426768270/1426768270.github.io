@@ -39,7 +39,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/unsafe.png">
 <meta property="article:published_time" content="2020-07-14T16:39:47.000Z">
-<meta property="article:modified_time" content="2020-07-14T16:39:49.713Z">
+<meta property="article:modified_time" content="2020-08-09T11:03:56.609Z">
 <meta property="article:author" content="naive">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="多线程">
@@ -234,10 +234,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-07-15 00:39:47 / 修改时间：00:39:49" itemprop="dateCreated datePublished" datetime="2020-07-15T00:39:47+08:00">2020-07-15</time>
+              <time title="创建时间：2020-07-15 00:39:47" itemprop="dateCreated datePublished" datetime="2020-07-15T00:39:47+08:00">2020-07-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-09 19:03:56" itemprop="dateModified" datetime="2020-08-09T19:03:56+08:00">2020-08-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -417,17 +423,20 @@
 <p>如果是多线程环境下，一个线程读取到i的值到工作内存，然后对i做出自增操作，<br>然后写回主内存，其它内存才知道i的值被修改了，这个<strong>过程本身就不是原子</strong>的。<br>所以不能拿volatile来带替synchronized,如果是多线程环境，仍然需要使用synchronized保证线程同步。</p>
 <p>loadfence原语指令</p>
 <p>storefence原语指令</p>
-<h3 id="CAS-无锁优化-自旋-乐观"><a href="#CAS-无锁优化-自旋-乐观" class="headerlink" title="CAS(无锁优化 自旋 乐观)"></a>CAS(无锁优化 自旋 乐观)</h3><p>CAS: Compare And Swap 比较成功并交换。<br>CAS体现的是一种乐观锁的机制。<br><strong>CAS涉及到3个元素: 指定的内存地址,期盼值和目标值。</strong><br>将指定内存地址的值与期盼值相比较，如果比较成功就将内存地址的值修改为目标值。</p>
+<h3 id="CAS-无锁优化-自旋-乐观"><a href="#CAS-无锁优化-自旋-乐观" class="headerlink" title="CAS(无锁优化 自旋 乐观)"></a>CAS(无锁优化 自旋 乐观)</h3><p>CAS: Compare And Swap 比较成功并交换。<br>CAS体现的是一种乐观锁的机制。<br><strong>CAS涉及到3个元素: 指定的内存地址,期盼值和目标值。</strong><br><strong>将指定内存地址的值与期盼值相比较，如果比较成功就将内存地址的值修改为目标值。</strong></p>
 <h4 id="CAS在JAVA中的底层实现-Atomic原子类实现"><a href="#CAS在JAVA中的底层实现-Atomic原子类实现" class="headerlink" title="CAS在JAVA中的底层实现(Atomic原子类实现)"></a>CAS在JAVA中的底层实现(Atomic原子类实现)</h4><p>CAS在Java中的实现是 juc的atomic包下的Atomicxx原子类。</p>
-<p>而这些Atomic原子类的核心是: <Unsafe>类<br>Unsafe类是个final类，它的核心方法都是native的，<br>因为Java无法像C/C++一样使用指针来操作内存,<br>Unsafe类就解决了这个问题。<br>CAS的效率更高</Unsafe></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicInteger</span> <span class="keyword">extends</span> <span class="title">Number</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Unsafe unsafe = Unsafe.getUnsafe();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> valueOffset;</span><br><span class="line">    <span class="comment">//反射操作，获取这个类的值在内存中分偏移地址</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        valueOffset = unsafe.objectFieldOffset</span><br><span class="line">            (AtomicInteger.class.getDeclaredField("value"));</span><br><span class="line">      &#125; <span class="keyword">catch</span> (Exception ex) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> Error(ex); &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//加入volatile保证内存的可见性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">int</span> value;</span><br><span class="line">    <span class="comment">//原子性由CAS保证。这个操作是一个原子操作，同一时刻只有一个线程可以执行。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">compareAndSet</span><span class="params">(<span class="keyword">int</span> expect, <span class="keyword">int</span> update)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe.compareAndSwapInt(<span class="keyword">this</span>, valueOffset, expect, update);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">而这些Atomic原子类的核心是: &lt;Unsafe&gt;类</span><br><span class="line">Unsafe类是个final类，它的核心方法都是native的，里面的操作都是原子操作。</span><br><span class="line">因为Java无法像C&#x2F;C++一样使用指针来操作内存,</span><br><span class="line">Unsafe类就解决了这个问题。 </span><br><span class="line">CAS的效率更高</span><br></pre></td></tr></table></figure>
+
 <p>cpu原语操作</p>
 <blockquote>
-<p>拿incrementAndGet方法来说，<br>Unsafe首先调用getAndAddInt方法,<br>它会根据当前Atomic的value在内存中地址获取到当前对象的值,<br>然后再重复此操作，把之前获得的值与第二遍获得的值进行比较，<br>如果成功，就把内存地址的值更新为新值，否则就do while循环.</p>
+<p>拿incrementAndGet方法来说，<br>Unsafe首先调用getAndAddInt方法,<br>它会根据当前Atomic的value在内存中地址获取到当前对象的值,<br><strong>然后再重复此操作，把之前获得的值与第二遍获得的值进行比较，</strong><br><strong>如果成功，就把内存地址的值更新为新值，否则就do while循环.</strong></p>
+<p>简单来说，就是如果要修改的值与内存中一样就对他进行改变。不一样就一直获取内存中的值。</p>
 <p>cas(0,1){<br>while(如果当前m==0;m=1)<br>}</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span> var5;</span><br><span class="line">   <span class="keyword">do</span> &#123;</span><br><span class="line">       var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">   &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> var5;</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</span><br><span class="line">&gt;<span class="keyword">int</span> var5;</span><br><span class="line">&gt;<span class="keyword">do</span> &#123;</span><br><span class="line">  var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">   <span class="comment">//对象，参数的偏移地址，当前内存的值，要修改成为的值。</span></span><br><span class="line">&gt;&#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</span><br><span class="line"></span><br><span class="line">&gt;<span class="keyword">return</span> var5;</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p><img src="/2020/07/15/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/unsafe.png" alt="unsafe"></p>
-<p><strong>如果当前的值和内存地址的值一样就加+1</strong></p>
 <p><strong>并且有个重要的细节就是,Atomic原子类内部的value值都是由volatile修饰的,<br>这就使得Atomic的value值是对其他线程可见的。</strong></p>
 <h4 id="CAS的缺点"><a href="#CAS的缺点" class="headerlink" title="CAS的缺点"></a>CAS的缺点</h4><ul>
 <li><p>循环时间开销大: 我在看源码的时候，发现Atomic的CAS操作并没有进行CAS失败的退出处理，<br>只是单纯的循环比较并交换，这就让我很担心它的性能问题，<br>如果长时间不成功，那会是很可怕的一件事请，至少cpu的负荷会很大。</p>
@@ -438,9 +447,7 @@
 </li>
 </ul>
 <blockquote>
-<blockquote>
 <p>假设2个线程读取了同一份数据，线程1修改了这个值并把它改回了原值，并同步到主内存中，<br>另一个线程准备进行CAS操作,当它发现原值和期盼的值是一样的，那么CAS仍然成功。</p>
-</blockquote>
 </blockquote>
 <h4 id="解决ABA问题"><a href="#解决ABA问题" class="headerlink" title="解决ABA问题"></a>解决ABA问题</h4><p>一个线程线程要使用变量1<br>另一个线程把它变成2又变会1 加版本号</p>
 <p>在juc的atomic包中提供了 AtomicStampedReference 类,<br>这个类较普通的原子类新增了一个<strong>stamp</strong>字段，它的作用相当于version。<br>每次修改这个引用的值，也都会修改stamp的值，<br>当发现stamp的值与期盼的stamp不一样，也会修改失败.<br>这就类似于以version实现乐观锁一样。             </p>
@@ -631,14 +638,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
