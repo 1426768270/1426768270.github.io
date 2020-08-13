@@ -33,8 +33,10 @@
 <meta property="og:image" content="http://yoursite.com/2020/07/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP%E5%A4%B4%E9%83%A8.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/UDP%E5%A4%B4%E9%83%A8.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/IP%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/IP%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB.png">
 <meta property="article:published_time" content="2020-07-27T09:01:01.000Z">
-<meta property="article:modified_time" content="2020-07-29T09:12:20.781Z">
+<meta property="article:modified_time" content="2020-08-12T07:57:10.109Z">
 <meta property="article:author" content="naive">
 <meta property="article:tag" content="网络">
 <meta name="twitter:card" content="summary">
@@ -236,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-29 17:12:20" itemprop="dateModified" datetime="2020-07-29T17:12:20+08:00">2020-07-29</time>
+                <time title="修改时间：2020-08-12 15:57:10" itemprop="dateModified" datetime="2020-08-12T15:57:10+08:00">2020-08-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -317,7 +319,8 @@
 <li>TFTP，HHTP，SMTP,FTP,DN</li>
 </ul>
 <p>在TCP/IP中会话层和表示层，应用层是应用层</p>
-<h1 id="二、TCP和UDP"><a href="#二、TCP和UDP" class="headerlink" title="二、TCP和UDP"></a>二、TCP和UDP</h1><h2 id="TCP和UCP的区别"><a href="#TCP和UCP的区别" class="headerlink" title="TCP和UCP的区别"></a>TCP和UCP的区别</h2><table>
+<h1 id="二、TCP和UDP"><a href="#二、TCP和UDP" class="headerlink" title="二、TCP和UDP"></a>二、TCP和UDP</h1><p><strong>传输层协议</strong></p>
+<h2 id="TCP和UCP的区别"><a href="#TCP和UCP的区别" class="headerlink" title="TCP和UCP的区别"></a>TCP和UCP的区别</h2><table>
 <thead>
 <tr>
 <th></th>
@@ -487,7 +490,7 @@
 <p>（1）<strong>网速的提升给UDP的稳定性提供可靠网络保障，丢包率很低，如果使用应用层重传，能够确保传输的可靠性。</strong></p>
 <p>（2）<strong>TCP为了实现网络通信的可靠性，使用了复杂的拥塞控制算法，建立了繁琐的握手过程，由于TCP内置的系统协议栈中，极难对其进行改进。</strong></p>
 <p>采用TCP，一旦发生丢包，TCP会将后续的包缓存起来，等前面的包重传并接收到后再继续发送，延时会越来越大，基于UDP对实时性要求较为严格的情况下，采用自定义重传机制，能够把丢包产生的延迟降到最低，尽量减少网络问题对游戏性造成影响。</p>
-<h1 id="三、HTTP"><a href="#三、HTTP" class="headerlink" title="三、HTTP"></a>三、HTTP</h1><h2 id="HTTP特性"><a href="#HTTP特性" class="headerlink" title="HTTP特性"></a>HTTP特性</h2><p>HTTP：是互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。</p>
+<h1 id="三、HTTP"><a href="#三、HTTP" class="headerlink" title="三、HTTP"></a>三、HTTP</h1><h2 id="HTTP特性"><a href="#HTTP特性" class="headerlink" title="HTTP特性"></a>HTTP特性</h2><p>HTTP：是互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。<strong>是应用层协议</strong></p>
 <h3 id="HTTP-常见的状态码，有哪些？"><a href="#HTTP-常见的状态码，有哪些？" class="headerlink" title="HTTP 常见的状态码，有哪些？"></a>HTTP 常见的状态码，有哪些？</h3><p><em>2xx</em>类状态码表示服务器<strong>成功</strong>处理了客户端的请求，也是我们最愿意看到的状态。</p>
 <ul>
 <li>「<strong>200 OK</strong>」是最常见的成功状态码，表示一切正常。如果是非 <code>HEAD</code> 请求，服务器返回的响应头都会有 body 数据。</li>
@@ -582,13 +585,13 @@
 <li>HTTPS 协议需要向 CA（证书权威机构）申请数字证书，来保证服务器的身份是可信的。</li>
 </ol>
 <p>HTTPS 解决了，<strong>窃听风险</strong>，<strong>篡改风险</strong>，<strong>冒充风险</strong></p>
-<p>HTTP<strong>S</strong> 在 HTTP 与 TCP 层之间加入了 <code>SSL/TLS</code> 协议。</p>
+<p>HTTP<strong>S</strong> 在 HTTP 与 TCP 层之间加入了 <code>SSL/TLS</code> 协议。<strong>HTTPS 并不是新协议，而是让 HTTP 先和 SSL（Secure Sockets Layer）通信，再由 SSL 和 TCP 通信，也就是说 HTTPS 使用了隧道进行通信。</strong></p>
 <ul>
 <li><strong>信息加密</strong>：交互信息无法被窃取，但你的号会因为「自身忘记」账号而没。</li>
 <li><strong>校验机制</strong>：无法篡改通信内容，篡改了就不能正常显示，但百度「竞价排名」依然可以搜索垃圾广告。</li>
 <li><strong>身份证书</strong>：证明淘宝是真的淘宝网，但你的钱还是会因为「剁手」而没。</li>
 </ul>
-<h3 id="HTTPS-是如何解决上面的三个风险的"><a href="#HTTPS-是如何解决上面的三个风险的" class="headerlink" title="HTTPS 是如何解决上面的三个风险的"></a>HTTPS 是如何解决上面的三个风险的</h3><ul>
+<h3 id="HTTPS-是如何解决上面的三个风险的"><a href="#HTTPS-是如何解决上面的三个风险的" class="headerlink" title="HTTPS 是如何解决上面的三个风险的"></a>HTTPS 是如何解决上面的三个风险的</h3><h4 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h4><ul>
 <li><strong>混合加密</strong>的方式实现信息的<strong>机密性</strong>，解决了窃听的风险。<ul>
 <li><strong>对称加密</strong>和<strong>非对称加密</strong><ul>
 <li>在通信建立前采用<strong>非对称加密</strong>的方式交换「会话秘钥」，后续就不再使用非对称加密。</li>
@@ -596,17 +599,28 @@
 </ul>
 </li>
 <li><strong>对称加密</strong>只使用一个密钥，运算速度快，密钥必须保密，无法做到安全的密钥交换。</li>
-<li><strong>非对称加密</strong>使用两个密钥：公钥和私钥，公钥可以任意分发而私钥保密，解决了密钥交换问题但速度慢。</li>
+<li><strong>非对称加密</strong>使用两个密钥：公钥和私钥，公钥可以任意分发而私钥保密，解决了密钥交换问题但速度慢。公开密钥所有人都可以获得，通信发送方获得接收方的公开密钥之后，就可以使用公开密钥进行加密，接收方收到通信内容后使用私有密钥解密。<ul>
+<li>非对称密钥除了用来加密，还可以用来进行签名。因为私有密钥无法被其他人获取，因此通信发送方使用其私有密钥进行签名，通信接收方使用发送方的公开密钥对签名进行解密，就能判断这个签名是否正确。</li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+<h4 id="完整性"><a href="#完整性" class="headerlink" title="完整性"></a>完整性</h4><ul>
 <li><strong>摘要算法</strong>的方式来实现<strong>完整性</strong>，它能够为数据生成独一无二的「指纹」，指纹用于校验数据的完整性，解决了篡改的风险。<ul>
 <li><strong>摘要算法</strong>用来实现<strong>完整性</strong>，能够为数据生成独一无二的「指纹」，用于校验数据的完整性，解决了篡改的风险。</li>
 </ul>
 </li>
-<li>将服务器公钥放入到<strong>数字证书</strong>中，解决了冒充的风险。</li>
 </ul>
-<p>HTTPS  是如何建立连接的？其间交互了什么？</p>
-<p>1、客户端获取主机证书</p>
+<h4 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h4><ul>
+<li><p>将服务器公钥放入到<strong>数字证书</strong>中，解决了冒充的风险。</p>
+</li>
+<li><p>数字证书认证机构（CA，Certificate Authority）是客户端与服务器双方都可信赖的第三方机构。</p>
+<p>服务器的运营人员向 CA 提出公开密钥的申请，CA 在判明提出申请者的身份之后，会对已申请的公开密钥做数字签名，然后分配这个已签名的公开密钥，并将该公开密钥放入公开密钥证书后绑定在一起。</p>
+<p>进行 HTTPS 通信时，服务器会把证书发送给客户端。客户端取得其中的公开密钥之后，先使用数字签名进行验证，如果验证通过，就可以开始通信了。</p>
+</li>
+</ul>
+<h3 id="HTTPS-是如何建立连接的？其间交互了什么？"><a href="#HTTPS-是如何建立连接的？其间交互了什么？" class="headerlink" title="HTTPS  是如何建立连接的？其间交互了什么？"></a>HTTPS  是如何建立连接的？其间交互了什么？</h3><p>1、客户端获取主机证书</p>
 <p>2、通过主机证书验证服务器的合法性，即是否是客户端想要连接的服务器：</p>
 <p>通过证书中包含的签发机构，从根证书链中取得对应公钥，然后对目标域名进行签名，然后对比签名是否和证书中的一致；</p>
 <p>如果CA不在证书链中，或者比对有一项不同则主机不被信任（或许是一个虚假主机，或许是不受信任的证书），如果选择信任则继续进行秘钥的磋商</p>
@@ -638,8 +652,52 @@
 <li>TL3 升级成了最新的 <code>1.3</code> 版本，头部压缩算法也升级成了 <code>QPack</code>。</li>
 <li>HTTPS 要建立一个连接，要花费 6 次交互，先是建立三次握手，然后是 <code>TLS/1.3</code> 的三次握手。QUIC 直接把以往的 TCP 和 <code>TLS/1.3</code> 的 6 次交互<strong>合并成了 3 次，减少了交互次数</strong>。</li>
 </ul>
-<h1 id="四、IP"><a href="#四、IP" class="headerlink" title="四、IP"></a>四、IP</h1><p>参考</p>
-<p><a href="https://notecc.ink/posts/50daec4.html" target="_blank" rel="noopener">https://notecc.ink/posts/50daec4.html</a><br><a href="https://blog.csdn.net/iva_brother/article/details/90317645" target="_blank" rel="noopener">https://blog.csdn.net/iva_brother/article/details/90317645</a><br><a href="https://mp.weixin.qq.com/s/amOya0M00LwpL5kCS96Y6w" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/amOya0M00LwpL5kCS96Y6w</a><br><a href="https://blog.csdn.net/u011547347/article/details/83186514" target="_blank" rel="noopener">https://blog.csdn.net/u011547347/article/details/83186514</a><br><a href="https://baijiahao.baidu.com/s?id=1654225744653405133&amp;wfr=spider&amp;for=pc" target="_blank" rel="noopener">https://baijiahao.baidu.com/s?id=1654225744653405133&amp;wfr=spider&amp;for=pc</a></p>
+<h1 id="四、IP"><a href="#四、IP" class="headerlink" title="四、IP"></a>四、IP</h1><p><strong>网络层协议</strong></p>
+<p>与 IP 协议配套使用的还有三个协议：</p>
+<ul>
+<li>地址解析协议 ARP（Address Resolution Protocol）</li>
+<li>网际控制报文协议 ICMP（Internet Control Message Protocol）</li>
+<li>网际组管理协议 IGMP（Internet Group Management Protocol）</li>
+</ul>
+<h2 id="IP-数据报格式"><a href="#IP-数据报格式" class="headerlink" title="IP 数据报格式"></a>IP 数据报格式</h2><img src="/2020/07/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/IP数据报格式.png" alt="img" style="zoom:67%;">
+
+<ul>
+<li><strong>版本</strong> : 有 4（IPv4）和 6（IPv6）两个值；</li>
+<li><strong>首部长度</strong> : 占 4 位，因此最大值为 15。值为 1 表示的是 1 个 32 位字的长度，也就是 4 字节。因为固定部分长度为 20 字节，因此该值最小为 5。如果可选字段的长度不是 4 字节的整数倍，就用尾部的填充部分来填充。</li>
+<li><strong>区分服务</strong> : 用来获得更好的服务，一般情况下不使用。</li>
+<li><strong>总长度</strong> : 包括首部长度和数据部分长度。</li>
+<li><strong>生存时间</strong> ：TTL，它的存在是为了防止无法交付的数据报在互联网中不断兜圈子。以路由器跳数为单位，当 TTL 为 0 时就丢弃数据报。</li>
+<li><strong>协议</strong> ：指出携带的数据应该上交给哪个协议进行处理，例如 ICMP、TCP、UDP 等。</li>
+<li><strong>首部检验和</strong> ：因为数据报每经过一个路由器，都要重新计算检验和，因此检验和不包含数据部分可以减少计算的工作量。</li>
+<li><strong>标识</strong> : 在数据报长度过长从而发生分片的情况下，相同数据报的不同分片具有相同的标识符。</li>
+<li><strong>片偏移</strong> : 和标识符一起，用于发生分片的情况。片偏移的单位为 8 字节。</li>
+</ul>
+<h2 id="IP-地址编址方式"><a href="#IP-地址编址方式" class="headerlink" title="IP 地址编址方式"></a>IP 地址编址方式</h2><h3 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h3><p>由两部分组成，网络号和主机号，其中不同分类具有不同的网络号长度，并且是固定的。</p>
+<p>IP 地址 ::= {&lt; 网络号 &gt;, &lt; 主机号 &gt;}</p>
+<p><img src="/2020/07/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/IP%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB.png" alt="image-20200812155218926"></p>
+<ul>
+<li><p>广播地址<br>广播地址(Broadcast Address)是专门<strong>用于同时向网络中所有工作站进行发送的一个地址</strong>。</p>
+<p>在使用TCP/IP 协议的网络中，主机标识段host ID 为全1 的IP 地址为广播地址，广播的分组传送给host ID段所涉及的所有计算机。例如，对于10.1.1.0 （255.255.255.0 ）网段，其广播地址为10.1.1.255 （255 即为2 进制的11111111 ），当发出一个目的地址为10.1.1.255 的分组（封包）时，它将被分发给该网段上的所有计算机。</p>
+<ul>
+<li>计算广播地址<br>广播地址：网络地址的主机位全部变成1 ，10011111 即159 即：202.112.14.159</li>
+</ul>
+</li>
+<li><p>回环地址<br>127.0.0.1，通常被称为本地回环地址(Loop back address)，不属于任何一个有类别地址类。它代表设备的本地虚拟接口，所以默认被看作是永远不会宕掉的接口。在windows操作系统中也有相似的定义，所以通常在不安装网卡前就可以ping通这个本地回环地址。<strong>一般都会用来检查本地网络协议、基本数据接口等是否正常的</strong></p>
+</li>
+</ul>
+<h3 id="2-子网划分"><a href="#2-子网划分" class="headerlink" title="2. 子网划分"></a>2. 子网划分</h3><p>为什么进行子网划分</p>
+<ul>
+<li><strong>减少网络流量</strong></li>
+<li><strong>优化网络性能</strong>，这是减少网络流量的结果。</li>
+<li><strong>简化管理</strong>，与庞大的网络相比，在一系列相连的小网络中找出并隔离网络问题更容易。</li>
+<li><strong>有助于覆盖大型地理区域</strong>，WAN链路比LAN链路的速度慢得多，且更昂贵;单个大跨度的大型网络在前面说的各个方面都可能出现问题（网络流量太大，广播风暴），而将多个小网络连接起来可提高系统的效率。</li>
+</ul>
+<p>通过在主机号字段中拿一部分作为子网号，把两级 IP 地址划分为三级 IP 地址。</p>
+<p>IP 地址 ::= {&lt; 网络号 &gt;, &lt; 子网号 &gt;, &lt; 主机号 &gt;}</p>
+<p>要使用子网，必须配置子网掩码。一个 B 类地址的默认子网掩码为 255.255.0.0，如果 B 类地址的子网占两个比特，那么子网掩码为 11111111 11111111 11000000 00000000，也就是 255.255.192.0。</p>
+<p>注意，外部网络看不到子网的存在。</p>
+<p>参考</p>
+<p><a href="https://github.com/CyC2018/CS-Notes/blob/master/notes/HTTP.md" target="_blank" rel="noopener">HTTP</a><br><a href="https://github.com/CyC2018/CS-Notes/blob/master/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20-%20%E7%9B%AE%E5%BD%95.md" target="_blank" rel="noopener">计算机网络</a><br><a href="https://notecc.ink/posts/50daec4.html" target="_blank" rel="noopener">网络</a><br><a href="https://blog.csdn.net/iva_brother/article/details/90317645" target="_blank" rel="noopener">TCP与UDP的区别与联系</a><br><a href="https://mp.weixin.qq.com/s/amOya0M00LwpL5kCS96Y6w" target="_blank" rel="noopener">图解 HTTP 常见的面试题</a><br><a href="https://blog.csdn.net/u011547347/article/details/83186514" target="_blank" rel="noopener">https实现原理</a><br><a href="https://baijiahao.baidu.com/s?id=1654225744653405133&wfr=spider&for=pc" target="_blank" rel="noopener">TCP 连接的“ 三次握手 ”与“ 四次挥手 ”</a></p>
 
     </div>
 
@@ -723,7 +781,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、网络模型"><span class="nav-number">1.</span> <span class="nav-text">一、网络模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、TCP和UDP"><span class="nav-number">2.</span> <span class="nav-text">二、TCP和UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP和UCP的区别"><span class="nav-number">2.1.</span> <span class="nav-text">TCP和UCP的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP连接"><span class="nav-number">2.2.</span> <span class="nav-text">TCP连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三次握手"><span class="nav-number">2.2.1.</span> <span class="nav-text">三次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四次挥手"><span class="nav-number">2.2.2.</span> <span class="nav-text">四次挥手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么TCP连接要建立三次连接？"><span class="nav-number">2.2.4.</span> <span class="nav-text">为什么TCP连接要建立三次连接？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要4次挥手？"><span class="nav-number">2.2.5.</span> <span class="nav-text">为什么要4次挥手？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么TIME-WAIT状态还需要等2-MSL（Max-SegmentLifetime，最大分段生存期）秒之后才能返回到CLOSED状态呢？"><span class="nav-number">2.2.6.</span> <span class="nav-text">为什么TIME_WAIT状态还需要等2*MSL（Max SegmentLifetime，最大分段生存期）秒之后才能返回到CLOSED状态呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果已经建立了连接，但是客户端突然出现故障了怎么办？"><span class="nav-number">2.2.7.</span> <span class="nav-text">如果已经建立了连接，但是客户端突然出现故障了怎么办？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP与UDP的区别"><span class="nav-number">2.3.1.</span> <span class="nav-text">TCP与UDP的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么UDP有时比TCP更有优势"><span class="nav-number">2.3.2.</span> <span class="nav-text">为什么UDP有时比TCP更有优势?</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、HTTP"><span class="nav-number">3.</span> <span class="nav-text">三、HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP特性"><span class="nav-number">3.1.</span> <span class="nav-text">HTTP特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-常见的状态码，有哪些？"><span class="nav-number">3.1.1.</span> <span class="nav-text">HTTP 常见的状态码，有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#报文格式"><span class="nav-number">3.1.2.</span> <span class="nav-text">报文格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GET-与-POST"><span class="nav-number">3.2.</span> <span class="nav-text">GET 与 POST</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GET-和-POST-的区别？"><span class="nav-number">3.2.1.</span> <span class="nav-text">GET 和 POST 的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GET-和-POST-方法都是安全和幂等的吗？"><span class="nav-number">3.2.2.</span> <span class="nav-text">GET 和 POST 方法都是安全和幂等的吗？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-特性"><span class="nav-number">3.3.</span> <span class="nav-text">HTTP 特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-1-1"><span class="nav-number">3.3.1.</span> <span class="nav-text">HTTP&#x2F;1.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在浏览器中输入url到显示页面的过程"><span class="nav-number">3.3.2.</span> <span class="nav-text">在浏览器中输入url到显示页面的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP传输过程"><span class="nav-number">3.3.3.</span> <span class="nav-text">HTTP传输过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-与-HTTPS"><span class="nav-number">3.4.</span> <span class="nav-text">HTTP 与 HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-与-HTTPS-有哪些区别"><span class="nav-number">3.4.1.</span> <span class="nav-text">HTTP 与 HTTPS 有哪些区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS-是如何解决上面的三个风险的"><span class="nav-number">3.4.2.</span> <span class="nav-text">HTTPS 是如何解决上面的三个风险的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Http的发展"><span class="nav-number">3.5.</span> <span class="nav-text">Http的发展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-2"><span class="nav-number">3.5.1.</span> <span class="nav-text">HTTP&#x2F;2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-3"><span class="nav-number">3.5.2.</span> <span class="nav-text">HTTP&#x2F;3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、IP"><span class="nav-number">4.</span> <span class="nav-text">四、IP</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、网络模型"><span class="nav-number">1.</span> <span class="nav-text">一、网络模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、TCP和UDP"><span class="nav-number">2.</span> <span class="nav-text">二、TCP和UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP和UCP的区别"><span class="nav-number">2.1.</span> <span class="nav-text">TCP和UCP的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP连接"><span class="nav-number">2.2.</span> <span class="nav-text">TCP连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三次握手"><span class="nav-number">2.2.1.</span> <span class="nav-text">三次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四次挥手"><span class="nav-number">2.2.2.</span> <span class="nav-text">四次挥手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么TCP连接要建立三次连接？"><span class="nav-number">2.2.4.</span> <span class="nav-text">为什么TCP连接要建立三次连接？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要4次挥手？"><span class="nav-number">2.2.5.</span> <span class="nav-text">为什么要4次挥手？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么TIME-WAIT状态还需要等2-MSL（Max-SegmentLifetime，最大分段生存期）秒之后才能返回到CLOSED状态呢？"><span class="nav-number">2.2.6.</span> <span class="nav-text">为什么TIME_WAIT状态还需要等2*MSL（Max SegmentLifetime，最大分段生存期）秒之后才能返回到CLOSED状态呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果已经建立了连接，但是客户端突然出现故障了怎么办？"><span class="nav-number">2.2.7.</span> <span class="nav-text">如果已经建立了连接，但是客户端突然出现故障了怎么办？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP与UDP的区别"><span class="nav-number">2.3.1.</span> <span class="nav-text">TCP与UDP的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么UDP有时比TCP更有优势"><span class="nav-number">2.3.2.</span> <span class="nav-text">为什么UDP有时比TCP更有优势?</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、HTTP"><span class="nav-number">3.</span> <span class="nav-text">三、HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP特性"><span class="nav-number">3.1.</span> <span class="nav-text">HTTP特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-常见的状态码，有哪些？"><span class="nav-number">3.1.1.</span> <span class="nav-text">HTTP 常见的状态码，有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#报文格式"><span class="nav-number">3.1.2.</span> <span class="nav-text">报文格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GET-与-POST"><span class="nav-number">3.2.</span> <span class="nav-text">GET 与 POST</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GET-和-POST-的区别？"><span class="nav-number">3.2.1.</span> <span class="nav-text">GET 和 POST 的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GET-和-POST-方法都是安全和幂等的吗？"><span class="nav-number">3.2.2.</span> <span class="nav-text">GET 和 POST 方法都是安全和幂等的吗？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-特性"><span class="nav-number">3.3.</span> <span class="nav-text">HTTP 特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-1-1"><span class="nav-number">3.3.1.</span> <span class="nav-text">HTTP&#x2F;1.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在浏览器中输入url到显示页面的过程"><span class="nav-number">3.3.2.</span> <span class="nav-text">在浏览器中输入url到显示页面的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP传输过程"><span class="nav-number">3.3.3.</span> <span class="nav-text">HTTP传输过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-与-HTTPS"><span class="nav-number">3.4.</span> <span class="nav-text">HTTP 与 HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-与-HTTPS-有哪些区别"><span class="nav-number">3.4.1.</span> <span class="nav-text">HTTP 与 HTTPS 有哪些区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS-是如何解决上面的三个风险的"><span class="nav-number">3.4.2.</span> <span class="nav-text">HTTPS 是如何解决上面的三个风险的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加密"><span class="nav-number">3.4.2.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完整性"><span class="nav-number">3.4.2.2.</span> <span class="nav-text">完整性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#认证"><span class="nav-number">3.4.2.3.</span> <span class="nav-text">认证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS-是如何建立连接的？其间交互了什么？"><span class="nav-number">3.4.3.</span> <span class="nav-text">HTTPS  是如何建立连接的？其间交互了什么？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Http的发展"><span class="nav-number">3.5.</span> <span class="nav-text">Http的发展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-2"><span class="nav-number">3.5.1.</span> <span class="nav-text">HTTP&#x2F;2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-3"><span class="nav-number">3.5.2.</span> <span class="nav-text">HTTP&#x2F;3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、IP"><span class="nav-number">4.</span> <span class="nav-text">四、IP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-数据报格式"><span class="nav-number">4.1.</span> <span class="nav-text">IP 数据报格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-地址编址方式"><span class="nav-number">4.2.</span> <span class="nav-text">IP 地址编址方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-分类"><span class="nav-number">4.2.1.</span> <span class="nav-text">1. 分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-子网划分"><span class="nav-number">4.2.2.</span> <span class="nav-text">2. 子网划分</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -739,14 +797,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
