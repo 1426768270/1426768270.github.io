@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="垃圾回收概述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm(7)--垃圾回收">
+<meta property="og:url" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/index.html">
+<meta property="og:site_name" content="焱燚">
+<meta property="og:description" content="垃圾回收概述">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E6%A6%82%E8%BF%B0.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%8F%AF%E8%BE%BE%E6%80%A7%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png">
+<meta property="article:published_time" content="2020-07-18T07:33:58.000Z">
+<meta property="article:modified_time" content="2020-07-19T01:48:00.580Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="jvm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E6%A6%82%E8%BF%B0.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>jvm(7)--垃圾回收 | 焱燚</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">焱燚</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jvm(7)--垃圾回收
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-18 15:33:58" itemprop="dateCreated datePublished" datetime="2020-07-18T15:33:58+08:00">2020-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-19 09:48:00" itemprop="dateModified" datetime="2020-07-19T09:48:00+08:00">2020-07-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="垃圾回收概述"><a href="#垃圾回收概述" class="headerlink" title="垃圾回收概述"></a>垃圾回收概述</h1><a id="more"></a>
+
+<h2 id="什么是垃圾"><a href="#什么是垃圾" class="headerlink" title="什么是垃圾"></a>什么是垃圾</h2><p><img src="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E6%A6%82%E8%BF%B0.png" alt="概述"></p>
+<h3 id="什么是垃圾？"><a href="#什么是垃圾？" class="headerlink" title="什么是垃圾？"></a>什么是垃圾？</h3><p>垃圾是指在运行程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾。</p>
+<p>如果不及时对内存中的垃圾进行清理，那么，这些垃圾对象所占的内存空间会一直保留到应用程序的结束，被保留的空间无法被其它对象使用，<strong>甚至可能导致内存溢出</strong>。</p>
+<h2 id="为什么需要GC"><a href="#为什么需要GC" class="headerlink" title="为什么需要GC"></a>为什么需要GC</h2><ul>
+<li>内存迟早都会被消耗完</li>
+<li>垃圾回收可以清除内存里的记录碎片。碎片整理将所占用的堆内存移到堆的一端，<strong>以便JVM将整理出的内存分配给新的对象。</strong></li>
+<li>随着应用程序所应付的业务越来越庞大、复杂，用户越来越多，<strong>没有GC就不能保证应用程序的正常进行</strong></li>
+</ul>
+<h2 id="Java垃圾回收机制"><a href="#Java垃圾回收机制" class="headerlink" title="Java垃圾回收机制"></a>Java垃圾回收机制</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>自动内存管理，无需开发人员手动参与内存的分配与回收，<strong>这样降低内存泄漏和内存溢出的风险</strong></p>
+<p>可以更专心地专注于业务开发</p>
+<p><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/toc.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/toc.html</a></p>
+<h3 id="担忧"><a href="#担忧" class="headerlink" title="担忧"></a>担忧</h3><p>弱化Java开发人员在程序出现内存溢出时定位问题和解决问题的能力。</p>
+<h3 id="GC主要关注的区域"><a href="#GC主要关注的区域" class="headerlink" title="GC主要关注的区域"></a>GC主要关注的区域</h3><p> 方法区 和堆</p>
+<p>Java堆是垃圾收集器的工作重点</p>
+<ul>
+<li>频繁收集Young区</li>
+<li>较少收集Old区</li>
+<li>基本不收集Perm区（元空间）</li>
+</ul>
+<h1 id="垃圾回收相关算法"><a href="#垃圾回收相关算法" class="headerlink" title="垃圾回收相关算法"></a>垃圾回收相关算法</h1><h2 id="标记阶段（重要）"><a href="#标记阶段（重要）" class="headerlink" title="标记阶段（重要）"></a>标记阶段（重要）</h2><p>在堆里存放着几乎所有的Java对象实例，在GC执行垃圾回收之前，首先需要区分出内存中哪些是存活对象，哪些是已经死亡的对象。只有被标记为己经死亡的对象，GC才会在执行垃圾回收时，释放掉其所占用的内存空间，因此这个过程我们可以称为垃圾标记阶段。</p>
+<p>那么在JVM中究竟是如何标记一个死亡对象呢？简单来说，<strong>当一个对象已经不再被任何的存活对象继续引用时，就可以宣判为已经死亡。</strong></p>
+<p>判断对象存活一般有两种方式：<strong>引用计数算法和可达性分析算法</strong>。</p>
+<h3 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h3><p>引用计数算法（Reference Counting）比较简单，对<strong>每个对象保存一个整型的引用计数器属性。用于记录对象被引用的情况。</strong></p>
+<p>对于一个对象A，只要有任何一个对象引用了A，则A的引用计数器就加1；当引用失效时，引用计数器就减1。只要对象A的引用计数器的值为0，即表示对象A不可能再被使用，可进行回收。</p>
+<p>优点：实现简单，垃圾对象便于辨识；判定效率高，回收没有延迟性。</p>
+<p>缺点：</p>
+<ul>
+<li>它需要单独的字段存储计数器，这样的做法<strong>增加了存储空间的开销</strong>。</li>
+<li>每次赋值都需要更新计数器，伴随着加法和减法操作，这<strong>增加了时间开销。</strong></li>
+<li><strong>无法处理循环引用的情况。这是一条致命缺陷，导致在Java的垃圾回收器中没有使用这类算法。</strong></li>
+</ul>
+<h4 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h4><p><img src="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8.png" alt="循环引用"></p>
+<p>java中不会出现这种内存泄露</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RefCountGC</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 这个成员属性的唯一作用就是占用一点内存</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] bigSize = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">5</span>*<span class="number">1024</span>*<span class="number">1024</span>];</span><br><span class="line">    <span class="comment">// 引用</span></span><br><span class="line">    Object reference = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        RefCountGC obj1 = <span class="keyword">new</span> RefCountGC();</span><br><span class="line">        RefCountGC obj2 = <span class="keyword">new</span> RefCountGC();</span><br><span class="line">        obj1.reference = obj2;</span><br><span class="line">        obj2.reference = obj1;</span><br><span class="line">        obj1 = <span class="keyword">null</span>;</span><br><span class="line">        obj2 = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// 显示的执行垃圾收集行为，判断obj1 和 obj2是否被回收？</span></span><br><span class="line">        System.gc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[GC (System.gc()) [PSYoungGen: <span class="number">15490</span>K-&gt;<span class="number">808</span>K(<span class="number">76288</span>K)] <span class="number">15490</span>K-&gt;<span class="number">816</span>K(<span class="number">251392</span>K), <span class="number">0.0061980</span> secs] [Times: user=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.36</span> secs] </span><br><span class="line">[<span class="function">Full <span class="title">GC</span> <span class="params">(System.gc()</span>) [PSYoungGen: 808K-&gt;0<span class="title">K</span><span class="params">(<span class="number">76288</span>K)</span>] [ParOldGen: 8K-&gt;672<span class="title">K</span><span class="params">(<span class="number">175104</span>K)</span>] 816K-&gt;672<span class="title">K</span><span class="params">(<span class="number">251392</span>K)</span>, [Metaspace: 3479K-&gt;3479<span class="title">K</span><span class="params">(<span class="number">1056768</span>K)</span>], 0.0045983 secs] [Times: user</span>=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total <span class="number">76288</span>K, used <span class="number">655</span>K [<span class="number">0x000000076b500000</span>, <span class="number">0x0000000770a00000</span>, <span class="number">0x00000007c0000000</span>)</span><br><span class="line">  eden space <span class="number">65536</span>K, <span class="number">1</span>% used [<span class="number">0x000000076b500000</span>,<span class="number">0x000000076b5a3ee8</span>,<span class="number">0x000000076f500000</span>)</span><br><span class="line">  from space <span class="number">10752</span>K, <span class="number">0</span>% used [<span class="number">0x000000076f500000</span>,<span class="number">0x000000076f500000</span>,<span class="number">0x000000076ff80000</span>)</span><br><span class="line">  to   space <span class="number">10752</span>K, <span class="number">0</span>% used [<span class="number">0x000000076ff80000</span>,<span class="number">0x000000076ff80000</span>,<span class="number">0x0000000770a00000</span>)</span><br><span class="line"> ParOldGen       total <span class="number">175104</span>K, used <span class="number">672</span>K [<span class="number">0x00000006c1e00000</span>, <span class="number">0x00000006cc900000</span>, <span class="number">0x000000076b500000</span>)</span><br><span class="line">  object space <span class="number">175104</span>K, <span class="number">0</span>% used [<span class="number">0x00000006c1e00000</span>,<span class="number">0x00000006c1ea8070</span>,<span class="number">0x00000006cc900000</span>)</span><br><span class="line"> Metaspace       used <span class="number">3486</span>K, capacity <span class="number">4496</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">space</span>    <span class="title">used</span> 385<span class="title">K</span>, <span class="title">capacity</span> 388<span class="title">K</span>, <span class="title">committed</span> 512<span class="title">K</span>, <span class="title">reserved</span> 1048576<span class="title">K</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">                                 </span></span><br><span class="line"><span class="class">//<span class="title">gc</span>         </span></span><br><span class="line">PSYoungGen: 15490K-&gt;808K(76288K)] 15490K-&gt;816K(251392K)</span><br></pre></td></tr></table></figure>
+
+<p>Python，它更是同时支持引用计数和垃圾收集机制。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">手动解除：很好理解，就是在合适的时机，解除引用关系。</span><br><span class="line">使用弱引用weakref，weakref是Python提供的标准库，旨在解决循环引用。</span><br></pre></td></tr></table></figure>
+
+<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>根搜索算法、追踪性垃圾收集</p>
+<p>同样具备实现简单和执行高效等特点<strong>，更重要的是该算法可以有效地解决在引用计数算法中循环引用的问题，防止内存泄漏的发生。</strong></p>
+<p>相较于引用计数算法，这里的可达性分析就是Java、C#选择的。这种类型的垃圾收集通常也叫作<strong>追踪性垃圾收集</strong>（Tracing Garbage Collection）</p>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>所谓”GCRoots”根集合就是一组必须活跃的引用。</p>
+<p>基本思路：</p>
+<ul>
+<li>可达性分析算法是以根对象集合（GCRoots）为起始点，按照从上至下的方式<strong>搜索被根对象集合所连接的目标对象是否可达。</strong></li>
+<li>使用可达性分析算法后，内存中的存活对象都会被根对象集合直接或间接连接着，搜索所走过的路径称为<strong>引用链</strong>（Reference Chain）</li>
+<li>如果目标对象没有任何引用链相连，则是不可达的，就意味着该对象己经死亡，可以标记为垃圾对象。</li>
+<li>在可达性分析算法中，只有能够被根对象集合直接或者间接连接的对象才是存活对象。</li>
+</ul>
+<img src="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/可达性算法.png" alt="可达性算法" style="zoom: 50%;">
+
+<h4 id="GC-Roots可以是哪些？"><a href="#GC-Roots可以是哪些？" class="headerlink" title="GC Roots可以是哪些？"></a>GC Roots可以是哪些？</h4><ul>
+<li><strong>虚拟机栈中引用的对象</strong><ul>
+<li>比如：各个线程被调用的方法中使用到的参数、局部变量等。</li>
+</ul>
+</li>
+<li><strong>本地方法栈内JNI（通常说的本地方法）</strong></li>
+<li><strong>引用的对象方法区中类静态属性引用的对象</strong><ul>
+<li>比如：Java类的引用类型静态变量</li>
+</ul>
+</li>
+<li><strong>方法区中常量引用的对象</strong></li>
+<li>比如：字符串常量池（string Table）里的引用</li>
+<li>所有被同步锁synchronized持有的对象</li>
+<li>Java虚拟机内部的引用。<ul>
+<li>基本数据类型对应的Class对象，一些常驻的异常对象（如：Nu11PointerException、outofMemoryError），系统类加载器。</li>
+</ul>
+</li>
+<li>反映java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等。</li>
+</ul>
+<p>总结一句话就是，除了堆空间外的一些结构，比如 虚拟机栈、本地方法栈、方法区、字符串常量池 等地方对堆空间进行引用的，都可以作为GC Roots进行可达性分析</p>
+<p>除了这些固定的GC Roots集合以外，根据用户所选用的垃圾收集器以及当前回收的内存区域不同，<strong>还可以有其他对象“临时性”地加入</strong>，共同构成完整GC Roots集合。比如：<strong>分代收集和局部回收（PartialGC）。</strong></p>
+<h4 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h4><p>由于Root采用栈方式存放变量和指针，所以如果一个指针，<strong>它保存了堆内存里面的对象，但是自己又不存放在堆内存里面，</strong>那它就是一个Root。</p>
+<p>注意<br>如果要使用可达性分析算法来判断内存是否可回收，那么分析工作必须在一个能保障一致性的快照中进行。这点不满足的话分析结果的准确性就无法保证。</p>
+<p>这点也是导致GC进行时必须“stop The World”的一个重要原因。</p>
+<p>即使是号称（几乎）不会发生停顿的CMS收集器中，<strong>枚举根节点时也是必须要停顿的。</strong></p>
+<h2 id="对象的finalization机制"><a href="#对象的finalization机制" class="headerlink" title="对象的finalization机制"></a>对象的finalization机制</h2><p>允许开发人员提供对象被销毁之前的自定义处理逻辑。</p>
+<p>当垃圾回收器发现没有引用指向一个对象，即：垃圾回收此对象之前，总会先调用这个对象的finalize()方法。</p>
+<p>finalize() 方法允许在子类中被重写，<strong>用于在对象被回收时进行资源释放。</strong>通常在这个方法中进行一些<strong>资源释放和清理的工作，比如关闭文件、套接字和数据库连接等。</strong></p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ul>
+<li><p>永远<strong>不要主动调用某个对象的finalize()</strong>方法I应该交给垃圾回收机制调用。理由包括下面三点：</p>
+<ul>
+<li><p>在finalize（）时可能<strong>会导致对象复活</strong>。</p>
+</li>
+<li><p>finalize（）方法的<strong>执行时间是没有保障的</strong>，它完全由GC线程决定，极端情况下，若不发生GC，则finalize（）方法将没有执行机会。<br>因为优先级比较低，即使主动调用该方法，也不会因此就直接进行回收</p>
+</li>
+<li><p>一个糟糕的finalize（）会严重影响Gc的性能。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>从功能上来说，finalize（）方法与c++中的析构函数比较相似，但是Java采用的是基于垃圾回收器的自动内存管理机制，所以finalize（）方法在本质上不同于C++中的析构函数。</p>
+<p>由于finalize（）方法的存在，虚拟机中的对象一般处于<strong>三种可能的状态。</strong></p>
+<p><strong>一个无法触及的对象有可能在某一个条件下“复活”自己</strong></p>
+<ul>
+<li>可触及的：从根节点开始，可以到达这个对象。</li>
+<li>可复活的：对象的所有引用都被释放，但是对象有可能在finalize（）中复活。</li>
+<li>不可触及的：对象的finalize（）被调用，并且没有复活，那么就会进入不可触及状态。不可触及的对象不可能被复活，因为<strong>finalize()只会被调用一次</strong>。</li>
+</ul>
+<h3 id="具体过程"><a href="#具体过程" class="headerlink" title="具体过程"></a>具体过程</h3><ul>
+<li>如果对象objA到GC Roots没有引用链，则进行第一次标记。</li>
+<li>进行筛选，判断此对象<strong>是否有必要执行finalize（）</strong>方法<ul>
+<li>如果对象objA没有重写finalize（）方法，或者finalize（）方法已经被虚拟机调用过，则虚拟机视为“没有必要执行”，objA被判定为不可触及的。</li>
+<li>如果对象objA重写了finalize（）方法，且还未执行过，那么objA会被插入到F-Queue队列中，由一个虚拟机自动创建的、低优先级的Finalizer线程触发其finalize（）方法执行。</li>
+<li><strong>finalize（）方法是对象逃脱死亡的最后机会</strong>，稍后GC会对F-Queue队列中的对象进行第二次标记。如果objA在finalize（）方法中与引用链上的任何一个对象建立了联系，那么在第二次标记时，objA会被移出“即将回收”集合。之后，对象会再次出现没有引用存在的情况。finalize方法不会被再次调用，对象会直接变成不可触及的状态。</li>
+</ul>
+</li>
+</ul>
+<h2 id="MAT与JProfiler的GC-Roots溯源"><a href="#MAT与JProfiler的GC-Roots溯源" class="headerlink" title="MAT与JProfiler的GC Roots溯源"></a>MAT与JProfiler的GC Roots溯源</h2><h3 id="MAT"><a href="#MAT" class="headerlink" title="MAT"></a>MAT</h3><p>MAT是Memory Analyzer的简称，它是一款功能强大的Java堆内存分析器。用于查找内存泄漏以及查看内存消耗情况。</p>
+<p><a href="http://www.eclipse.org/mat/" target="_blank" rel="noopener">http://www.eclipse.org/mat/</a> 下载</p>
+<h3 id="命令行使用-jmap"><a href="#命令行使用-jmap" class="headerlink" title="命令行使用 jmap"></a>命令行使用 jmap</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jps 查看进程id</span><br><span class="line">jmap -dump:format&#x3D;b,live,file&#x3D;test1.bin 进程id</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用JVIsualVM"><a href="#使用JVIsualVM" class="headerlink" title="使用JVIsualVM"></a>使用JVIsualVM</h3><p>监视-dump-save as</p>
+<p>使用MAT 或Jprofiler查看GC root</p>
+<h3 id="检查OOM"><a href="#检查OOM" class="headerlink" title="检查OOM"></a>检查OOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:HeapDumpOnOutOfMemoryError  &#x2F;&#x2F;设定自动生成dump</span><br></pre></td></tr></table></figure>
+
+<p>然后用MAT或Jprofiler打开</p>
+<h2 id="清除阶段（重要）"><a href="#清除阶段（重要）" class="headerlink" title="清除阶段（重要）"></a>清除阶段（重要）</h2><h3 id="标记-清除算法（Mark-Sweep）"><a href="#标记-清除算法（Mark-Sweep）" class="headerlink" title="标记-清除算法（Mark-Sweep）"></a>标记-清除算法（Mark-Sweep）</h3><h4 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a>执行过程</h4><p>当堆中的有效内存空间（available memory）被耗尽的时候，就会停止整个程序（也被称为<strong>stop the world</strong>），然后进行两项工作，第一项则是标记，第二项则是清除</p>
+<ul>
+<li>标记：Collector从引用根节点开始遍历，<strong>标记所有被引用的对象（不是垃圾）。</strong>一般是在对象的Header中记录为可达对象。<ul>
+<li><strong>标记的是引用的对象，不是垃圾！！</strong></li>
+</ul>
+</li>
+<li><strong>清除</strong>：Collector对堆内存从头到尾进行线性的遍历，如果发现某个对象在其Header中没有标记为可达对象，则将其回收</li>
+</ul>
+<p><img src="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4.png" alt="标记清除"></p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>标记清除算法的效率不算高</li>
+<li>在进行GC的时候，需要停止整个应用程序，用户体验较差</li>
+<li>这种方式清理出来的空闲内存是不连续的，产生内碎片，需要维护一个空闲列表</li>
+</ul>
+<h4 id="什么是清除？"><a href="#什么是清除？" class="headerlink" title="什么是清除？"></a>什么是清除？</h4><p>这里所谓的清除并不是真的置空，而是把需要清除的对象地址保存在空闲的地址列表里。下次有新对象需要加载时，判断垃圾的位置空间是否够，如果够，就存放覆盖原有的地址。</p>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>将活着的内存空间分为两块，每次只使用其中一块，在垃圾回收时将正在使用的内存中的存活对象复制到未被使用的内存块中，之后清除正在使用的内存块中的所有对象，交换两个内存的角色，最后完成垃圾回收</p>
+<p><img src="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95.png" alt="复制算法"></p>
+<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>没有标记和清除过程，实现简单，运行高效</li>
+<li>复制过去以后保证空间的连续性，不会出现“碎片”问题。</li>
+</ul>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>此算法的缺点也是很明显的，就是需要两倍的内存空间。</li>
+<li>对于G1这种分拆成为大量region的GC，复制而不是移动，意味着GC需要维护region之间对象引用关系，不管是内存占用或者时间开销也不小</li>
+</ul>
+<h4 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h4><p>如果系统中的垃圾对象很多，复制算法需要复制的存活对象数量并不会太大，或者说非常低才行（老年代大量的对象存活，那么复制的对象将会有很多，效率会很低）</p>
+<p>在新生代，对常规应用的垃圾回收，一次通常可以回收70% - 99% 的内存空间。回收性价比很高。所以现在的商业虚拟机都是用这种收集算法回收新生代。</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>基于老年代垃圾回收的特性，需要使用其他的算法。</p>
+<p><img src="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png" alt="标记整理"></p>
+<p>第一阶段和标记清除算法一样，从根节点开始标记所有被引用对象</p>
+<p>第二阶段将所有的存活对象压缩到内存的一端，按顺序排放。之后，清理边界外所有的空间</p>
+<h4 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>消除了内存区域分散的缺点，我们需要给新对象分配内存时，JVM只需要持有一个内存的起始地址即可。</li>
+<li>消除了复制算法当中，内存减半的高额代价。</li>
+</ul>
+<h4 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>从效率上来说，标记-整理算法要低于复制算法。</li>
+<li>移动对象的同时，如果对象被其他对象引用，则还需要调整引用的地址</li>
+<li>移动过程中，需要全程暂停用户应用程序。即：STW</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>标记清除</th>
+<th>标记整理</th>
+<th>复制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>速率</strong></td>
+<td>中等</td>
+<td>最慢</td>
+<td>最快</td>
+</tr>
+<tr>
+<td><strong>空间开销</strong></td>
+<td>少（但会堆积碎片）</td>
+<td>少（不堆积碎片）</td>
+<td>通常需要活对象的2倍空间（不堆积碎片）</td>
+</tr>
+<tr>
+<td><strong>移动对象</strong></td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2><p>在HotSpot中，基于分代的概念，GC所使用的内存回收算法必须结合年轻代和老年代各自的特点。</p>
+<ul>
+<li>年轻代（Young Gen）<br>年轻代特点：<strong>区域相对老年代较小，对象生命周期短、存活率低，回收频繁。</strong></li>
+</ul>
+<p>这种情况<strong>复制算法</strong>的回收整理，速度是最快的。复制算法的效率只和当前存活对象大小有关，因此很适用于年轻代的回收。而复制算法内存利用率不高的问题，<strong>通过hotspot中的两个survivor的设计得到缓解。</strong></p>
+<ul>
+<li>老年代（Tenured Gen）<br>老年代特点：<strong>区域较大，对象生命周期长、存活率高，回收不及年轻代频繁。</strong></li>
+</ul>
+<p>这种情况存在大量存活率高的对象，复制算法明显变得不合适。一般是由<strong>标记-清除或者是标记-清除与标记-整理的混合实现。</strong></p>
+<ul>
+<li>Mark阶段的开销与存活对象的数量成正比。</li>
+<li>Sweep阶段的开销与所管理区域的大小成正相关。</li>
+<li>compact阶段的开销与存活对象的数据成正比。</li>
+</ul>
+<p>以HotSpot中的CMS回收器为例，<strong>CMS是基于Mark-Sweep实现的</strong>，对于对象的回收效率很高。而对于碎片问题，CMS采用基于Mark-Compact算法的Serial old回收器作为补偿措施：当内存回收不佳（碎片导致的Concurrent Mode Failure时），将采用serial old执行FullGC以达到对老年代内存的整理。</p>
+<h2 id="增量收集算法"><a href="#增量收集算法" class="headerlink" title="增量收集算法"></a>增量收集算法</h2><p>解决stop the World</p>
+<p>可以让垃圾收集线程和应用程序线程交替执行。每次，<strong>垃圾收集线程只收集一小片区域的内存空间，接着切换到应用程序线程。依次反复，直到垃圾收集完成。</strong></p>
+<p>总的来说，增量收集算法的基础仍是传统的标记-清除和复制算法。<strong>增量收集算法通过对线程间冲突的妥善处理，允许垃圾收集线程以分阶段的方式完成标记、清理或复制工作</strong></p>
+<h3 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h3><p>因为线程切换和上下文转换的消耗，会使得垃圾回收的总体成本上升，造成系统吞吐量的下降</p>
+<h2 id="分区算法"><a href="#分区算法" class="headerlink" title="分区算法"></a>分区算法</h2><p>一次Gc时所需要的时间就越长，有关GC产生的停顿也越长。</p>
+<p>将一块大的内存区域分割成多个小块，根据目标的停顿时间，每次合理地回收若干个小区间，而不是整个堆空间，从而减少一次GC所产生的停顿。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/jvm/" rel="tag"># jvm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/17/java%E5%9F%BA%E7%A1%80/jvm-String/" rel="prev" title="jvm(6)--string">
+      <i class="fa fa-chevron-left"></i> jvm(6)--string
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/19/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6(2)/" rel="next" title="jvm(8)--垃圾回收2">
+      jvm(8)--垃圾回收2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#垃圾回收概述"><span class="nav-number">1.</span> <span class="nav-text">垃圾回收概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是垃圾"><span class="nav-number">1.1.</span> <span class="nav-text">什么是垃圾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是垃圾？"><span class="nav-number">1.1.1.</span> <span class="nav-text">什么是垃圾？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要GC"><span class="nav-number">1.2.</span> <span class="nav-text">为什么需要GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java垃圾回收机制"><span class="nav-number">1.3.</span> <span class="nav-text">Java垃圾回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">1.3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#担忧"><span class="nav-number">1.3.2.</span> <span class="nav-text">担忧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC主要关注的区域"><span class="nav-number">1.3.3.</span> <span class="nav-text">GC主要关注的区域</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#垃圾回收相关算法"><span class="nav-number">2.</span> <span class="nav-text">垃圾回收相关算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#标记阶段（重要）"><span class="nav-number">2.1.</span> <span class="nav-text">标记阶段（重要）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用计数算法"><span class="nav-number">2.1.1.</span> <span class="nav-text">引用计数算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#循环引用"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">循环引用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可达性分析算法"><span class="nav-number">2.1.2.</span> <span class="nav-text">可达性分析算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#思路"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC-Roots可以是哪些？"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">GC Roots可以是哪些？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小技巧"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">小技巧</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的finalization机制"><span class="nav-number">2.2.</span> <span class="nav-text">对象的finalization机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注意"><span class="nav-number">2.2.1.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体过程"><span class="nav-number">2.2.2.</span> <span class="nav-text">具体过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAT与JProfiler的GC-Roots溯源"><span class="nav-number">2.3.</span> <span class="nav-text">MAT与JProfiler的GC Roots溯源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MAT"><span class="nav-number">2.3.1.</span> <span class="nav-text">MAT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行使用-jmap"><span class="nav-number">2.3.2.</span> <span class="nav-text">命令行使用 jmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用JVIsualVM"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用JVIsualVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查OOM"><span class="nav-number">2.3.4.</span> <span class="nav-text">检查OOM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清除阶段（重要）"><span class="nav-number">2.4.</span> <span class="nav-text">清除阶段（重要）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标记-清除算法（Mark-Sweep）"><span class="nav-number">2.4.1.</span> <span class="nav-text">标记-清除算法（Mark-Sweep）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#执行过程"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">执行过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是清除？"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">什么是清除？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制算法"><span class="nav-number">2.4.2.</span> <span class="nav-text">复制算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点-1"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意-1"><span class="nav-number">2.4.2.3.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标记-整理算法"><span class="nav-number">2.4.3.</span> <span class="nav-text">标记-整理算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点-2"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点-2"><span class="nav-number">2.4.3.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">2.4.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分代收集算法"><span class="nav-number">2.5.</span> <span class="nav-text">分代收集算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增量收集算法"><span class="nav-number">2.6.</span> <span class="nav-text">增量收集算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点-3"><span class="nav-number">2.6.1.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分区算法"><span class="nav-number">2.7.</span> <span class="nav-text">分区算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="naive"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">naive</p>
+  <div class="site-description" itemprop="description">选择有时候比努力更重要</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-07 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">naive</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!--崩溃欺骗-->
+<script type="text/javascript" src="\js\FunnyTitle.js"></script>

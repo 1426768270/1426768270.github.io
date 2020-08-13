@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="设计模式面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群] 代码重用性、可扩展性，可读性、可靠性、高内聚低耦合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式">
+<meta property="og:url" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="焱燚">
+<meta property="og:description" content="设计模式面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群] 代码重用性、可扩展性，可读性、可靠性、高内聚低耦合">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%94%B9%E8%BF%9B%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%90%88%E6%88%90%E5%A4%8D%E7%94%A8.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BE%9D%E8%B5%96.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B3%9B%E5%8C%96.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AE%9E%E7%8E%B0%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%81%9A%E5%90%88%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%84%E5%90%88.png">
+<meta property="article:published_time" content="2020-07-20T15:05:37.000Z">
+<meta property="article:modified_time" content="2020-07-21T13:51:23.547Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>设计模式 | 焱燚</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">焱燚</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          设计模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-20 23:05:37" itemprop="dateCreated datePublished" datetime="2020-07-20T23:05:37+08:00">2020-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-21 21:51:23" itemprop="dateModified" datetime="2020-07-21T21:51:23+08:00">2020-07-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><p>面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群]</p>
+<p>代码重用性、可扩展性，可读性、可靠性、高内聚低耦合</p>
+<a id="more"></a>
+
+<h2 id="七大原则"><a href="#七大原则" class="headerlink" title="七大原则"></a>七大原则</h2><h3 id="单一职责"><a href="#单一职责" class="headerlink" title="单一职责"></a>单一职责</h3><p>一个类只负责一项职责，如A类负责两个不同职责，职责1需要改变A时，可能造成职责2错误，需要把A分为A1,A2 。 如UserDao应该仅仅操作user一张表。</p>
+<h3 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h3><p>客户端不应该依赖它不需要的接口，即一个类对另一个类的依赖应该建立在最小的接口上</p>
+<img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/接口隔离.png" alt="接口隔离" style="zoom:50%;">
+
+<p>​        将接口Interface1拆分为独立的几个接口，类A和类C分别与他们需要的接口建立依赖关系。也就是采用接口隔离原则</p>
+<img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/改进接口隔离.png" alt="改进接口隔离" style="zoom: 67%;">
+
+<h3 id="依赖倒转原则"><a href="#依赖倒转原则" class="headerlink" title="依赖倒转原则"></a>依赖倒转原则</h3><p>1) 高层模块不应该依赖低层模块，二者都应该依赖其抽象</p>
+<p>2) <strong>抽象不应该依赖细节，细节应该依赖抽象</strong></p>
+<p>3) 依赖倒转(倒置)的中心思想是面向<strong>接口编程</strong></p>
+<p>4) 依赖倒转原则是基于这样的设计理念：相对于细节的多变性，抽象的东西要稳定的多。以抽象为基础搭建的架构比以细节为基础的架构要稳定的多。在java中，抽象指的是接口或抽象类，细节就是具体的实现类</p>
+<p><strong>依赖关系传递的三种方式</strong> 接口传递、 构造方法传递、setter方式传递</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> principle.inversion.improve;</span><br><span class="line"><span class="comment">//方式1： 通过接口传递实现依赖</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DependecyInversion</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      <span class="comment">//客户端无需改变</span></span><br><span class="line">      Person person = <span class="keyword">new</span> Person();</span><br><span class="line">      person.receive(<span class="keyword">new</span> Email());</span><br><span class="line">      person.receive(<span class="keyword">new</span> WeiXin());</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IReceiver</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">getInfo</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Email</span> <span class="keyword">implements</span> <span class="title">IReceiver</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">getInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"电子邮件信息: hello,world"</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//增加微信</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WeiXin</span> <span class="keyword">implements</span> <span class="title">IReceiver</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">getInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"微信信息: hello,ok"</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">   <span class="comment">//这里我们是对接口的依赖</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">(IReceiver receiver)</span> </span>&#123;</span><br><span class="line">      System.out.println(receiver.getInfo());</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式2: 通过构造方法依赖传递</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IOpenAndClose</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>; <span class="comment">//抽象方法</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ITV</span> </span>&#123; <span class="comment">//ITV接口</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OpenAndClose</span> <span class="keyword">implements</span> <span class="title">IOpenAndClose</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> ITV tv; <span class="comment">//成员</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OpenAndClose</span><span class="params">(ITV tv)</span></span>&#123; <span class="comment">//构造器</span></span><br><span class="line">		<span class="keyword">this</span>.tv = tv;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>&#123;</span><br><span class="line">    	<span class="keyword">this</span>.tv.play();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 方式3 , 通过setter方法传递</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IOpenAndClose</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>; <span class="comment">// 抽象方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTv</span><span class="params">(ITV tv)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ITV</span> </span>&#123; <span class="comment">// ITV接口</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OpenAndClose</span> <span class="keyword">implements</span> <span class="title">IOpenAndClose</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> ITV tv;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTv</span><span class="params">(ITV tv)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.tv = tv;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.tv.play();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>变量的声明类型尽量是抽象类或接口, 这样我们的变量引用和实际对象间，就存在一个缓冲层，利于程序扩展和优化</p>
+<p>继承时遵循里氏替换原则</p>
+<h3 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h3><p>继承包含这样一层含义：父类中凡是已经实现好的方法，实际上是在设定规范和契约，虽然它不强制要求所有的子类必须遵循这些契约，但是如果子类对这些已经实现的方法任意修改，就会对整个继承体系造成破坏。</p>
+<p>继承在给程序设计带来便利的同时，也带来了弊端。比如使用继承会给程序带来侵入性，程序的可移植性降低，<strong>增加对象间的耦合性</strong>，如果一个类被其他的类所继承，则当这个类需要修改时，必须考虑到所有的子类，并且父类修改后，所有涉及到子类的功能都有可能产生故障</p>
+<ul>
+<li>所有引用基类的地方必须能透明地使用其子类的对象。</li>
+<li>在子类中<strong>尽量</strong>不要重写父类的方法</li>
+<li>继承实际上让两个类耦合性增强了，<strong>在适当的情况下，可以通过聚合，组合，依赖 来解决问题。</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个更加基础的基类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> </span>&#123;</span><br><span class="line">    <span class="comment">//把更加基础的方法和成员写到Base类</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">extends</span> <span class="title">Base</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 返回两个数的差</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> num1 - num2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// B类继承了A</span></span><br><span class="line"><span class="comment">// 增加了一个新功能：完成两个数相加,然后和9求和</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">Base</span> </span>&#123;</span><br><span class="line">    <span class="comment">//如果B需要使用A类的方法,使用组合关系</span></span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span> A();</span><br><span class="line">    <span class="comment">//这里，重写了A类的方法, 可能是无意识</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">func2</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> func1(a, b) + <span class="number">9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//我们仍然想使用A的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">func3</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.a.func1(a, b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h3><ul>
+<li>一个软件实体如类，模块和函数应该对扩展开放(对提供方)，对修改关闭(对使用方)。用抽象构建框架，用实现扩展细节。</li>
+<li>当软件需要变化时，尽量<strong>通过扩展</strong>软件实体的行为来实现变化，而<strong>不是通过修改</strong>已有的代码来实现变化。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Ocp</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        GraphicEditor graphicEditor = <span class="keyword">new</span> GraphicEditor();</span><br><span class="line">        graphicEditor.drawShape(<span class="keyword">new</span> Rectangle());</span><br><span class="line">        graphicEditor.drawShape(<span class="keyword">new</span> Circle());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这是一个用于绘图的类 [使用方]</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;</span><br><span class="line">    <span class="comment">//接收Shape对象，调用draw方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//使用方的代码就不需要修</span></span><br><span class="line">        s.draw();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Shape类，基类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m_type;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>;<span class="comment">//抽象方法</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    Rectangle() &#123;</span><br><span class="line">        <span class="keyword">super</span>.m_type = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">" 绘制矩形 "</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    Circle() &#123;</span><br><span class="line">        <span class="keyword">super</span>.m_type = <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">" 绘制圆形 "</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="迪米特法则"><a href="#迪米特法则" class="headerlink" title="迪米特法则"></a>迪米特法则</h3><p>即一个类对自己依赖的类知道的越少越好。也就是说，对于被依赖的类不管多么复杂，都尽量将逻辑封装在类的内部。对外除了提供的public 方法，不对外泄露任何信息</p>
+<p>只与直接的朋友通信</p>
+<p>直接朋友：每个对象都会与其他对象有耦合关系，只要两个对象之间有耦合关系，我们就说这两个对象之间是朋友关系。耦合的方式很多，依赖，关联，组合，聚合等。其中，我们称<strong>出现成员变量，方法参数，方法返回值中的类为直接的朋友</strong>，而出现在局部变量中的类不是直接的朋友。也就是说，陌生的类最好不要以局部变量的形式出现在类的内部</p>
+<ul>
+<li>迪米特法则的核心是<strong>降低类之间的耦合</strong></li>
+<li>但是注意：由于每个类都减少了不必要的依赖，因此迪米特法则只是要求降低类间(对象间)耦合关系， 并不是要求完全没有依赖关系</li>
+</ul>
+<h3 id="合成复用原则"><a href="#合成复用原则" class="headerlink" title="合成复用原则"></a>合成复用原则</h3><p>尽量使用合成/聚合的方式，而不是使用继承</p>
+<img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/合成复用.png" alt="合成复用" style="zoom: 80%;">
+
+<h3 id="设计原则核心思想"><a href="#设计原则核心思想" class="headerlink" title="设计原则核心思想"></a>设计原则核心思想</h3><ul>
+<li>找出应用中可能需要变化之处，把它们独立出来，不要和那些不需要变化的代码混在一起。</li>
+<li>针对接口编程，而不是针对实现编程。</li>
+<li>为了交互对象之间的松耦合设计而努力</li>
+</ul>
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><p>UML——Unified modeling language UML (<strong>统一建模语言</strong>)</p>
+<p>是一套符号的规定，就像数学符号和化学符号一样，这些符号用于描述软件模型中的各个元素和他们之间的关系</p>
+<p>Rational  Rose来画类图</p>
+<p>图分类：</p>
+<p>1) 用例图(use case)<br>2) 静态结构图：类图、对象图、包图、组件图、部署图<br>3) 动态行为图：交互图（时序图与协作图）、状态图、活动图</p>
+<p>类之间的关系：<strong>依赖、泛化（继承）、实现、关联、聚合与组合</strong></p>
+<h4 id="依赖关系"><a href="#依赖关系" class="headerlink" title="依赖关系"></a><strong>依赖关系</strong></h4><p>只要是在<strong>类中用到了对方</strong>，那么他们之间就存在依赖关系。如果没有对方，连编绎都通过不了</p>
+<img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/依赖.png" alt="依赖" style="zoom:67%;">
+
+<h4 id="泛化关系"><a href="#泛化关系" class="headerlink" title="泛化关系"></a>泛化关系</h4><p>泛化关系实际上就是继承关系,他是<strong>依赖关系的特例</strong></p>
+<img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/泛化.png" alt="泛化" style="zoom:67%;">
+
+<h4 id="实现关系"><a href="#实现关系" class="headerlink" title="实现关系"></a>实现关系</h4><p>实现关系实际上就是A类实现B接口，他是<strong>依赖关系的特例</strong></p>
+<p><img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%AE%9E%E7%8E%B0%E5%85%B3%E7%B3%BB.png" alt="实现关系"></p>
+<h4 id="关联关系"><a href="#关联关系" class="headerlink" title="关联关系"></a>关联关系</h4><p>关联关系实际上就是<strong>类与类之间的联系，他是依赖关系的特例</strong></p>
+<p>关联具有导航性：即双向关系或单向关系</p>
+<p>关系具有多重性：如“1”（表示有且仅有一个），“0…”（表示0个或者多个），“0，1”（表示0个或者一个），“n…m”(表示n到 m个都可以),“m…*”（表示至少m个）。</p>
+<h4 id="聚合关系"><a href="#聚合关系" class="headerlink" title="聚合关系"></a>聚合关系</h4><p>表示的是<strong>整体和部分</strong>的关系，整体与部分可以分开。聚合关系是关联关系的特例，所以他具有关联的导航性与多重性。</p>
+<p>如：一台电脑由键盘(keyboard)、显示器(monitor)，鼠标等组成；组成电脑的各个配件是可以从电脑上分离出来的，使用带空心菱形的实线来表示：</p>
+<img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/聚合关系.png" alt="image-20200721195509574" style="zoom:67%;">
+
+<h4 id="组合关系"><a href="#组合关系" class="headerlink" title="组合关系"></a>组合关系</h4><p>组合关系：也是整体与部分的关系，但是整体与部分不可以分开。 </p>
+<p>再看一个案例：在程序中我们定义实体：Person与IDCard、Head, 那么 Head 和Person 就是 组合，IDCard 和 Person 就是聚合。</p>
+<p>但是如果在程序中Person实体中定义了对IDCard进行<strong>级联删除</strong>，即删除Person时连同IDCard一起删除，那么IDCard 和 Person 就是组合了</p>
+<img src="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/组合.png" alt="image-20200721195926231" style="zoom:67%;">
+
+<h2 id="设计模式类型"><a href="#设计模式类型" class="headerlink" title="设计模式类型"></a>设计模式类型</h2><p><strong>1)</strong> <strong>创建型模式</strong>：<strong>单例模式</strong>、抽象工厂模式、原型模式、建造者模式、<strong>工厂模式</strong>。</p>
+<p><strong>2)</strong> <strong>结构型模式</strong>：适配器模式、桥接模式、<strong>装饰模式</strong>、组合模式、外观模式、享元模式、<strong>代理模式</strong>。</p>
+<p><strong>3)</strong> <strong>行为型模式</strong>：模版方法模式、命令模式、访问者模式、迭代器模式、<strong>观察者模式</strong>、中介者模式、备忘录模式、解释器模式（Interpreter模式）、状态模式、策略模式、职责链模式(责任链模式)。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/19/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6(2)/" rel="prev" title="jvm(8)--垃圾回收2">
+      <i class="fa fa-chevron-left"></i> jvm(8)--垃圾回收2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式-单例模式">
+      设计模式-单例模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式"><span class="nav-number">1.</span> <span class="nav-text">设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七大原则"><span class="nav-number">2.</span> <span class="nav-text">七大原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单一职责"><span class="nav-number">2.1.</span> <span class="nav-text">单一职责</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口隔离原则"><span class="nav-number">2.2.</span> <span class="nav-text">接口隔离原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖倒转原则"><span class="nav-number">2.3.</span> <span class="nav-text">依赖倒转原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#里氏替换原则"><span class="nav-number">2.4.</span> <span class="nav-text">里氏替换原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开闭原则"><span class="nav-number">2.5.</span> <span class="nav-text">开闭原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迪米特法则"><span class="nav-number">2.6.</span> <span class="nav-text">迪米特法则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合成复用原则"><span class="nav-number">2.7.</span> <span class="nav-text">合成复用原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计原则核心思想"><span class="nav-number">2.8.</span> <span class="nav-text">设计原则核心思想</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UML类图"><span class="nav-number">3.</span> <span class="nav-text">UML类图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖关系"><span class="nav-number">3.0.1.</span> <span class="nav-text">依赖关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#泛化关系"><span class="nav-number">3.0.2.</span> <span class="nav-text">泛化关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现关系"><span class="nav-number">3.0.3.</span> <span class="nav-text">实现关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关联关系"><span class="nav-number">3.0.4.</span> <span class="nav-text">关联关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合关系"><span class="nav-number">3.0.5.</span> <span class="nav-text">聚合关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组合关系"><span class="nav-number">3.0.6.</span> <span class="nav-text">组合关系</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式类型"><span class="nav-number">4.</span> <span class="nav-text">设计模式类型</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="naive"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">naive</p>
+  <div class="site-description" itemprop="description">选择有时候比努力更重要</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-07 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">naive</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!--崩溃欺骗-->
+<script type="text/javascript" src="\js\FunnyTitle.js"></script>
