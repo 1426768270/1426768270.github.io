@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="第二章、线程安全性核心在于要对状态访问进行管理，特别是共享、可变的。 共享意味着变量可以由多个线程进行访问，可变意味着变量的值发生变化。 java同步机制是关键词synchronized,他提供一种加锁方式，但同步术语还得volatile。 修复线程安全的方式：  不在线程之间共享该状态变量 将状态变量修改为不可变的变量 在访问状态变量时使用同步  2.1线程安全性当多个线程访问某个类时，这个类始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程实战">
+<meta property="og:url" content="http://yoursite.com/2020/08/25/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="焱燚">
+<meta property="og:description" content="第二章、线程安全性核心在于要对状态访问进行管理，特别是共享、可变的。 共享意味着变量可以由多个线程进行访问，可变意味着变量的值发生变化。 java同步机制是关键词synchronized,他提供一种加锁方式，但同步术语还得volatile。 修复线程安全的方式：  不在线程之间共享该状态变量 将状态变量修改为不可变的变量 在访问状态变量时使用同步  2.1线程安全性当多个线程访问某个类时，这个类始">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-25T15:18:32.000Z">
+<meta property="article:modified_time" content="2020-08-25T16:33:21.275Z">
+<meta property="article:author" content="naive">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/25/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java并发编程实战 | 焱燚</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">焱燚</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/25/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java并发编程实战
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-25 23:18:32" itemprop="dateCreated datePublished" datetime="2020-08-25T23:18:32+08:00">2020-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-26 00:33:21" itemprop="dateModified" datetime="2020-08-26T00:33:21+08:00">2020-08-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="第二章、线程安全性"><a href="#第二章、线程安全性" class="headerlink" title="第二章、线程安全性"></a>第二章、线程安全性</h2><p>核心在于要对状态访问进行管理，特别是共享、可变的。</p>
+<p>共享意味着变量可以由多个线程进行访问，可变意味着变量的值发生变化。</p>
+<p>java同步机制是关键词synchronized,他提供一种加锁方式，但同步术语还得volatile。</p>
+<p>修复线程安全的方式：</p>
+<ul>
+<li>不在线程之间共享该状态变量</li>
+<li>将状态变量修改为不可变的变量</li>
+<li>在访问状态变量时使用同步</li>
+</ul>
+<h3 id="2-1线程安全性"><a href="#2-1线程安全性" class="headerlink" title="2.1线程安全性"></a>2.1线程安全性</h3><p>当多个线程访问某个类时，这个类始终都能表现出正确的行为，那么就称这个类是线程安全的。</p>
+<p>大多数Servlet对象时无状态的</p>
+<p><strong>无状态对象一定是线程安金的。</strong><br>只有当Servlet在处理请求时需要保存些信息，线程安全性才会成为一个问题。由于线程访问无状态对象的行为并不会影响其他线程中操作的正确性，因此无状大多数Servlet都是无状态的，从而极大地降低了在实现Servlet线程安全性时的复杂性。</p>
+<h3 id="2-2-原子性"><a href="#2-2-原子性" class="headerlink" title="2.2 原子性"></a>2.2 原子性</h3><p>当在无状态对象中增加一个状态，如命中计算器，来统计所处理的请求数量。当对一个值，进行修改时，操作并不是原子性的，包括“读取-修改-写入”。在并发编程中执行时序不正确的结果是一种非常重要的情况，他有一个正式的名字：<strong>竞态条件</strong>。</p>
+<h4 id="2-2-1-竞态条件"><a href="#2-2-1-竞态条件" class="headerlink" title="2.2.1 竞态条件"></a>2.2.1 <strong>竞态条件</strong></h4><p>正确的结果取决于运气。最常见的就是“先检查后执行，通过一个可能失效的观测结果决定下一步的动作。</p>
+<h4 id="2-2-2-实例：延迟初始化化的竞态条件"><a href="#2-2-2-实例：延迟初始化化的竞态条件" class="headerlink" title="2.2.2 实例：延迟初始化化的竞态条件"></a>2.2.2 实例：延迟初始化化的竞态条件</h4><p>使用“先检查后执行”的一种常见情况就是延迟初始化。延迟初始化的目的是将对象的初始化操作推迟到实际被使用时才进行，同时要确保只被初始化一次。</p>
+<p>单例模式中没有加入双重检查的getInstance</p>
+<h4 id="2-2-3-复合操作"><a href="#2-2-3-复合操作" class="headerlink" title="2.2.3 复合操作"></a>2.2.3 复合操作</h4><p>要避免竞态条件问题，就必须在某个线程修改该变量时，通过某种方式防止其他线程使用这个变量，从而确保其他线程只能在修改操作完成之前或之后读取和修改状态，而不是在修改状态的过程中。</p>
+<p>例如修改变量的操作是原子操作，为了保证线程的安全性，’先检查后执行’和‘读取修改写入’操作必须是原子性，这些操作我们称之为复合操作，包含了一组以原子操作来确保线程的安全性。</p>
+<p>在<strong>java.util.concurrent.atomic</strong>包中包含了一些原子变量类，用于实现在数值和对象引用上的原子状态转换。通过用AtomicLong来代替long 类型的计数器，能够确保所有对计数器状态的访问操作都是原子的。°由于Servlet的状态就是计数器的状态，并且计数器是线程安全的，因此这里的Servlet也是线程安全的。</p>
+<p>我们在因数分解的Servlet中增加了一个计数器，并通过使用线程安全类AtomicLong来管理计数器的状态，从而确保了代码的线程安全性。当在无状态的类中添加一个状态时，如果该状态完全由线程安全的对象来管理，那么这个类仍然是线程安全的。然而，在2.3节你将看到，当状态变量的数量由一个变为多个时，并不会像状态变量数量由零个变为一个那样简单。</p>
+<h3 id="2-3-加速机制"><a href="#2-3-加速机制" class="headerlink" title="2.3 加速机制"></a>2.3 加速机制</h3><p>当在Servlet中添加一个状态变量时，可以通过线程安全的对象来管理Servlet的状态以维护Servlet的线程安全性。但如果想在Servlet中添加更多的状态，那么是否只需添加更多的线程安全状态变量就足够了?</p>
+<p>当线程A获取这个值时，线程B可能修改了他们，这样线程A也就不会发现不变性条件被破坏了。</p>
+<p>要保证状态的一致性， 就需要在单个原子操作中更新所有相关的状态变量。</p>
+<h4 id="2-3-1内置锁"><a href="#2-3-1内置锁" class="headerlink" title="2.3.1内置锁"></a>2.3.1内置锁</h4><p>java提供一种内置的机制保证原子性，<strong>同步代码块</strong>。</p>
+<p>同步代码块包括2个部分：</p>
+<ul>
+<li>一个作为锁的对象引用</li>
+<li>一个作为由这锁保护的代码块</li>
+</ul>
+<p>以关键词synchronized修饰的方法计算横跨整个方法体的同步代码块，其中该代码块的锁计算方法调用所在的对象。</p>
+<p>每个Java对象都可以用做一个实现同步的锁，这些锁被称为<strong>内置锁</strong>(Intrinsic Lock)或监视器锁(Monitor Lock)。线程在进入同步代码块之前会自动获得锁，并且在退出同步代码块时自动释放锁，而无论是通过正常的控制路径退出，还是通过从代码块中抛出异常退出。获得内置锁的唯一途径就是进入由这个锁保护的同步代码块或方法。</p>
+<p>Java的内置锁相当于一种<strong>互斥体</strong>（或互斥锁)，这意味着最多只有一个线程能持有这种锁，当线程A尝试获取一个由线程B持有的锁时，线程A必须等待或者阻塞，直到线程B释放这个锁。如果B永远不释放锁，那么A也将永远地等下去。</p>
+<p>这种方法很安全，但是性能非常低，无法令人接受。</p>
+<h4 id="2-3-2-重入"><a href="#2-3-2-重入" class="headerlink" title="2.3.2 重入"></a>2.3.2 重入</h4><p>·当某个线程请求一个由其他线程持有的锁时，发出请求的线程就会阻塞。然而，由于内置锁是可重入的，<strong>因此如果某个线程试图获得一个已经由它自己持有的锁，那么这个请求就会成功。</strong>“重入”意味着获取锁的操作的粒度是“线程”，而不是“调用”。</p>
+<blockquote>
+<p>重入的一种实现方式是，为每个锁关联一个获取计数值和一个所有者线程。当计数值为0时，这个锁就被认为是没有被任何线程持有。当线程请求一个未被持有的锁时，JVM将记下锁的持有者，并且将获取计数值置为1。如果同一个线程再次获取这个锁，计数值将递增，而当线程退出同步代码块时，计数器会相应地递减。当计数值为О时，这个锁将被释放。</p>
+</blockquote>
+<p><strong>重入进一步提升了加锁行为的封装性。</strong></p>
+<blockquote>
+<p>当子类改写了父类的synchronized的方法，然后调用父类的方法，如果没有可重入锁，那么这段代码就会产生死锁</p>
+</blockquote>
+<h3 id="2-4-用锁来保护状态"><a href="#2-4-用锁来保护状态" class="headerlink" title="2.4 用锁来保护状态"></a>2.4 用锁来保护状态</h3><p>由于锁能使其保护的代码路径以<strong>串行形式</strong>来来访问，因此可以通过锁来构造一些协议以实现对共享状态的独占访问。只要始终遵循这些协议，就能确保状态的一致性。</p>
+<blockquote>
+<p>访问共享状态的复合操作，例如命中计数器的递增操作（读取–修改-写人）或者延迟初始化（先检查后执行)，都必须是原子操作以避免产生竟态条件。如果在复合操作的执行过程中持有一个锁，那么会使复合操作成为原子操作。然而，仅仅将复合操作封装到一个同步代码块中是不够的。如果用同步来协调对某个变量的访问，那么在访问这个变量的所有位置上都需要使用同步。而且，当使用锁来协调对某个变量的访问时，在访问变量的所有位置上都要使用同-一个锁。</p>
+</blockquote>
+<p><strong>一种常见的错误是认为，只有在写入共享变量时才需要使用同步</strong>，然而事实并非如此（3.1）节将进一步解释其中的原因)。</p>
+<blockquote>
+<p>对象的内置锁与其状态之间没有内在的关联。虽然大多数类都将内置锁用做一种有效的加锁机制，但对象的域并不一定要通过内置锁来保护。当获取与对象关联的锁时，并不能阻止其他线程访问该对象，某个线程在获得对象的锁之后，只能阻止其他线程获得同一个锁。之所以每个对象都有一个内置锁，只是为了免去显式地创建锁对象。你需要自行构造加锁协议或者同步策略来实现对共享状态的安全访问，并且在程序中自始至终地使用它们。</p>
+</blockquote>
+<p>一种常见的加锁约定是，将所有的可变状态都封装在对象内部，通过内置锁进行同步，例如Vector</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/23/%E6%A1%86%E6%9E%B6/shiro/" rel="prev" title="shiro">
+      <i class="fa fa-chevron-left"></i> shiro
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章、线程安全性"><span class="nav-number">1.</span> <span class="nav-text">第二章、线程安全性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1线程安全性"><span class="nav-number">1.1.</span> <span class="nav-text">2.1线程安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-原子性"><span class="nav-number">1.2.</span> <span class="nav-text">2.2 原子性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-竞态条件"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.2.1 竞态条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-实例：延迟初始化化的竞态条件"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2.2 实例：延迟初始化化的竞态条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-复合操作"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.2.3 复合操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-加速机制"><span class="nav-number">1.3.</span> <span class="nav-text">2.3 加速机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1内置锁"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.3.1内置锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-重入"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.3.2 重入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-用锁来保护状态"><span class="nav-number">1.4.</span> <span class="nav-text">2.4 用锁来保护状态</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="naive"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">naive</p>
+  <div class="site-description" itemprop="description">选择有时候比努力更重要</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-07 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">naive</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!--崩溃欺骗-->
+<script type="text/javascript" src="\js\FunnyTitle.js"></script>

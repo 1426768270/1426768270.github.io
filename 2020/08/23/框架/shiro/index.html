@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Shiro一、权限的管理1.1 什么是权限管理基本上涉及到用户参与的系统都要进行权限管理，权限管理属于系统安全的范畴，权限管理实现对用户访问系统的控制，按照安全规则或者安全策略控制用户可以访问而且只能访问自己被授权的资源。 权限管理包括用户身份认证和授权两部分，简称认证授权。对于需要访问控制的资源用户首先经过身份认证，认证通过后用户具有该资源的访问权限方可访问。 1.2 什么是身份认证身份认证，就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shiro">
+<meta property="og:url" content="http://yoursite.com/2020/08/23/%E6%A1%86%E6%9E%B6/shiro/index.html">
+<meta property="og:site_name" content="焱燚">
+<meta property="og:description" content="Shiro一、权限的管理1.1 什么是权限管理基本上涉及到用户参与的系统都要进行权限管理，权限管理属于系统安全的范畴，权限管理实现对用户访问系统的控制，按照安全规则或者安全策略控制用户可以访问而且只能访问自己被授权的资源。 权限管理包括用户身份认证和授权两部分，简称认证授权。对于需要访问控制的资源用户首先经过身份认证，认证通过后用户具有该资源的访问权限方可访问。 1.2 什么是身份认证身份认证，就">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/08/23/%E6%A1%86%E6%9E%B6/shiro/shiro%E6%A1%86%E6%9E%B6.png">
+<meta property="article:published_time" content="2020-08-23T09:18:53.000Z">
+<meta property="article:modified_time" content="2020-08-23T14:22:17.547Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="shiro">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/08/23/%E6%A1%86%E6%9E%B6/shiro/shiro%E6%A1%86%E6%9E%B6.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/23/%E6%A1%86%E6%9E%B6/shiro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>shiro | 焱燚</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">焱燚</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/23/%E6%A1%86%E6%9E%B6/shiro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          shiro
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-23 17:18:53 / 修改时间：22:22:17" itemprop="dateCreated datePublished" datetime="2020-08-23T17:18:53+08:00">2020-08-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">框架</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Shiro"><a href="#Shiro" class="headerlink" title="Shiro"></a>Shiro</h1><h2 id="一、权限的管理"><a href="#一、权限的管理" class="headerlink" title="一、权限的管理"></a>一、权限的管理</h2><h3 id="1-1-什么是权限管理"><a href="#1-1-什么是权限管理" class="headerlink" title="1.1 什么是权限管理"></a>1.1 什么是权限管理</h3><p>基本上涉及到用户参与的系统都要进行权限管理，权限管理属于系统安全的范畴，权限管理实现<code>对用户访问系统的控制</code>，按照安全规则或者<a href="http://baike.baidu.com/view/160028.htm" target="_blank" rel="noopener">安全策略</a>控制用户可以访问而且只能访问自己被授权的资源。</p>
+<p>权限管理包括用户<code>身份认证</code>和<code>授权</code>两部分，简称<code>认证授权</code>。对于需要访问控制的资源用户首先经过身份认证，认证通过后用户具有该资源的访问权限方可访问。</p>
+<h3 id="1-2-什么是身份认证"><a href="#1-2-什么是身份认证" class="headerlink" title="1.2 什么是身份认证"></a>1.2 什么是身份认证</h3><p><code>身份认证</code>，就是判断一个用户是否为合法用户的处理过程。最常用的简单身份认证方式是系统通过核对用户输入的用户名和口令，看其是否与系统中存储的该用户的用户名和口令一致，来判断用户身份是否正确。对于采用<a href="http://baike.baidu.com/view/5628.htm" target="_blank" rel="noopener">指纹</a>等系统，则出示指纹；对于硬件Key等刷卡系统，则需要刷卡。</p>
+<h3 id="1-3-什么是授权"><a href="#1-3-什么是授权" class="headerlink" title="1.3 什么是授权"></a>1.3 什么是授权</h3><p><code>授权，即访问控制</code>，控制谁能访问哪些资源。主体进行身份认证后需要分配权限方可访问系统的资源，对于某些资源没有权限是无法访问的</p>
+<h2 id="2-什么是shiro"><a href="#2-什么是shiro" class="headerlink" title="2.什么是shiro"></a>2.什么是shiro</h2><blockquote>
+<p><strong>Apache Shiro™</strong> is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management. With Shiro’s easy-to-understand API, you can quickly and easily secure any application – from the smallest mobile applications to the largest web and enterprise applications.  </p>
+<p>Shiro 是一个功能强大且易于使用的Java安全框架，它执行身份验证、授权、加密和会话管理。使用Shiro易于理解的API，您可以快速轻松地保护任何应用程序—从最小的移动应用程序到最大的web和企业应用程序。</p>
+</blockquote>
+<p><code>Shiro是apache旗下一个开源框架，它将软件系统的安全认证相关的功能抽取出来，实现用户身份认证，权限授权、加密、会话管理等功能，组成了一个通用的安全认证框架。</code></p>
+<h2 id="3-shiro的核心架构"><a href="#3-shiro的核心架构" class="headerlink" title="3.shiro的核心架构"></a>3.shiro的核心架构</h2><img src="/2020/08/23/%E6%A1%86%E6%9E%B6/shiro/shiro框架.png" alt="image-20200520220413190" style="zoom:150%;">
+
+<h3 id="3-1-Subject"><a href="#3-1-Subject" class="headerlink" title="3.1 Subject"></a>3.1 Subject</h3><p><code>Subject即主体</code>，外部应用与subject进行交互，subject记录了当前操作用户，将用户的概念理解为当前操作的主体，可能是一个通过浏览器请求的用户，也可能是一个运行的程序。    Subject在shiro中是一个接口，接口中定义了很多认证授相关的方法，外部程序通过subject进行认证授，而subject是通过SecurityManager安全管理器进行认证授权</p>
+<h3 id="3-2-SecurityManager"><a href="#3-2-SecurityManager" class="headerlink" title="3.2 SecurityManager"></a>3.2 SecurityManager</h3><p><code>SecurityManager即安全管理器</code>，对全部的subject进行安全管理，它是shiro的核心，负责对所有的subject进行安全管理。通过SecurityManager可以完成subject的认证、授权等，实质上SecurityManager是通过Authenticator进行认证，通过Authorizer进行授权，通过SessionManager进行会话管理等。</p>
+<p><code>SecurityManager是一个接口，继承了Authenticator, Authorizer, SessionManager这三个接口。</code></p>
+<h3 id="3-3-Authenticator"><a href="#3-3-Authenticator" class="headerlink" title="3.3 Authenticator"></a>3.3 Authenticator</h3><p><code>Authenticator即认证器</code>，对用户身份进行认证，Authenticator是一个接口，shiro提供ModularRealmAuthenticator实现类，通过ModularRealmAuthenticator基本上可以满足大多数需求，也可以自定义认证器。</p>
+<h3 id="3-4-Authorizer"><a href="#3-4-Authorizer" class="headerlink" title="3.4 Authorizer"></a>3.4 Authorizer</h3><p><code>Authorizer即授权器</code>，用户通过认证器认证通过，在访问功能时需要通过授权器判断用户是否有此功能的操作权限。</p>
+<h3 id="3-5-Realm"><a href="#3-5-Realm" class="headerlink" title="3.5 Realm"></a>3.5 Realm</h3><p><code>Realm即领域</code>，相当于datasource数据源，securityManager进行安全认证需要通过Realm获取用户权限数据，比如：如果用户身份数据在数据库那么realm就需要从数据库获取用户身份信息。</p>
+<ul>
+<li>​    注意：不要把realm理解成只是从数据源取数据，在realm中还有认证授权校验的相关的代码。</li>
+</ul>
+<h3 id="3-6-SessionManager"><a href="#3-6-SessionManager" class="headerlink" title="3.6 SessionManager"></a>3.6 SessionManager</h3><p><code>sessionManager即会话管理</code>，shiro框架定义了一套会话管理，它不依赖web容器的session，所以shiro可以使用在非web应用上，也可以将分布式应用的会话集中在一点管理，此特性可使它实现单点登录。</p>
+<h3 id="3-7-SessionDAO"><a href="#3-7-SessionDAO" class="headerlink" title="3.7 SessionDAO"></a>3.7 SessionDAO</h3><p><code>SessionDAO即会话dao</code>，是对session会话操作的一套接口，比如要将session存储到数据库，可以通过jdbc将会话存储到数据库。</p>
+<h3 id="3-8-CacheManager"><a href="#3-8-CacheManager" class="headerlink" title="3.8 CacheManager"></a>3.8 CacheManager</h3><p><code>CacheManager即缓存管理</code>，将用户权限数据存储在缓存，这样可以提高性能。</p>
+<h3 id="3-9-Cryptography"><a href="#3-9-Cryptography" class="headerlink" title="3.9 Cryptography"></a>3.9 Cryptography</h3><p>​    <code>Cryptography即密码管理</code>，shiro提供了一套加密/解密的组件，方便开发。比如提供常用的散列、加/解密等功能。</p>
+<h2 id="4-shiro中的认证"><a href="#4-shiro中的认证" class="headerlink" title="4. shiro中的认证"></a>4. shiro中的认证</h2><h3 id="4-1-认证"><a href="#4-1-认证" class="headerlink" title="4.1 认证"></a>4.1 认证</h3><p>身份认证，就是判断一个用户是否为合法用户的处理过程。最常用的简单身份认证方式是系统通过核对用户输入的用户名和口令，看其是否与系统中存储的该用户的用户名和口令一致，来判断用户身份是否正确。</p>
+<h3 id="4-2-shiro中认证的关键对象"><a href="#4-2-shiro中认证的关键对象" class="headerlink" title="4.2 shiro中认证的关键对象"></a>4.2 shiro中认证的关键对象</h3><ul>
+<li><strong>Subject：主体</strong></li>
+</ul>
+<p>访问系统的用户，主体可以是用户、程序等，进行认证的都称为主体； </p>
+<ul>
+<li><strong>Principal：身份信息</strong></li>
+</ul>
+<p>是主体（subject）进行身份认证的标识，标识必须具有<code>唯一性</code>，如用户名、手机号、邮箱地址等，一个主体可以有多个身份，但是必须有一个主身份（Primary Principal）。</p>
+<ul>
+<li><strong>credential：凭证信息</strong></li>
+</ul>
+<p>是只有主体自己知道的安全信息，如密码、证书等。</p>
+<h3 id="4-3-认证流程"><a href="#4-3-认证流程" class="headerlink" title="4.3 认证流程"></a>4.3 认证流程</h3><p>![image-20200521204452288](F:/Chrome/shiro实战教程资料/Shiro 实战教程.assets/image-20200521204452288.png)</p>
+<h3 id="4-4-认证的开发"><a href="#4-4-认证的开发" class="headerlink" title="4.4 认证的开发"></a>4.4 认证的开发</h3><h5 id="1-创建项目并引入依赖"><a href="#1-创建项目并引入依赖" class="headerlink" title="1. 创建项目并引入依赖"></a>1. 创建项目并引入依赖</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.5.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-引入shiro配置文件并加入如下配置"><a href="#2-引入shiro配置文件并加入如下配置" class="headerlink" title="2. 引入shiro配置文件并加入如下配置"></a>2. 引入shiro配置文件并加入如下配置</h5><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[users]</span></span><br><span class="line"><span class="attr">xiaochen</span>=<span class="number">123</span></span><br><span class="line"><span class="attr">zhangsan</span>=<span class="number">456</span></span><br></pre></td></tr></table></figure>
+
+<p>![image-20200521205219719](F:/Chrome/shiro实战教程资料/Shiro 实战教程.assets/image-20200521205219719.png)</p>
+<h5 id="3-开发认证代码"><a href="#3-开发认证代码" class="headerlink" title="3.开发认证代码"></a>3.开发认证代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAuthenticator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建securityManager</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(<span class="keyword">new</span> IniRealm(<span class="string">"classpath:shiro.ini"</span>));</span><br><span class="line">        <span class="comment">//将安装工具类中设置默认安全管理器</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        <span class="comment">//获取主体对象</span></span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line">        <span class="comment">//创建token令牌</span></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"xiaochen1"</span>, <span class="string">"123"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            subject.login(token);<span class="comment">//用户登录</span></span><br><span class="line">            System.out.println(<span class="string">"登录成功~~"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownAccountException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(<span class="string">"用户名错误!!"</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IncorrectCredentialsException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(<span class="string">"密码错误!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>DisabledAccountException（帐号被禁用）</p>
+</li>
+<li><p>LockedAccountException（帐号被锁定）</p>
+</li>
+<li><p>ExcessiveAttemptsException（登录失败次数过多）</p>
+</li>
+<li><p>ExpiredCredentialsException（凭证过期）等</p>
+</li>
+</ul>
+<hr>
+<h3 id="4-5-自定义Realm"><a href="#4-5-自定义Realm" class="headerlink" title="4.5 自定义Realm"></a>4.5 自定义Realm</h3><p>上边的程序使用的是Shiro自带的IniRealm，IniRealm从ini配置文件中读取用户的信息，大部分情况下需要从系统的数据库中读取用户信息，所以需要自定义realm。</p>
+<h5 id="1-shiro提供的Realm"><a href="#1-shiro提供的Realm" class="headerlink" title="1.shiro提供的Realm"></a>1.shiro提供的Realm</h5><p>![image-20200521212728541](F:/Chrome/shiro实战教程资料/Shiro 实战教程.assets/image-20200521212728541.png)</p>
+<h5 id="2-根据认证源码认证使用的是SimpleAccountRealm"><a href="#2-根据认证源码认证使用的是SimpleAccountRealm" class="headerlink" title="2.根据认证源码认证使用的是SimpleAccountRealm"></a>2.根据认证源码认证使用的是SimpleAccountRealm</h5><p>![image-20200521213451998](F:/Chrome/shiro实战教程资料/Shiro 实战教程.assets/image-20200521213451998.png)</p>
+<p><code>SimpleAccountRealm的部分源码中有两个方法一个是 认证 一个是 授权</code>,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleAccountRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.......省略</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">        UsernamePasswordToken upToken = (UsernamePasswordToken) token;</span><br><span class="line">        SimpleAccount account = getUser(upToken.getUsername());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (account != <span class="keyword">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (account.isLocked()) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> LockedAccountException(<span class="string">"Account ["</span> + account + <span class="string">"] is locked."</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (account.isCredentialsExpired()) &#123;</span><br><span class="line">                String msg = <span class="string">"The credentials for account ["</span> + account + <span class="string">"] are expired"</span>;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ExpiredCredentialsException(msg);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> account;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line">        String username = getUsername(principals);</span><br><span class="line">        USERS_LOCK.readLock().lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.users.get(username);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            USERS_LOCK.readLock().unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-自定义realm"><a href="#3-自定义realm" class="headerlink" title="3.自定义realm"></a>3.自定义realm</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义realm</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line">    <span class="comment">//认证方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//授权方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">        String principal = (String) token.getPrincipal();</span><br><span class="line">        <span class="keyword">if</span>(<span class="string">"xiaochen"</span>.equals(principal))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> SimpleAuthenticationInfo(principal,<span class="string">"123"</span>,<span class="keyword">this</span>.getName());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-使用自定义Realm认证"><a href="#4-使用自定义Realm认证" class="headerlink" title="4.使用自定义Realm认证"></a>4.使用自定义Realm认证</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAuthenticatorCusttomerRealm</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建securityManager</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        <span class="comment">//IniRealm realm = new IniRealm("classpath:shiro.ini");</span></span><br><span class="line">        <span class="comment">//设置为自定义realm获取认证数据</span></span><br><span class="line">        defaultSecurityManager.setRealm(<span class="keyword">new</span> CustomerRealm());</span><br><span class="line">        <span class="comment">//将安装工具类中设置默认安全管理器</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        <span class="comment">//获取主体对象</span></span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line">        <span class="comment">//创建token令牌</span></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"xiaochen"</span>, <span class="string">"123"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            subject.login(token);<span class="comment">//用户登录</span></span><br><span class="line">            System.out.println(<span class="string">"登录成功~~"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownAccountException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(<span class="string">"用户名错误!!"</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IncorrectCredentialsException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(<span class="string">"密码错误!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-6-使用MD5和Salt"><a href="#4-6-使用MD5和Salt" class="headerlink" title="4.6 使用MD5和Salt"></a>4.6 使用MD5和Salt</h3><blockquote>
+<p>实际应用是将盐和散列后的值存在数据库中，自动realm从数据库取出盐和加密后的值由shiro完成密码校验。</p>
+</blockquote>
+<h5 id="1-自定义md5-salt的realm"><a href="#1-自定义md5-salt的realm" class="headerlink" title="1.自定义md5+salt的realm"></a>1.自定义md5+salt的realm</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义md5+salt realm</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line">    <span class="comment">//认证方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//授权方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">        String principal = (String) token.getPrincipal();</span><br><span class="line">        <span class="keyword">if</span>(<span class="string">"xiaochen"</span>.equals(principal))&#123;</span><br><span class="line">            String password = <span class="string">"3c88b338102c1a343bcb88cd3878758e"</span>;</span><br><span class="line">            String salt = <span class="string">"Q4F%"</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> SimpleAuthenticationInfo(principal,password, </span><br><span class="line">                                                ByteSource.Util.bytes(salt),<span class="keyword">this</span>.getName());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-使用md5-salt-认证"><a href="#2-使用md5-salt-认证" class="headerlink" title="2.使用md5 + salt 认证"></a>2.使用md5 + salt 认证</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAuthenticatorCusttomerRealm</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建securityManager</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        <span class="comment">//IniRealm realm = new IniRealm("classpath:shiro.ini");</span></span><br><span class="line">        <span class="comment">//设置为自定义realm获取认证数据</span></span><br><span class="line">        CustomerRealm customerRealm = <span class="keyword">new</span> CustomerRealm();</span><br><span class="line">        <span class="comment">//设置md5加密</span></span><br><span class="line">        HashedCredentialsMatcher credentialsMatcher = <span class="keyword">new</span> HashedCredentialsMatcher();</span><br><span class="line">        credentialsMatcher.setHashAlgorithmName(<span class="string">"MD5"</span>);</span><br><span class="line">        credentialsMatcher.setHashIterations(<span class="number">1024</span>);<span class="comment">//设置散列次数</span></span><br><span class="line">        customerRealm.setCredentialsMatcher(credentialsMatcher);</span><br><span class="line">        defaultSecurityManager.setRealm(customerRealm);</span><br><span class="line">        <span class="comment">//将安装工具类中设置默认安全管理器</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        <span class="comment">//获取主体对象</span></span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line">        <span class="comment">//创建token令牌</span></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"xiaochen"</span>, <span class="string">"123"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            subject.login(token);<span class="comment">//用户登录</span></span><br><span class="line">            System.out.println(<span class="string">"登录成功~~"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownAccountException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(<span class="string">"用户名错误!!"</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IncorrectCredentialsException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            System.out.println(<span class="string">"密码错误!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id><a href="#" class="headerlink" title></a></h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/shiro/" rel="tag"># shiro</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/20/redis/redis/" rel="prev" title="redis">
+      <i class="fa fa-chevron-left"></i> redis
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/25/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98/" rel="next" title="java并发编程实战">
+      java并发编程实战 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shiro"><span class="nav-number">1.</span> <span class="nav-text">Shiro</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、权限的管理"><span class="nav-number">1.1.</span> <span class="nav-text">一、权限的管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-什么是权限管理"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 什么是权限管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-什么是身份认证"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 什么是身份认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-什么是授权"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 什么是授权</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-什么是shiro"><span class="nav-number">1.2.</span> <span class="nav-text">2.什么是shiro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-shiro的核心架构"><span class="nav-number">1.3.</span> <span class="nav-text">3.shiro的核心架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Subject"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Subject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-SecurityManager"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 SecurityManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Authenticator"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 Authenticator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Authorizer"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 Authorizer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Realm"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5 Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-SessionManager"><span class="nav-number">1.3.6.</span> <span class="nav-text">3.6 SessionManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-SessionDAO"><span class="nav-number">1.3.7.</span> <span class="nav-text">3.7 SessionDAO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-CacheManager"><span class="nav-number">1.3.8.</span> <span class="nav-text">3.8 CacheManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-9-Cryptography"><span class="nav-number">1.3.9.</span> <span class="nav-text">3.9 Cryptography</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-shiro中的认证"><span class="nav-number">1.4.</span> <span class="nav-text">4. shiro中的认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-认证"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-shiro中认证的关键对象"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 shiro中认证的关键对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-认证流程"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 认证流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-认证的开发"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.4 认证的开发</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-创建项目并引入依赖"><span class="nav-number">1.4.4.0.1.</span> <span class="nav-text">1. 创建项目并引入依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-引入shiro配置文件并加入如下配置"><span class="nav-number">1.4.4.0.2.</span> <span class="nav-text">2. 引入shiro配置文件并加入如下配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-开发认证代码"><span class="nav-number">1.4.4.0.3.</span> <span class="nav-text">3.开发认证代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-自定义Realm"><span class="nav-number">1.4.5.</span> <span class="nav-text">4.5 自定义Realm</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-shiro提供的Realm"><span class="nav-number">1.4.5.0.1.</span> <span class="nav-text">1.shiro提供的Realm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-根据认证源码认证使用的是SimpleAccountRealm"><span class="nav-number">1.4.5.0.2.</span> <span class="nav-text">2.根据认证源码认证使用的是SimpleAccountRealm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-自定义realm"><span class="nav-number">1.4.5.0.3.</span> <span class="nav-text">3.自定义realm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-使用自定义Realm认证"><span class="nav-number">1.4.5.0.4.</span> <span class="nav-text">4.使用自定义Realm认证</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-使用MD5和Salt"><span class="nav-number">1.4.6.</span> <span class="nav-text">4.6 使用MD5和Salt</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-自定义md5-salt的realm"><span class="nav-number">1.4.6.0.1.</span> <span class="nav-text">1.自定义md5+salt的realm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-使用md5-salt-认证"><span class="nav-number">1.4.6.0.2.</span> <span class="nav-text">2.使用md5 + salt 认证</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.5.</span> <span class="nav-text"></span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="naive"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">naive</p>
+  <div class="site-description" itemprop="description">选择有时候比努力更重要</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-07 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">naive</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!--崩溃欺骗-->
+<script type="text/javascript" src="\js\FunnyTitle.js"></script>
