@@ -197,94 +197,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/Netty/Netty3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/03/Netty/Netty3/" class="post-title-link" itemprop="url">Netty-Netty进阶</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-03 22:28:17" itemprop="dateCreated datePublished" datetime="2020-08-03T22:28:17+08:00">2020-08-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-05 16:44:56" itemprop="dateModified" datetime="2020-08-05T16:44:56+08:00">2020-08-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Netty-核心模块组件"><a href="#Netty-核心模块组件" class="headerlink" title="Netty 核心模块组件"></a>Netty 核心模块组件</h2><h3 id="Bootstrap、ServerBootstrap"><a href="#Bootstrap、ServerBootstrap" class="headerlink" title="Bootstrap、ServerBootstrap"></a>Bootstrap、ServerBootstrap</h3><p>Bootstrap 意思是引导，<strong>一个 Netty 应用通常由一个 Bootstrap 开始</strong>，主要作用是配置整个 Netty 程序，串联各个组件，Netty 中 Bootstrap 类是客户端程序的启动引导类，ServerBootstrap 是服务端启动引导类</p>
-<p>常见的方法有</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ServerBootstrap <span class="title">group</span><span class="params">(EventLoopGroup parentGroup, EventLoopGroup childGroup)</span>，该方法用于服务器端，用来设置两个 EventLoop</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> B <span class="title">group</span><span class="params">(EventLoopGroup group)</span> ，该方法用于客户端，用来设置一个 EventLoop</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> B <span class="title">channel</span><span class="params">(Class&lt;? extends C&gt; channelClass)</span>，该方法用来设置一个服务器端的通道实现</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> &lt;T&gt; B <span class="title">option</span><span class="params">(ChannelOption&lt;T&gt; option, T value)</span>，用来给 ServerChannel 添加配置 y</span></span><br><span class="line"><span class="function">    													用来设置bossGroup的通道</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> &lt;T&gt; ServerBootstrap <span class="title">childOption</span><span class="params">(ChannelOption&lt;T&gt; childOption, T value)</span>，用来给接收到的通道添加配置 设置workGroup的通道</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ServerBootstrap <span class="title">childHandler</span><span class="params">(ChannelHandler childHandler)</span>，该方法用来设置业务处理类（自定义的 handler）</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ChannelFuture <span class="title">bind</span><span class="params">(<span class="keyword">int</span> inetPort)</span> ，该方法用于服务器端，用来设置占用的端口号</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ChannelFuture <span class="title">connect</span><span class="params">(String inetHost, <span class="keyword">int</span> inetPort)</span> ，该方法用于客户端，用来连接服务器端</span></span><br></pre></td></tr></table></figure>
-
-<p>.handler 对应bossGroup </p>
-<p>.childHandler对应workGroup</p>
-<h3 id="Future、ChannelFuture"><a href="#Future、ChannelFuture" class="headerlink" title="Future、ChannelFuture"></a>Future、ChannelFuture</h3><p> Netty 中所有的 IO 操作都是异步的，不能立刻得知消息是否被正确处理。但是可以过一会等它执行完成或者直接注册一个监听，具体的实现就是通过 Future 和 ChannelFutures，他们可以注册一个监听，当操作执行成功或失败时监听会自动触发注册的监听事件</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Channel <span class="title">channel</span><span class="params">()</span>，返回当前正在进行 IO 操作的通道</span></span><br><span class="line"><span class="function">ChannelFuture <span class="title">sync</span><span class="params">()</span>，等待异步操作执行完毕，把异步变成同步</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/03/Netty/Netty3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/Netty/Netty2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1178,6 +1090,87 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-22 21:56:26" itemprop="dateCreated datePublished" datetime="2020-07-22T21:56:26+08:00">2020-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-30 16:24:42" itemprop="dateModified" datetime="2020-07-30T16:24:42+08:00">2020-07-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="线性结构和非线性结构"><a href="#线性结构和非线性结构" class="headerlink" title="线性结构和非线性结构"></a>线性结构和非线性结构</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1249,7 +1242,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -197,89 +197,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/20/%E7%AC%94%E8%AF%95/%E7%BB%BF%E7%9B%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/20/%E7%AC%94%E8%AF%95/%E7%BB%BF%E7%9B%9F/" class="post-title-link" itemprop="url">绿盟</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-20 17:02:28" itemprop="dateCreated datePublished" datetime="2020-08-20T17:02:28+08:00">2020-08-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-23 16:53:05" itemprop="dateModified" datetime="2020-08-23T16:53:05+08:00">2020-08-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AC%94%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">笔试</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="给定年月日计算是那一天"><a href="#给定年月日计算是那一天" class="headerlink" title="给定年月日计算是那一天"></a>给定年月日计算是那一天</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Day</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">while</span> (input.hasNext())&#123;</span><br><span class="line">            <span class="keyword">int</span> year = input.nextInt();</span><br><span class="line">            <span class="keyword">int</span> month = input.nextInt();</span><br><span class="line">            <span class="keyword">int</span> day = input.nextInt();</span><br><span class="line">            <span class="keyword">int</span> daysInYear = getDaysInYear(year, month, day);</span><br><span class="line">            System.out.println(daysInYear);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDaysInYear</span><span class="params">(<span class="keyword">int</span> year, <span class="keyword">int</span> month, <span class="keyword">int</span> day)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (month-<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">11</span>:total += <span class="number">30</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">10</span>:total += <span class="number">31</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">9</span>:total += <span class="number">30</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">8</span>:total += <span class="number">31</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">7</span>:total += <span class="number">31</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">6</span>:total += <span class="number">30</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>:total += <span class="number">31</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:total += <span class="number">30</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:total += <span class="number">31</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:total += <span class="number">28</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:total += <span class="number">31</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>:<span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isR(year))&#123;</span><br><span class="line">            total++;</span><br><span class="line">        &#125;</span><br><span class="line">        total +=day;</span><br><span class="line">        <span class="keyword">return</span> total;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isR</span><span class="params">(<span class="keyword">int</span> year)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(year%<span class="number">400</span>==<span class="number">0</span>||(year%<span class="number">4</span>==<span class="number">0</span> &amp;&amp; year%<span class="number">100</span>!=<span class="number">0</span>))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="计算回文素数"><a href="#计算回文素数" class="headerlink" title="计算回文素数"></a>计算回文素数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Sushu</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> a = in.nextInt();</span><br><span class="line">        <span class="keyword">int</span> b = in.nextInt();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=a;i&lt;=b;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (isPrime(i) &amp;&amp; isHuiO(i))&#123;</span><br><span class="line">                System.out.println(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//判断是不是素数</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isPrime</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>;i&lt;Math.sqrt(n);i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (n % i ==<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isHuiO</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">        String s = String.valueOf(n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;s.length()/<span class="number">2</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (s.charAt(i)!=s.charAt(s.length()-i-<span class="number">1</span>))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/20/%E7%AC%94%E8%AF%95/%E7%BB%BF%E7%9B%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/18/%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6/Gradle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1074,6 +991,98 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%AE%BE%E5%A4%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%AE%BE%E5%A4%87/" class="post-title-link" itemprop="url">操作系统-设备管理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-13 11:41:28 / 修改时间：17:55:49" itemprop="dateCreated datePublished" datetime="2020-08-13T11:41:28+08:00">2020-08-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h1><h2 id="一、I-O系统"><a href="#一、I-O系统" class="headerlink" title="一、I/O系统"></a>一、I/O系统</h2><h3 id="1-1设备分类"><a href="#1-1设备分类" class="headerlink" title="1.1设备分类"></a>1.1设备分类</h3><p>按设备的共享属性分类：</p>
+<ul>
+<li>独占设备：在<strong>一段时间</strong>内<strong>只允许一个用户进程使用</strong>的设备。</li>
+<li>共享设备：在<strong>一段时间</strong>内<strong>允许多个进程使用</strong>的设备。</li>
+<li>虚拟设备：指通过虚拟技术将<strong>一台独占设备</strong>改造成<strong>若干台逻辑设备</strong>，<strong>供若干个用户进程同时使用</strong>。通常把这种经过虚拟技术处理后的设备称为虚拟设备。</li>
+</ul>
+<p>按信息交换单位分类：</p>
+<ul>
+<li>块设备：处理信息的<strong>基本单位是字符块</strong>。一般块的大小为512B～4KB，如磁盘、磁带等是块设备。</li>
+<li>字符设备：处理信息的<strong>基本单位是字符</strong>。如键盘、打印机和显示器是字符设备。</li>
+</ul>
+<h3 id="1-2-I-O控制方式"><a href="#1-2-I-O控制方式" class="headerlink" title="1.2 I/O控制方式"></a>1.2 I/O控制方式</h3><p>I/O控制方式发展过程中始终贯穿的宗旨是<strong>尽量减少主机对I/O控制的干预</strong>。常用的输入/输出控制方式有下述几种：</p>
+<ul>
+<li>程序直接控制方式</li>
+<li>中断控制方式</li>
+<li>直接存储器访问控制方式</li>
+<li>通道控制方式</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%AE%BE%E5%A4%87/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1145,7 +1154,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
