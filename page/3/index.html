@@ -197,6 +197,439 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/" class="post-title-link" itemprop="url">mysql事务和锁</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-14 21:25:21" itemprop="dateCreated datePublished" datetime="2020-08-14T21:25:21+08:00">2020-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-16 10:24:44" itemprop="dateModified" datetime="2020-08-16T10:24:44+08:00">2020-08-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MySQL事务"><a href="#MySQL事务" class="headerlink" title="MySQL事务"></a>MySQL事务</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
+<p>MySQL数据库中事务默认自动提交</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">事务提交的两种方式：</span><br><span class="line">	自动提交：</span><br><span class="line">		mysql就是自动提交的</span><br><span class="line">		一条DML(增删改)语句会自动提交一次事务。</span><br><span class="line"></span><br><span class="line">	手动提交：</span><br><span class="line">		Oracle 数据库默认是手动提交事务</span><br><span class="line">		需要先开启事务，再提交</span><br><span class="line"></span><br><span class="line">修改事务的默认提交方式：</span><br><span class="line">	查看事务的默认提交方式：SELECT @@autocommit; -- 1 代表自动提交 0 代表手动提交 </span><br><span class="line">	修改默认提交方式： set @@autocommit &#x3D; 0;</span><br></pre></td></tr></table></figure>
+
+<h2 id="事务的四大特征（ACID）"><a href="#事务的四大特征（ACID）" class="headerlink" title="事务的四大特征（ACID）"></a>事务的四大特征（ACID）</h2><h3 id="1-原子性（Atomicity）"><a href="#1-原子性（Atomicity）" class="headerlink" title="1. 原子性（Atomicity）"></a>1. 原子性（Atomicity）</h3><p>事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
+<p>回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
+<h3 id="2-一致性（Consistency）"><a href="#2-一致性（Consistency）" class="headerlink" title="2. 一致性（Consistency）"></a>2. 一致性（Consistency）</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%9A%84in%E5%92%8Cexist%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%9A%84in%E5%92%8Cexist%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">mysql的in和exist区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-14 18:43:10 / 修改时间：21:24:42" itemprop="dateCreated datePublished" datetime="2020-08-14T18:43:10+08:00">2020-08-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="in"><a href="#in" class="headerlink" title="in"></a>in</h2><p>确定给定的值是否与子查询或列表中的值相匹配。in在查询的时候，首<strong>先查询子查询的表，然后将内表和外表做一个笛卡尔积</strong>，然后按照条件进行筛选。<strong>所以相对内表比较小的时候，in的速度较快。</strong></p>
+<h2 id="exists"><a href="#exists" class="headerlink" title="exists"></a>exists</h2><p><strong>指定一个子查询，检测行的存在。遍历循环外表，然后看外表中的记录有没有和内表的数据一样的。</strong>匹配上就将结果放入结果集中。</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p><strong>1、运用情况不同</strong></p>
+<p>sql中in适用于<strong>子查询得出的结果集记录较少</strong>，主查询中的表较大且又有索引的表,。sql中exist适用于外层的主查询记录较少，<strong>子查询中的表大</strong>，又有索引的时候。</p>
+<p><strong>2、驱动顺序不同</strong></p>
+<p>IN是先查询子查询的表，然后将内表和外表做一个笛卡尔积，然后按照条件进行筛选。exists是<strong>以外层表为驱动表</strong>，先被访问。</p>
+<p><strong>3、执行次数不同</strong>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%9A%84in%E5%92%8Cexist%E5%8C%BA%E5%88%AB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" class="post-title-link" itemprop="url">mysql必知必会</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-14 09:32:07 / 修改时间：18:33:29" itemprop="dateCreated datePublished" datetime="2020-08-14T09:32:07+08:00">2020-08-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="第3章-使用MySQL"><a href="#第3章-使用MySQL" class="headerlink" title="第3章 使用MySQL"></a>第3章 使用MySQL</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">use crashcourse; #指定使用的数据库</span><br><span class="line">show databases;  # 了解数据库，返回数据库列表</span><br><span class="line">show tables;  # 返回数据库内表的列表</span><br><span class="line">show columns from customers; # 查看customers表中的所有列设置</span><br><span class="line">describe customers;  # 同上，查看customers表中的所有列设置</span><br><span class="line"></span><br><span class="line">show status; # 用于显示广泛的服务器状态信息</span><br><span class="line">show create database crashcourse; #查看创建数据库crashcourse的mysql代码语句</span><br><span class="line">show create table productnotes;  #查看创建表productnotes表的mysql代码语句</span><br><span class="line">show grants; #显示授予用户（所有用户或特定用户）的安全权限</span><br><span class="line"># show errors; # 显示服务器错误内容</span><br><span class="line"># show warnings； #显示服务器警告内容</span><br></pre></td></tr></table></figure>
+
+<h2 id="第4章-检索数据"><a href="#第4章-检索数据" class="headerlink" title="第4章 检索数据"></a>第4章 检索数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># select检索单列，多列，所有列</span><br><span class="line">select prod_name from products;  # 从products表中检索prod_name 单列</span><br><span class="line">select prod_id,prod_name,prod_price from products;   # 从products表中检索prod_name，prod_name,prod_price 多列</span><br><span class="line">select * from products;   #  # 从products表中检索所有列，通常情况下，检索不需要的列会降低检索和应用程序的效率</span><br><span class="line"></span><br><span class="line"># 使用distinct 去重</span><br><span class="line">select distinct vend_id from products;  # 使用distinct关键字去重，distinc只能放在列名的前面</span><br><span class="line">select distinct vend_id,prod_price from products;  # distinct不仅对前置它的列vend_id起作用，同时也作用于prod_price，两列值有重复，才去重</span><br><span class="line"></span><br><span class="line"># 使用limit检索部分行，开始位置为行索引值，索引从0开始</span><br><span class="line">select prod_name from products limit 5; #从第 0 行开始，返回前 5 行</span><br><span class="line">select prod_name from products limit 5,5; #从第 5 行开始，检索 5 行</span><br><span class="line"># 另一种写法</span><br><span class="line">select prod_name from products limit 4 OFFSET 3; #从第 3 行开始，检索 4 行</span><br><span class="line">select prod_name from products limit 3,4; #，同上，从第 3 行开始，检索 4 行</span><br><span class="line"></span><br><span class="line"># 行数不够时，mysql只返回它能返回的那么多行</span><br><span class="line">select count(prod_name) from products; # prod_name 共14行，索引为0-13</span><br><span class="line">select prod_name from products limit 10,5; #从第 10 行开始，检索 5 行，行索引10-14，超出范围，只返回10-13共4行数据</span><br><span class="line"></span><br><span class="line"># 使用完全限定的表名</span><br><span class="line">select products.prod_name from products;</span><br><span class="line">select products.prod_name from crashcourse.products;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第5章-排序检索数据"><a href="#第5章-排序检索数据" class="headerlink" title="第5章 排序检索数据"></a>第5章 排序检索数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;* 关系型数据库设计理论认为，如果不明确规定排序顺序，</span><br><span class="line">则不应该假定检索出的数据的顺序有意义 *&#x2F;</span><br><span class="line"></span><br><span class="line"># order by 子句对输出排序</span><br><span class="line"># 按单列排序 </span><br><span class="line">select prod_name from products order by prod_name;   # 以字母顺序排序prod_name列 </span><br><span class="line">select prod_name from products order by prod_id;  # 使用非检索的列排序数据也是合法的，如使用prod_id顺序排列prod_name</span><br><span class="line"></span><br><span class="line"># 按多列排序 </span><br><span class="line">select prod_id, prod_price,prod_name from products order by prod_price, prod_name; #先按价格，再按产品名排序</span><br><span class="line"></span><br><span class="line"># 降序排列 desc，desc只作用于直接位于其前面的列名</span><br><span class="line">select prod_id, prod_price,prod_name from products order by prod_price desc; # 按价格降序排列</span><br><span class="line">select prod_id, prod_price,prod_name from products order by prod_price desc, prod_name; #先按价格降序排列，再按产品名升序排列 </span><br><span class="line">select prod_id, prod_price,prod_name from products order by prod_price desc, prod_name desc; #先按价格降序排列，再按产品名降序排列</span><br><span class="line"></span><br><span class="line"># 使用order by 和limit组合，找出一列中最高或最低的值</span><br><span class="line"># 顺序：order by子句必须在from子句之后，limit子句必须在order by之后</span><br><span class="line">select prod_price from products order by prod_price desc limit 1; # 最高值 </span><br><span class="line">select prod_price from products order by prod_price limit 1; # 最低值</span><br></pre></td></tr></table></figure>
+
+<h2 id="第6章-过滤数据"><a href="#第6章-过滤数据" class="headerlink" title="第6章 过滤数据"></a>第6章 过滤数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">select prod_name,prod_price from products where prod_price &#x3D; 2.50;   # 价格等于2.50的产品名、产品价格</span><br><span class="line">select prod_name,prod_price from products where prod_name &#x3D; &quot;fuses&quot;;  # 默认不区分大小写</span><br><span class="line">select prod_name,prod_price from products where prod_price &lt; 10; # 价格小于10的产品名、产品价格</span><br><span class="line">select prod_name,prod_price from products where prod_price &lt;&#x3D;10; # 价格小于等于10的产品名、产品价格</span><br><span class="line"></span><br><span class="line"># 不匹配检查</span><br><span class="line">select vend_id,prod_name from products where vend_id &lt;&gt; 1003; # 检索不是由1003供应商制造的所有产品 </span><br><span class="line">select vend_id,prod_name from products where vend_id !&#x3D; 1003; # 同上，检索不是由1003供应商制造的所有产品 </span><br><span class="line"></span><br><span class="line"># 范围值检索，between A and B，包括A和B</span><br><span class="line">select prod_name,prod_price from products where prod_price between 5 and 10; # 价格 大于等于5，小于等于10 的产品名、产品价格</span><br><span class="line"></span><br><span class="line"># 空值检查</span><br><span class="line">select prod_name from products where prod_price is null;  # 返回prod_price为空值null的prod_name,无对应数据 </span><br><span class="line">select cust_id from customers where cust_email is null; # 检索cust_email为空值时的cust_id</span><br><span class="line">&#x2F;* 在通过过滤选择出不具有特定值的行时，你可能希望返回具有NULL值得行。</span><br><span class="line">但是，不行。因为未知具有特殊的含义，数据库不知道他们是否匹配，所以在匹配过滤和不匹配过滤中不返回NULL。</span><br><span class="line">因此，在过滤数据时，一定要验证返回数据中确实给出了被过滤列具有NULL的行。 </span><br><span class="line">*&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第7章-数据过滤"><a href="#第7章-数据过滤" class="headerlink" title="第7章 数据过滤"></a>第7章 数据过滤</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># and 或 or 操作符连接多个where子句 </span><br><span class="line"># AND 用在WHERE子句中的关键字，用来指示检索满足所有给定条件的行</span><br><span class="line">select vend_id,prod_price,prod_name from products</span><br><span class="line">where vend_id &#x3D; 1003 and prod_price &lt;&#x3D; 10; #检索由供应商1003制造且价格小于等于10美元的产品信息</span><br><span class="line"># OR操作符，指示MySQL检索匹配任一条件的行</span><br><span class="line">select prod_name,prod_price from products </span><br><span class="line">where vend_id &#x3D; 1002 or vend_id &#x3D; 1003; # 检索由任一个指定供应商制造的所有产品的产品信息</span><br><span class="line"></span><br><span class="line"># and 和 or结合，and优先计算</span><br><span class="line"># 优先计算and，查找vend_id为1003且价格&gt;&#x3D;10的产品，或者vend_id为1002的产品，不管价格如何  </span><br><span class="line">select prod_name,prod_price from products </span><br><span class="line">where vend_id &#x3D; 1002 or vend_id &#x3D; 1003 and prod_price &gt;&#x3D; 10;</span><br><span class="line"># 使用圆括号明确运算顺序：查找vend_id为1002或1003，且价格&gt;&#x3D;10的产品</span><br><span class="line">select prod_name,prod_price from products </span><br><span class="line">where (vend_id &#x3D; 1002 or vend_id &#x3D; 1003) and prod_price &gt;&#x3D; 10; </span><br><span class="line"></span><br><span class="line"># IN操作符</span><br><span class="line"># IN操作符后跟由逗号分隔的合法值清单，整个清单必须括在圆括号</span><br><span class="line">select prod_name,prod_price from products</span><br><span class="line">where vend_id in (1002,1003) order by prod_name;</span><br><span class="line"># IN操作符完成与OR相同的功能</span><br><span class="line">select prod_name,prod_price from products</span><br><span class="line">where vend_id &#x3D; 1002 or vend_id &#x3D; 1003 order by prod_name; # 同上 </span><br><span class="line"></span><br><span class="line"># NOT操作符</span><br><span class="line"># 列出1002和1003之外的供应商生产的产品</span><br><span class="line">select prod_name,prod_price from products</span><br><span class="line">where vend_id not in (1002,1003) order by prod_name;</span><br><span class="line"># Mysql支持not对in，between，exsits子句取反</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/14/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" class="post-title-link" itemprop="url">操作系统-常见面试题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-13 17:56:31" itemprop="dateCreated datePublished" datetime="2020-08-13T17:56:31+08:00">2020-08-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-22 21:09:39" itemprop="dateModified" datetime="2020-08-22T21:09:39+08:00">2020-08-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h1><h2 id="1-什么是操作系统"><a href="#1-什么是操作系统" class="headerlink" title="1. 什么是操作系统"></a>1. 什么是操作系统</h2><p>操作系统是运行在计算机.上最重要的一种软件，它管理计算机的资源和进程以及所有的硬件和软件。它为计算机硬件和软件提供了一种中间层。</p>
+<p>通常情况下，计算机上会运行着许多应用程序，他们都需要对内存和CPU进行交互，操作系统就是为了保证这些访问和交互能够准确无误的进行。</p>
+<h2 id="2-操作系统的主要目的是什么"><a href="#2-操作系统的主要目的是什么" class="headerlink" title="2. 操作系统的主要目的是什么"></a>2. 操作系统的主要目的是什么</h2><p>操作系统是-种软件，它的主要目的有三种</p>
+<ul>
+<li>管理计算机资源，这些资源包括CPU、内存、磁盘驱动器、打印机等。</li>
+<li>提供一种图形界面，就像我们前面描述的那样，它提供了用户和计算机之间的桥梁。</li>
+<li>为其他软件提供服务，操作系统与软件进行交互，以便为其分配运行所需的任何必要资源。</li>
+</ul>
+<h2 id="3-什么是按需分页"><a href="#3-什么是按需分页" class="headerlink" title="3. 什么是按需分页"></a>3. 什么是按需分页</h2><p>在操作系统中，进程是以页为单位加载到内存中的，按需分页是一种虛拟内存的管理方式。在使用请求分页的系统中，只有在尝试访问页面所在的磁盘并且该须面尚未在内存中时，也就发生了缺页异常，操作系统才会将磁盘页面复制到内存中。</p>
+<h2 id="4-多处理系统的优势"><a href="#4-多处理系统的优势" class="headerlink" title="4. 多处理系统的优势"></a>4. 多处理系统的优势</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%AE%BE%E5%A4%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%AE%BE%E5%A4%87/" class="post-title-link" itemprop="url">操作系统-设备管理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-13 11:41:28 / 修改时间：17:55:49" itemprop="dateCreated datePublished" datetime="2020-08-13T11:41:28+08:00">2020-08-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h1><h2 id="一、I-O系统"><a href="#一、I-O系统" class="headerlink" title="一、I/O系统"></a>一、I/O系统</h2><h3 id="1-1设备分类"><a href="#1-1设备分类" class="headerlink" title="1.1设备分类"></a>1.1设备分类</h3><p>按设备的共享属性分类：</p>
+<ul>
+<li>独占设备：在<strong>一段时间</strong>内<strong>只允许一个用户进程使用</strong>的设备。</li>
+<li>共享设备：在<strong>一段时间</strong>内<strong>允许多个进程使用</strong>的设备。</li>
+<li>虚拟设备：指通过虚拟技术将<strong>一台独占设备</strong>改造成<strong>若干台逻辑设备</strong>，<strong>供若干个用户进程同时使用</strong>。通常把这种经过虚拟技术处理后的设备称为虚拟设备。</li>
+</ul>
+<p>按信息交换单位分类：</p>
+<ul>
+<li>块设备：处理信息的<strong>基本单位是字符块</strong>。一般块的大小为512B～4KB，如磁盘、磁带等是块设备。</li>
+<li>字符设备：处理信息的<strong>基本单位是字符</strong>。如键盘、打印机和显示器是字符设备。</li>
+</ul>
+<h3 id="1-2-I-O控制方式"><a href="#1-2-I-O控制方式" class="headerlink" title="1.2 I/O控制方式"></a>1.2 I/O控制方式</h3><p>I/O控制方式发展过程中始终贯穿的宗旨是<strong>尽量减少主机对I/O控制的干预</strong>。常用的输入/输出控制方式有下述几种：</p>
+<ul>
+<li>程序直接控制方式</li>
+<li>中断控制方式</li>
+<li>直接存储器访问控制方式</li>
+<li>通道控制方式</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%AE%BE%E5%A4%87/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/12/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%86%85%E5%AD%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -637,457 +1070,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E6%8F%92%E4%BB%B6/typora%E7%BE%8E%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/08/%E6%8F%92%E4%BB%B6/typora%E7%BE%8E%E5%8C%96/" class="post-title-link" itemprop="url">typora美化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-08-08 10:59:45 / 修改时间：11:05:27" itemprop="dateCreated datePublished" datetime="2020-08-08T10:59:45+08:00">2020-08-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8F%92%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">插件</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="幕布-typora自动生成思维导图"><a href="#幕布-typora自动生成思维导图" class="headerlink" title="幕布+typora自动生成思维导图"></a>幕布+typora自动生成思维导图</h2><p>哔哩哔哩的指导视频</p>
-<p><a href="https://www.bilibili.com/video/av969076674" target="_blank" rel="noopener">https://www.bilibili.com/video/av969076674</a></p>
-<p>pandoc下载</p>
-<p><a href="https://pandoc.org/installing.html" target="_blank" rel="noopener">https://pandoc.org/installing.html</a></p>
-<p><a href="https://blog.csdn.net/qq_43741748/article/details/105454719" target="_blank" rel="noopener">https://blog.csdn.net/qq_43741748/article/details/105454719</a></p>
-<p>幕布</p>
-<p><a href="https://mubu.com/apps" target="_blank" rel="noopener">https://mubu.com/apps</a></p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/08/%E6%8F%92%E4%BB%B6/typora%E7%BE%8E%E5%8C%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/05/java%E5%9F%BA%E7%A1%80/Collection%E5%92%8CMap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/05/java%E5%9F%BA%E7%A1%80/Collection%E5%92%8CMap/" class="post-title-link" itemprop="url">java集合-Collection和Map</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-05 21:01:05" itemprop="dateCreated datePublished" datetime="2020-08-05T21:01:05+08:00">2020-08-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-10 11:01:45" itemprop="dateModified" datetime="2020-08-10T11:01:45+08:00">2020-08-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h1><h2 id="数组的弊端"><a href="#数组的弊端" class="headerlink" title="数组的弊端"></a>数组的弊端</h2><ul>
-<li><blockquote>
-<p>一旦初始化以后，其长度就不可修改。</p>
-</blockquote>
-</li>
-<li><blockquote>
-<p>数组中提供的方法非常限，对于添加、删除、插入数据等操作，非常不便，同时效率不高。</p>
-</blockquote>
-</li>
-<li><blockquote>
-<p>获取数组中实际元素的个数的需求，数组没有现成的属性或方法可用</p>
-</blockquote>
-</li>
-<li><blockquote>
-<p>数组存储数据的特点：有序、可重复。对于无序、不可重复的需求，不能满足。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="集合概述"><a href="#集合概述" class="headerlink" title="集合概述"></a>集合概述</h2><p>容器主要包括 Collection 和 Map 两种，Collection 存储着对象的集合，而 Map 存储着键值对（两个对象）的映射表</p>
-<p>Collection接口：单列数据，定义了存取一组对象的方法的集合</p>
-<ul>
-<li><p>List：元素有序、可重复的集合 </p>
-</li>
-<li><p>Set：元素无序、不可重复的集合</p>
-</li>
-</ul>
-<p>Map接口：双列数据，保存具有映射关系“key-value对”的集合</p>
-<h2 id="Collection"><a href="#Collection" class="headerlink" title="Collection"></a>Collection</h2><img src="/2020/08/05/java%E5%9F%BA%E7%A1%80/Collection%E5%92%8CMap/Collection.png" alt="image-20200805211029113" style="zoom:67%;">
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/05/java%E5%9F%BA%E7%A1%80/Collection%E5%92%8CMap/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/05/Netty/Netty4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/05/Netty/Netty4/" class="post-title-link" itemprop="url">Netty-Netty源码</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-08-05 16:45:27 / 修改时间：16:48:39" itemprop="dateCreated datePublished" datetime="2020-08-05T16:45:27+08:00">2020-08-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在 io.netty.example 包下，有很多Netty源码案例，可以用来分析</p>
-<h2 id="Netty-启动过程源码剖析"><a href="#Netty-启动过程源码剖析" class="headerlink" title="Netty 启动过程源码剖析"></a>Netty 启动过程源码剖析</h2><p>Netty 调用doBind方法， 追踪到 NioServerSocketChannel的doBind<br>并且要Debug 程序到 NioEventLoop类 的run代码 ，无限循环，在服务器端运行。</p>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/05/Netty/Netty4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/05/leetcode/%E5%89%91%E6%8C%87offer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/05/leetcode/%E5%89%91%E6%8C%87offer/" class="post-title-link" itemprop="url">剑指offer</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-05 16:45:27" itemprop="dateCreated datePublished" datetime="2020-08-05T16:45:27+08:00">2020-08-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-28 18:10:25" itemprop="dateModified" datetime="2020-08-28T18:10:25+08:00">2020-08-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>所有题按照leetcode</p>
-<h2 id="JZ3-数组中重复数字"><a href="#JZ3-数组中重复数字" class="headerlink" title="JZ3 数组中重复数字"></a>JZ3 数组中重复数字</h2><p>数组中重复的数字</p>
-<p>在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。请找出数组中任意一个重复的数字。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[2, 3, 1, 0, 2, 5, 3]</span><br><span class="line">输出：2 或 3</span><br></pre></td></tr></table></figure>
-
-<p>1.<strong>遍历数组</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Integer&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"><span class="keyword">int</span> repeat = -<span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!set.add(num))&#123;</span><br><span class="line">        repeat = num;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> repeat;</span><br></pre></td></tr></table></figure>
-
-<p>2.先排序在查找</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findRepeatNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    Arrays.sort(nums);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] == nums[i - <span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3.空间换时间</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/05/leetcode/%E5%89%91%E6%8C%87offer/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/Netty/Netty3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/03/Netty/Netty3/" class="post-title-link" itemprop="url">Netty-Netty进阶</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-03 22:28:17" itemprop="dateCreated datePublished" datetime="2020-08-03T22:28:17+08:00">2020-08-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-05 16:44:56" itemprop="dateModified" datetime="2020-08-05T16:44:56+08:00">2020-08-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Netty-核心模块组件"><a href="#Netty-核心模块组件" class="headerlink" title="Netty 核心模块组件"></a>Netty 核心模块组件</h2><h3 id="Bootstrap、ServerBootstrap"><a href="#Bootstrap、ServerBootstrap" class="headerlink" title="Bootstrap、ServerBootstrap"></a>Bootstrap、ServerBootstrap</h3><p>Bootstrap 意思是引导，<strong>一个 Netty 应用通常由一个 Bootstrap 开始</strong>，主要作用是配置整个 Netty 程序，串联各个组件，Netty 中 Bootstrap 类是客户端程序的启动引导类，ServerBootstrap 是服务端启动引导类</p>
-<p>常见的方法有</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ServerBootstrap <span class="title">group</span><span class="params">(EventLoopGroup parentGroup, EventLoopGroup childGroup)</span>，该方法用于服务器端，用来设置两个 EventLoop</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> B <span class="title">group</span><span class="params">(EventLoopGroup group)</span> ，该方法用于客户端，用来设置一个 EventLoop</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> B <span class="title">channel</span><span class="params">(Class&lt;? extends C&gt; channelClass)</span>，该方法用来设置一个服务器端的通道实现</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> &lt;T&gt; B <span class="title">option</span><span class="params">(ChannelOption&lt;T&gt; option, T value)</span>，用来给 ServerChannel 添加配置 y</span></span><br><span class="line"><span class="function">    													用来设置bossGroup的通道</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> &lt;T&gt; ServerBootstrap <span class="title">childOption</span><span class="params">(ChannelOption&lt;T&gt; childOption, T value)</span>，用来给接收到的通道添加配置 设置workGroup的通道</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ServerBootstrap <span class="title">childHandler</span><span class="params">(ChannelHandler childHandler)</span>，该方法用来设置业务处理类（自定义的 handler）</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ChannelFuture <span class="title">bind</span><span class="params">(<span class="keyword">int</span> inetPort)</span> ，该方法用于服务器端，用来设置占用的端口号</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ChannelFuture <span class="title">connect</span><span class="params">(String inetHost, <span class="keyword">int</span> inetPort)</span> ，该方法用于客户端，用来连接服务器端</span></span><br></pre></td></tr></table></figure>
-
-<p>.handler 对应bossGroup </p>
-<p>.childHandler对应workGroup</p>
-<h3 id="Future、ChannelFuture"><a href="#Future、ChannelFuture" class="headerlink" title="Future、ChannelFuture"></a>Future、ChannelFuture</h3><p> Netty 中所有的 IO 操作都是异步的，不能立刻得知消息是否被正确处理。但是可以过一会等它执行完成或者直接注册一个监听，具体的实现就是通过 Future 和 ChannelFutures，他们可以注册一个监听，当操作执行成功或失败时监听会自动触发注册的监听事件</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Channel <span class="title">channel</span><span class="params">()</span>，返回当前正在进行 IO 操作的通道</span></span><br><span class="line"><span class="function">ChannelFuture <span class="title">sync</span><span class="params">()</span>，等待异步操作执行完毕，把异步变成同步</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/03/Netty/Netty3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1155,7 +1141,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1168,7 +1154,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

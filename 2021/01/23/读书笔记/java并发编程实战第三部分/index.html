@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="十、避免活跃性危险10.1 死锁 锁顺序死锁：一个锁先锁left 在锁right,另一个锁先锁right再锁left,会发生死锁。  动态的锁顺序死锁 有时候，并不能清楚地知道是否在锁顺序上有足够的控制权来避免死锁的发生。 123456789101112131415&#x2F;&#x2F;注意:容易发生死锁!&#x2F;&#x2F;看似无害的代码，它将资金从一个账户转入另一个账户。在开始转账之前，首先要获得这两个Account对象的锁，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程实战--第三部分 活跃性、性能与测测">
+<meta property="og:url" content="http://yoursite.com/2021/01/23/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86/index.html">
+<meta property="og:site_name" content="焱燚">
+<meta property="og:description" content="十、避免活跃性危险10.1 死锁 锁顺序死锁：一个锁先锁left 在锁right,另一个锁先锁right再锁left,会发生死锁。  动态的锁顺序死锁 有时候，并不能清楚地知道是否在锁顺序上有足够的控制权来避免死锁的发生。 123456789101112131415&#x2F;&#x2F;注意:容易发生死锁!&#x2F;&#x2F;看似无害的代码，它将资金从一个账户转入另一个账户。在开始转账之前，首先要获得这两个Account对象的锁，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-23T11:47:32.000Z">
+<meta property="article:modified_time" content="2021-01-24T09:29:22.724Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="多线程">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/01/23/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java并发编程实战--第三部分 活跃性、性能与测测 | 焱燚</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">焱燚</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/23/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java并发编程实战--第三部分 活跃性、性能与测测
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-23 19:47:32" itemprop="dateCreated datePublished" datetime="2021-01-23T19:47:32+08:00">2021-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-24 17:29:22" itemprop="dateModified" datetime="2021-01-24T17:29:22+08:00">2021-01-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="十、避免活跃性危险"><a href="#十、避免活跃性危险" class="headerlink" title="十、避免活跃性危险"></a>十、避免活跃性危险</h2><h3 id="10-1-死锁"><a href="#10-1-死锁" class="headerlink" title="10.1 死锁"></a>10.1 死锁</h3><ul>
+<li><p>锁顺序死锁：一个锁先锁left 在锁right,另一个锁先锁right再锁left,会发生死锁。</p>
+</li>
+<li><p><strong>动态的锁顺序死锁</strong></p>
+<p>有时候，并不能清楚地知道是否在锁顺序上有足够的控制权来避免死锁的发生。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意:容易发生死锁!</span></span><br><span class="line"><span class="comment">//看似无害的代码，它将资金从一个账户转入另一个账户。在开始转账之前，首先要获得这两个Account对象的锁，以确保通过原子方式来更新两个账户中的余额，同时又不破坏一些不变性条件，例如“账户的余额不能为负数”。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transferMoney</span> <span class="params">(Account fromAccount,</span></span></span><br><span class="line"><span class="function"><span class="params">					Account toAccount ,Dol1arAmount amount)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> InsufficientFundsException </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span> (fromAccount) &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (toAccount) &#123;</span><br><span class="line">        	<span class="keyword">if</span> (fromAccount.getBalance( ).compareTo (amount) &lt; <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InsufficientFundsException ( ) ;</span><br><span class="line">        	<span class="keyword">else</span> &#123;</span><br><span class="line">        		fromAccount.debit (amount) ;</span><br><span class="line">                toAccount .credit (amount) ;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果两个线程同时转账，一个从X向Y转账，另一个从Y向X转账，就会发生死锁。</p>
+<p>可以使用System.identityHashCode方法，返回hash值，必须通过任意的方法来决定锁定顺序，但仍然有很小道可能发生死锁。</p>
+</li>
+<li><p><strong>在协作对象之间发送死锁。</strong>：这两个锁不一定在同一个方法中被获取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意:容易发生死锁!</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Taxi</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GuardedBy</span> (<span class="string">"this"</span>) <span class="keyword">private</span> Point location,destination;<span class="comment">//位置和谜底</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Dispatcher dispatcher ; <span class="comment">//出租车车队</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Taxi</span> <span class="params">(Dispatcher dispatcher)</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">this</span>.dispatcher = dispatcher;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Point <span class="title">getLocation</span> <span class="params">( )</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> location ;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setLocation</span> <span class="params">(Point location)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.location = location;</span><br><span class="line">		<span class="keyword">if</span> ( location. equals(destination))</span><br><span class="line">			dispatcher.notifyAvailable (<span class="keyword">this</span>) ;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dispatcher</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GuardedBy</span> ( <span class="string">"this"</span> ) <span class="keyword">private</span> <span class="keyword">final</span> set&lt;Taxi&gt; taxis;</span><br><span class="line">	<span class="meta">@GuardedBy</span>( <span class="string">"this"</span> ) <span class="keyword">private</span> <span class="keyword">final</span> set&lt;Taxi&gt; availableTaxis;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dispatcher</span> <span class="params">( )</span> </span>&#123;</span><br><span class="line">        taxis = <span class="keyword">new</span> HashSet&lt;Taxi&gt; ();</span><br><span class="line">        avai lableTaxis = <span class="keyword">new</span> Hashset&lt;Taxi&gt; ( ) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">notifyAvailable</span> <span class="params">(Taxi taxi)</span></span>&#123;</span><br><span class="line">    	availableTaxis.add (taxi) ;</span><br><span class="line">    &#125;	</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Image <span class="title">getImage</span> <span class="params">( )</span> </span>&#123;</span><br><span class="line">        Image image = <span class="keyword">new</span> Image () ;</span><br><span class="line">        <span class="keyword">for</span> (Taxi t : taxis)</span><br><span class="line">        	image.drawMarker(t.getLocation ());</span><br><span class="line">        <span class="keyword">return</span> image ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果一个线程在收到GPS接收器的更新事件时调用setLocation，那么它将首先更新出租车的位置，然后判断它是否到达了目的地。如果已经到达，它会通知Dispatcher : 它需要一个新的目的地。因为<strong>setLocation和notifyAvailable都是同步方法，因此调用setLocatior的线程将首先获取Taxi的锁，然后获取 Dispatcher的锁。同样，调用getImage的线程将首先获取 Dispatcher锁，然后再获取每一个Taxi的锁（每次获取一个)。</strong><br>如果在持有锁时调用某个外部方法那么将出现活跃性问题。在这个外部方法中可能会荻取其他锁:（这可能会产生死锁）,或者阻塞时间过长，导致其他线程无法及时获得;当前被持有的锁。</p>
+</li>
+<li><p>开放调用</p>
+<p><strong>如果在调用某个方法时不需要持有锁，那么这种调用被称为开放调用</strong>(Open Call)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可以很容易地将Taxi和 Dispatcher修改为使用开放调用，从而消除发生死锁的风险。这需要使同步代码块仅被用于保护那些涉及共享状态的操作，。通常，如果只是为了语法紧凑或简单性（而不是因为整个方法必须通过--个锁来保护）而使用同步方法（而不是同步代码块)，那么就会导致问题。(此外，收缩同步代码块的保护范围还可以提高可伸缩性)</span></span><br><span class="line"><span class="meta">@Threadsafe</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Taxi</span> </span>&#123;</span><br><span class="line"> 	<span class="meta">@GuardedBy</span> ( <span class="string">"this"</span> ) <span class="keyword">private</span> Point location，destination;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Dispatcher dispatcher ;</span><br><span class="line">	...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Point <span class="title">getLocation</span> <span class="params">( )</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">return</span> location;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLocation</span> <span class="params">( Point location)</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">boolean</span> reachedDestination ;</span><br><span class="line">    	<span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">    		<span class="keyword">this</span>.location = location ;</span><br><span class="line">    		reachedDestination = location.equals(destination) ;</span><br><span class="line">        &#125;</span><br><span class="line">    	<span class="keyword">if</span>(reachedDestination)</span><br><span class="line">    		dispatcher.notifyAvailable(<span class="keyword">this</span>) ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Threadsafe</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dispatcher</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GuardedBy</span> ( <span class="string">"this"</span> ) <span class="keyword">private</span> <span class="keyword">final</span> set&lt;Taxi&gt; taxis;</span><br><span class="line">	GuardedBy ( <span class="string">"this"</span>) <span class="keyword">private</span> <span class="keyword">final</span> set&lt;Taxi&gt; availableTaxis ;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">notifyAvailable</span> <span class="params">(Taxi taxi)</span> </span>&#123;</span><br><span class="line">    	availableTaxis.add (taxi) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Image <span class="title">getImage</span> <span class="params">()</span></span>&#123;</span><br><span class="line">        Set&lt;Taxi&gt;copy ;</span><br><span class="line">        <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">        	copy = <span class="keyword">new</span> Hashset&lt;Taxi&gt; (taxis) ;</span><br><span class="line">        &#125;</span><br><span class="line">        Image image = <span class="keyword">new</span> Image () ;</span><br><span class="line">        <span class="keyword">for</span> ( Taxi t : copy)</span><br><span class="line">        	image.drawMarker (t.getLocation ( ) ) ;</span><br><span class="line">        <span class="keyword">return</span> image;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>资源死锁</p>
+</li>
+</ul>
+<h3 id="10-2-死锁的避免和诊断"><a href="#10-2-死锁的避免和诊断" class="headerlink" title="10.2 死锁的避免和诊断"></a>10.2 死锁的避免和诊断</h3><p>在使用细粒度锁的程序中，可以通过使用一种<strong>两阶段策略（Two-Part Strategy）来检查代码中的死锁:首先，找出在什么地方将获取多个锁（使这个集合尽量小)，然后对所有这些实例进行全局分析，从而确保它们在整个程序中获取锁的顺序都保持一致。</strong></p>
+<ul>
+<li>支持定时的锁</li>
+<li>通过现场转储信息来分析死锁</li>
+</ul>
+<h3 id="10-3-其他活跃性问题"><a href="#10-3-其他活跃性问题" class="headerlink" title="10.3 其他活跃性问题"></a>10.3 其他活跃性问题</h3><ul>
+<li><p>饥饿：</p>
+<p>线程由于无法访问它所需的资源而不能继续执行，就发生了饥饿。（CPU时钟周期）</p>
+</li>
+<li><p>糟糕的响应性</p>
+</li>
+<li><p>活锁</p>
+<p>活锁(Livelock)是另一种形式的活跃性问题，该<strong>问题尽管不会阻塞线程，但也不能继续执行，因为线程将不断重复执行相同的操作，而且总会失败。</strong>活锁通常发生在处理事务消息的应用程序中﹔如果不能成功地处理某个消息，那么消息处理机制将回滚整个事务，并将它重新放到队列的开头。如果消息处理器在处理某种特定类型的消息时存在错误并导致它失败，那么每当这个消息从队列中取出并传递到存在错误的处理器时，都会发生事务回滚。由于这条消息又被放回到队列开头，因此处理器将被反复调用，并返回相同的结果。</p>
+<p><strong>要解决这个问题需要在重试机制上加入随机性。在并发程序中，通过等待随机长度的时间和回退可以有效的避免活锁</strong></p>
+</li>
+</ul>
+<h2 id="十一、性能与可伸缩性"><a href="#十一、性能与可伸缩性" class="headerlink" title="十一、性能与可伸缩性"></a>十一、性能与可伸缩性</h2><h3 id="11-1-对性能的思考"><a href="#11-1-对性能的思考" class="headerlink" title="11.1 对性能的思考"></a>11.1 对性能的思考</h3><p>要想通过并发来获得更好的性能，需要努力做好两件事情:<strong>更有效地利用现有处理资源，以及在出现新的处理资源时使程序尽可能地利用这些新资源。</strong></p>
+<h4 id="性能与可伸缩性"><a href="#性能与可伸缩性" class="headerlink" title="性能与可伸缩性"></a>性能与可伸缩性</h4><p>应用程序的性能可以采用多个指标来衡量，例如服务时间、延迟时间、吞吐率、效率、可伸缩性以及容量等。其中一-些指标（服务时间、等待时间〉用于衡量程序的“运行速度”，即某个指定的任务单元需要“多快”才能处理完成。另一些指标（生产量、吞吐量〉用于程序的“处理能力”，即在计算资源一定的情况下，能完成“多少”工作。<br>可伸缩性指的是，当增加计算资源时程序的吞吐量或者处理能力能理应地增加。</p>
+<h3 id="11-2-Amdahl定律"><a href="#11-2-Amdahl定律" class="headerlink" title="11.2 Amdahl定律"></a>11.2 Amdahl定律</h3><p>Amdahl定律描述的是﹔在增加计算资源的情况下，程序在理论上能够实现最高加速比，这个值取决于程序中可并行组件与串行组件所占的比重。</p>
+<p>假设应用程序中N个线程正在执行，这些线程从一个共享的工作队列中取出任务进行处理，而且这里的任务都不依赖于其他任务的执行结果或影响。暂时先不考虑任务是如何进入这个队列的，如果增加处理器，那么应用程序的性能是否会相应地发生变化?初看上去，这个程序似乎能完全并行化:各个任务之间不会相互等待，因此处理器越多,能够并发处理的任务也就越多。<strong>然而，在这个过程中包含了一个串行部分—从队列中获取任务。所有工作者线程都共享同一个工作队列，因此在对该队列进行并发访问时需要采用某种同步机制来维持队列的完整性。如果通过加锁来保护队列的状态，那么当一个线程从队列中取出任务时，其他需要获取下一个任务的线程就必须等待，这就是任务处理过程中的串行部分。</strong></p>
+<p>单个任务的处理时间不仅包括执行任务Runnable的时间，也包括从共享队列中取出任务的时间。<strong>如果使用LinkedBlockingQueue作为工作队列，那么出列操作被阻塞的可能性将小于使用同步LinkedList时发生阻塞的可能性，因为LinkedBlockingQueue使用了一种可伸缩性更高的算法。</strong>然而，无论访问何种共享数据结构，基本上都会在程序中引入一个串行部分。<br>这个示例还忽略了另一种常见的串行操作:对结果进行处理。所有有用的计算都会生成某种结果或者产生某种效应——如果不会，那么可以将它们作为“死亡代码”删除掉。由于Runnable没有提供明确的结果处理过程，因此这些任务一定会产生某种效果，例如将它们的结果写入到日志或者保存到某个数据结构。通常，日志文件和结果容器都会由多个工作者线程共享，并且这也是一个串行部分。如果所有线程都将各自的计算结果保存到自行维护数据结构中，并且在所有任务都执行完成后再合并所有的结果，那么这种合并操作也是一个串行部分。</p>
+<h3 id="11-3-线程引入的开销"><a href="#11-3-线程引入的开销" class="headerlink" title="11.3 线程引入的开销"></a>11.3 线程引入的开销</h3><ul>
+<li><p>上下文切换</p>
+<p>如果主线程是唯一的线程，那么它基本上不会被调度出去。另一方面，如果可运行的线程数大于CPU的数量，那么操作系统最终会将某个正在运行的线程调度出来，从而使其他线程能够使用CPU。这将导致一次上下文切换，在这个过程中将保存当前运行线程的执行上下文，并将新调度进来的线程的执行上下文设置为当前上下文。</p>
+</li>
+<li><p>内存同步</p>
+<p>在synchronized和volatile提供的可见性保证中可能会使用一些特殊指令，即内存栅栏(Memory Barrier)。内存栅栏可以刷新缓存，使缓存无效，剧新硬件的写缓冲，以及停止执行管道。<strong>内存栅栏可能同样会对性能带来间接的影响，因为它们将抑制-些编译器优化操作。</strong>在内存栅栏中，大多数操作都是不能被重排序的。<br>现代的JVM能通过优化来去掉一些不会发生竞争的锁，从而减少不必要的同步开销。如果一个锁对象只能由当前线程访问，那么JVM就可以通过优化来去掉这个锁获取操作</p>
+</li>
+<li><p>阻塞</p>
+</li>
+</ul>
+<h3 id="11-4-减少锁的竞争"><a href="#11-4-减少锁的竞争" class="headerlink" title="11.4 减少锁的竞争"></a>11.4 减少锁的竞争</h3><p>有两个因素将影响在锁上发生竞争的可能性:<strong>锁的请求频率，以及每次持有该锁的时间</strong>。如果二者的乘积很小，那么大多数获取锁的操作都不会发生竞争，因此在该锁上的竞争不会对可伸缩性造成严重影响。然而，如果在锁上的请求量很高，那么需要获取该锁的线程将被阻塞并等待。在极端情况下，即使仍有大量工作等待完成，处理器也会被闲置。</p>
+<ul>
+<li><p>缩小锁的范围</p>
+</li>
+<li><p>减小锁的粒度</p>
+<p>降低线程请求锁的频率，锁分解和锁分段。</p>
+</li>
+<li><p>锁分段</p>
+</li>
+<li><p>避免热点域</p>
+<p>将一些反复计算的结果缓存起来</p>
+</li>
+<li><p>一些代替独占锁的方法</p>
+<ul>
+<li>ReadWriteLock 读取不加锁，写加锁</li>
+<li>原子变量 </li>
+</ul>
+</li>
+</ul>
+<h3 id="11-5-比较Map的性能"><a href="#11-5-比较Map的性能" class="headerlink" title="11.5 比较Map的性能"></a>11.5 比较Map的性能</h3><p>在单线程环境下，ConcurrentHashMap 的性能比同步的HashMap 的性能略好一些，但在并发环境中则要好得多。<br>在同步Map的实现中，可伸缩性的最主要阻碍在于整个 Map中只有一个锁，因此每次只有一个线程能够访问这个 Map。不同的是，ConcurrentHashMap对于大多数读操作并不会加锁,并且在写人操作以及其他一些需要锁的读操作中使用了锁分段技术。因此，多个线程能并发地访问这个Map而不会发生阻塞。<br>ConcurrentHashMap,ConcurrentSkipListMap,以及通过synchronizedMap来包装的HashMap 和TreeMap。前两种Map是线程安全的，而后两种通过同步容器确保线程安全性。</p>
+<h3 id="11-6-减少上下文切换的开销"><a href="#11-6-减少上下文切换的开销" class="headerlink" title="11.6 减少上下文切换的开销"></a>11.6 减少上下文切换的开销</h3><p>在许多任务中都包含一些可能被阻塞的操作。<strong>当任务在运行和阻塞这两个状态之间转换时，就相当于一次上下文切换。在服务器应用程序中，发生阻塞的原因之一就是在处理请求时产生各种日志消息。</strong></p>
+<p>在大多数日志框架中都是简单地对println进行包装，当需要记录某个消息时，只需将其写人日志文件中。在第7章的LogWriter中给出了另一种方法:<strong>记录日志的工作由一个专门的后台线程完成，而不是由发出请求的线程完成。</strong>从开发人员的角度来看，这两种方法基本上是相同的。但二者在性能上可能存在一些差异，这取决于日志操作的工作量，即有多少线程正在记录日志，以及其他一些因素，例如上下文切换的开销等。<br><strong>日志操作的服务时间包括与I/О流类相关的计算时间，如果IО操作被阻塞，那么还会包括线程被阻塞的时间。</strong><br>请<strong>求服务的时间不应该过长，主要有以下原因。首先，服务时间将影响服务质量:服务时间越长，就意味着有程序在获得结果时需要等待更长的时间。但更重要的是，服务时间越长，也就意味着存在越多的锁竞争。</strong></p>
+<h2 id="十二、并发程序的测试"><a href="#十二、并发程序的测试" class="headerlink" title="十二、并发程序的测试"></a>十二、并发程序的测试</h2><p>有两类测试：安全性测试和活跃性测试。</p>
+<p><strong>在进行安全性测试时，通常会采用测试不变性条件的形式，即判断某个类的行为是否与其规范保持一致。</strong>例如，<br>测试活跃性本身也存在问题。活跃性测试包括<strong>进展测试和无进展测试</strong>两方面，这些都是很难量化的——如何验证某个方法是被阻塞了，而不只是运行缓慢﹖同样，如何测试某个算法不会发生死锁﹖要等待多久才能宣告它发生了故障?<br>与活跃性测试相关的是性能测试。性能可以通过多个方面来衡量，包括:</p>
+<ul>
+<li>吞吐量:指一组并发任务中已完成任务所占的比例。</li>
+<li>响应性．指请求从发出到完成之间的实际</li>
+<li>可伸缩性：在增加更多的资源情况下，吞吐量的提示情况。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"># 多线程</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/22/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86(2)/" rel="prev" title="java并发编程实战--第二部分 结构化并发应用程序(2)">
+      <i class="fa fa-chevron-left"></i> java并发编程实战--第二部分 结构化并发应用程序(2)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/24/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86(1)/" rel="next" title="java并发编程实战--第四部分 高级主题">
+      java并发编程实战--第四部分 高级主题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#十、避免活跃性危险"><span class="nav-number">1.</span> <span class="nav-text">十、避免活跃性危险</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-死锁"><span class="nav-number">1.1.</span> <span class="nav-text">10.1 死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-死锁的避免和诊断"><span class="nav-number">1.2.</span> <span class="nav-text">10.2 死锁的避免和诊断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-其他活跃性问题"><span class="nav-number">1.3.</span> <span class="nav-text">10.3 其他活跃性问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十一、性能与可伸缩性"><span class="nav-number">2.</span> <span class="nav-text">十一、性能与可伸缩性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1-对性能的思考"><span class="nav-number">2.1.</span> <span class="nav-text">11.1 对性能的思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#性能与可伸缩性"><span class="nav-number">2.1.1.</span> <span class="nav-text">性能与可伸缩性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-Amdahl定律"><span class="nav-number">2.2.</span> <span class="nav-text">11.2 Amdahl定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3-线程引入的开销"><span class="nav-number">2.3.</span> <span class="nav-text">11.3 线程引入的开销</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-4-减少锁的竞争"><span class="nav-number">2.4.</span> <span class="nav-text">11.4 减少锁的竞争</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-5-比较Map的性能"><span class="nav-number">2.5.</span> <span class="nav-text">11.5 比较Map的性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-6-减少上下文切换的开销"><span class="nav-number">2.6.</span> <span class="nav-text">11.6 减少上下文切换的开销</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十二、并发程序的测试"><span class="nav-number">3.</span> <span class="nav-text">十二、并发程序的测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="naive"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">naive</p>
+  <div class="site-description" itemprop="description">选择有时候比努力更重要</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-07 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">naive</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!--崩溃欺骗-->
+<script type="text/javascript" src="\js\FunnyTitle.js"></script>

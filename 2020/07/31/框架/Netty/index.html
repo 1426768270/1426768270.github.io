@@ -25,26 +25,26 @@
   <meta name="description" content="Netty简介Netty是一个异步、基于事件驱动的网络应用框架。主要针对在TCP协议下面向Client端的高并发应用。是一个NIO框架，适用于服务器。   应用场景 分布式系统中各节点远程过程调用（RPC：Dubbo） 游戏服务器 Hadoop通信  I&#x2F;O模型用什么样的通道进行数据的发送和接收  BIO：同步并阻塞(传统阻塞型)，服务器实现模式为一个连接一个线程，即客户端有连接请求时服务器端就需">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Netty-NIO">
-<meta property="og:url" content="http://yoursite.com/2020/07/31/Netty/Netty/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/index.html">
 <meta property="og:site_name" content="焱燚">
 <meta property="og:description" content="Netty简介Netty是一个异步、基于事件驱动的网络应用框架。主要针对在TCP协议下面向Client端的高并发应用。是一个NIO框架，适用于服务器。   应用场景 分布式系统中各节点远程过程调用（RPC：Dubbo） 游戏服务器 Hadoop通信  I&#x2F;O模型用什么样的通道进行数据的发送和接收  BIO：同步并阻塞(传统阻塞型)，服务器实现模式为一个连接一个线程，即客户端有连接请求时服务器端就需">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/netty%E5%85%B3%E7%B3%BB.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/BIO%E8%BF%90%E8%A1%8C.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/NIO.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/%E4%BC%A0%E7%BB%9FIO.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/mmap%E4%BC%98%E5%8C%96.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/sendFile.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/31/Netty/Netty/sendFile%E4%BC%98%E5%8C%96.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/netty%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/BIO%E8%BF%90%E8%A1%8C.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/NIO.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/%E4%BC%A0%E7%BB%9FIO.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/mmap%E4%BC%98%E5%8C%96.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/sendFile.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/sendFile%E4%BC%98%E5%8C%96.png">
 <meta property="article:published_time" content="2020-07-31T15:16:20.000Z">
 <meta property="article:modified_time" content="2020-08-03T00:24:10.817Z">
 <meta property="article:author" content="naive">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/31/Netty/Netty/netty%E5%85%B3%E7%B3%BB.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/netty%E5%85%B3%E7%B3%BB.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/07/31/Netty/Netty/">
+<link rel="canonical" href="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/">
 
 
 <script id="page-configurations">
@@ -210,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/31/Netty/Netty/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -271,7 +271,7 @@
 
       
         <h2 id="Netty简介"><a href="#Netty简介" class="headerlink" title="Netty简介"></a>Netty简介</h2><p>Netty是一个<strong>异步</strong>、基于<strong>事件驱动</strong>的网络应用框架。<br>主要针对在TCP协议下面向Client端的高并发应用。<br>是一个NIO框架，适用于服务器。</p>
-<img src="/2020/07/31/Netty/Netty/netty关系.png" alt="image-20200801221405273" style="zoom:67%;">
+<img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/netty关系.png" alt="image-20200801221405273" style="zoom:67%;">
 
 <h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
 <li>分布式系统中各节点远程过程调用（RPC：Dubbo）</li>
@@ -304,7 +304,7 @@
 <li><p>使用windos的telnet进行调试</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">telnet 127.0.0.1 6666</span><br><span class="line"></span><br><span class="line">ctrl+]</span><br><span class="line"></span><br><span class="line">seng msg</span><br></pre></td></tr></table></figure>
 
-<img src="/2020/07/31/Netty/Netty/BIO运行.png" alt="image-20200801232001047" style="zoom: 67%;">
+<img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/BIO运行.png" alt="image-20200801232001047" style="zoom: 67%;">
 
 
 
@@ -318,7 +318,7 @@
 <h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><p>Non-Blocking IO：<strong>同步非阻塞</strong>，一个请求一个线程，但连接请求都是先注册到多路复用器上，多路复用器轮询到连接有IO请求时才启动一个线程处理。</p>
 <p>NIO 有三大核心部分：<strong>Channel(通道)，Buffer(缓冲区), Selector(选择器)</strong> </p>
 <p><strong>NIO是 面向缓冲区 ，或者面向块编程的。</strong>数据读取到一个它稍后处理的缓冲区，需要时可在缓冲区中前后移动，这就增加了处理过程中的灵活性，使用它可以提供非阻塞式的高伸缩性网络</p>
-<img src="/2020/07/31/Netty/Netty/NIO.png" alt="image-20200801233632653" style="zoom: 50%;">
+<img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/NIO.png" alt="image-20200801233632653" style="zoom: 50%;">
 
 <ul>
 <li>一个Channel对应一个Buffer，一个Selector管理多个Channel，一个线程对应一个Selector</li>
@@ -414,7 +414,7 @@
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">api</span><br><span class="line">selector.select()<span class="comment">//阻塞</span></span><br><span class="line">selector.select(<span class="number">1000</span>);<span class="comment">//阻塞1000毫秒，在1000毫秒后返回</span></span><br><span class="line">selector.wakeup();<span class="comment">//唤醒selector</span></span><br><span class="line">selector.selectNow();<span class="comment">//不阻塞，立马返还</span></span><br></pre></td></tr></table></figure>
 
-<img src="/2020/07/31/Netty/Netty/网络编程相关.png" alt="image-20200802165116084" style="zoom:67%;">
+<img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/网络编程相关.png" alt="image-20200802165116084" style="zoom:67%;">
 
 <p>对图片的说明</p>
 <ol>
@@ -482,17 +482,17 @@
 <p>在 Java 程序中，常用的零拷贝有 mmap(内存映射) 和 sendFile。那么，他们在 OS 里，到底是怎么样的一个的设计？我们分析 mmap 和 sendFile 这两个零拷贝</p>
 <h4 id="传统IO数据读写"><a href="#传统IO数据读写" class="headerlink" title="传统IO数据读写"></a>传统IO数据读写</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(<span class="string">"test.txt"</span>);</span><br><span class="line">RandomAccessFile raf = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"rw"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">byte</span>[] arr = <span class="keyword">new</span> <span class="keyword">byte</span>[(<span class="keyword">int</span>) file.length()];</span><br><span class="line">raf.read(arr);</span><br><span class="line"></span><br><span class="line">Socket socket = <span class="keyword">new</span> ServerSocket(<span class="number">8080</span>).accept();</span><br><span class="line">socket.getOutputStream().write(arr);</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/07/31/Netty/Netty/%E4%BC%A0%E7%BB%9FIO.png" alt="image-20200802230755611"></p>
+<p><img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/%E4%BC%A0%E7%BB%9FIO.png" alt="image-20200802230755611"></p>
 <p>DMA: direct memory access直接内存拷贝(不使用CPU)</p>
 <p>4次拷贝 3次切换</p>
 <h4 id="mmap-优化"><a href="#mmap-优化" class="headerlink" title="mmap 优化"></a>mmap 优化</h4><p>将文件映射到内核缓冲区，同时，用户空间可以共享内核空间的数据。这样，在进行网络传输时，就可以减少内核空间到用户控件的拷贝次数。</p>
-<p><img src="/2020/07/31/Netty/Netty/mmap%E4%BC%98%E5%8C%96.png" alt="image-20200802231233781"></p>
+<p><img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/mmap%E4%BC%98%E5%8C%96.png" alt="image-20200802231233781"></p>
 <p>3次拷贝 3次切换</p>
 <h4 id="sendFile-优化"><a href="#sendFile-优化" class="headerlink" title="sendFile 优化"></a>sendFile 优化</h4><p>Linux 2.1 版本 提供了 sendFile 函数，其基本原理如下：数据根本不经过用户态，直接从内核缓冲区进入到 Socket Buffer，同时，由于和用户态完全无关，就减少了一次上下文切换</p>
-<p><img src="/2020/07/31/Netty/Netty/sendFile.png" alt="image-20200802231357878"></p>
+<p><img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/sendFile.png" alt="image-20200802231357878"></p>
 <p><strong>我们说零拷贝，是从操作系统的角度来说的。因为内核缓冲区之间，没有数据是重复的</strong>（只有 kernel buffer 有一份数据）。</p>
 <p>Linux 在 2.4 版本中，做了一些修改，避免了从内核缓冲区拷贝到 Socket buffer 的操作，直接拷贝到协议栈，从而再一次减少了数据拷贝。</p>
-<p><img src="/2020/07/31/Netty/Netty/sendFile%E4%BC%98%E5%8C%96.png" alt="image-20200802231618573"></p>
+<p><img src="/2020/07/31/%E6%A1%86%E6%9E%B6/Netty/sendFile%E4%BC%98%E5%8C%96.png" alt="image-20200802231618573"></p>
 <p>这里其实有 一次cpu 拷贝kernel buffer -&gt; socket buffer,但是，拷贝的信息很少，比如lenght , offset , 消耗低，可以忽略</p>
 <p>零拷贝不仅仅带来更少的数据复制，还能带来其他的性能优势，例如更少的上下文切换，更少的 CPU 缓存伪共享以及无 CPU 校验和计算。</p>
 <h4 id="mmap-和-sendFile-的区别"><a href="#mmap-和-sendFile-的区别" class="headerlink" title="mmap 和 sendFile 的区别"></a>mmap 和 sendFile 的区别</h4><ul>
@@ -581,7 +581,7 @@
       <i class="fa fa-chevron-left"></i> 设计模式-代理模式
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/08/03/Netty/Netty2/" rel="next" title="Netty-Netty入门">
+    <a href="/2020/08/03/%E6%A1%86%E6%9E%B6/Netty2/" rel="next" title="Netty-Netty入门">
       Netty-Netty入门 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -658,7 +658,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -671,7 +671,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
