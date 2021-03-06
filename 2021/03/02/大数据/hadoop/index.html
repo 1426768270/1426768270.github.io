@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、Hadoop入门1.1 Hadoop 是什么 Hadoop是一个由Apache基金会所开发的分布式系统基础架构。 主要解决，海量数据的存储和海量数据的分析计算问题。 广义上来说，Hadoop通常是指一个更广泛的概念——Hadoop生态圈。  1.2 Hadoop 三大发行版本Hadoop 三大发行版本：Apache、Cloudera、Hortonworks。 Apache 版本最原始（最基础）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop">
+<meta property="og:url" content="http://yoursite.com/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/index.html">
+<meta property="og:site_name" content="焱燚">
+<meta property="og:description" content="一、Hadoop入门1.1 Hadoop 是什么 Hadoop是一个由Apache基金会所开发的分布式系统基础架构。 主要解决，海量数据的存储和海量数据的分析计算问题。 广义上来说，Hadoop通常是指一个更广泛的概念——Hadoop生态圈。  1.2 Hadoop 三大发行版本Hadoop 三大发行版本：Apache、Cloudera、Hortonworks。 Apache 版本最原始（最基础）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/image-20210302184307303.png">
+<meta property="og:image" content="http://yoursite.com/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/image-20210302192706325.png">
+<meta property="og:image" content="http://yoursite.com/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/image-20210302193153598.png">
+<meta property="article:published_time" content="2021-03-02T10:15:33.000Z">
+<meta property="article:modified_time" content="2021-03-02T15:18:36.417Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="hadoop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/image-20210302184307303.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hadoop | 焱燚</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">焱燚</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hadoop
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-02 18:15:33 / 修改时间：23:18:36" itemprop="dateCreated datePublished" datetime="2021-03-02T18:15:33+08:00">2021-03-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、Hadoop入门"><a href="#一、Hadoop入门" class="headerlink" title="一、Hadoop入门"></a>一、Hadoop入门</h2><h3 id="1-1-Hadoop-是什么"><a href="#1-1-Hadoop-是什么" class="headerlink" title="1.1 Hadoop 是什么"></a>1.1 Hadoop 是什么</h3><ul>
+<li>Hadoop是一个由Apache基金会所开发的<strong>分布式</strong>系统基础架构。</li>
+<li>主要解决，海量数据的<strong>存储</strong>和海量数据的<strong>分析计算</strong>问题。</li>
+<li>广义上来说，Hadoop通常是指一个更广泛的概念——<strong>Hadoop生态圈</strong>。</li>
+</ul>
+<h3 id="1-2-Hadoop-三大发行版本"><a href="#1-2-Hadoop-三大发行版本" class="headerlink" title="1.2 Hadoop 三大发行版本"></a>1.2 Hadoop 三大发行版本</h3><p>Hadoop 三大发行版本：Apache、Cloudera、Hortonworks。</p>
+<p><strong>Apache</strong> 版本最原始（最基础）的版本，对于入门学习最好。2006</p>
+<p>Cloudera 内部集成了很多大数据框架，对应产品 <strong>CDH</strong>。2008</p>
+<p>Hortonworks 文档较好，对应产品 <strong>HDP</strong>。2011</p>
+<p>Hortonworks 现在已经被 Cloudera 公司收购，推出新的品牌 <strong>CDP</strong>。 </p>
+<h4 id="Apache-Hadoop"><a href="#Apache-Hadoop" class="headerlink" title="Apache Hadoop"></a>Apache Hadoop</h4><p>官网地址：<a href="http://hadoop.apache.org" target="_blank" rel="noopener">http://hadoop.apache.org</a></p>
+<p>下载地址：<a href="https://hadoop.apache.org/releases.html" target="_blank" rel="noopener">https://hadoop.apache.org/releases.html</a></p>
+<h4 id="Cloudera-Hadoop"><a href="#Cloudera-Hadoop" class="headerlink" title="Cloudera Hadoop"></a>Cloudera Hadoop</h4><p>官网地址：<a href="https://www.cloudera.com/downloads/cdh" target="_blank" rel="noopener">https://www.cloudera.com/downloads/cdh</a></p>
+<p>下载地址：<a href="https://docs.cloudera.com/documentation/enterprise/6/release-notes/topics/rg_cdh_6_download.html" target="_blank" rel="noopener">https://docs.cloudera.com/documentation/enterprise/6/release-notes/topics/rg_cdh_6_download.html</a></p>
+<h4 id="Hortonworks-Hadoop"><a href="#Hortonworks-Hadoop" class="headerlink" title="Hortonworks Hadoop"></a>Hortonworks Hadoop</h4><p>官网地址：<a href="https://hortonworks.com/products/data-center/hdp/" target="_blank" rel="noopener">https://hortonworks.com/products/data-center/hdp/</a></p>
+<p>下载地址：<a href="https://hortonworks.com/downloads/#data-pl" target="_blank" rel="noopener">https://hortonworks.com/downloads/#data-pl</a></p>
+<h3 id="1-3-Hadoop-优势"><a href="#1-3-Hadoop-优势" class="headerlink" title="1.3 Hadoop 优势"></a>1.3 Hadoop 优势</h3><p>1）高可靠性：Hadoop底层维护多个数据副本，所以即使Hadoop某个计算元素或存储出现故障，也不会导致数据的丢失。 </p>
+<p>2）高扩展性：在集群间分配任务数据，可方便的扩展数以千计的节点。</p>
+<p>3）高效性：在MapReduce的思想下，Hadoop是并行工作的，以加快任务处理速度。</p>
+<p>4）高容错性：能够自动将失败的任务重新分配。</p>
+<h3 id="1-4-Hadoop-组成"><a href="#1-4-Hadoop-组成" class="headerlink" title="1.4 Hadoop 组成"></a>1.4 Hadoop 组成</h3><p>Hadoop1.x、2.x、3.x区别</p>
+<p>在 Hadoop1.x 时 代 ，Hadoop中 的MapReduce同时处理业务逻辑运算和资源的调度，耦合性较大。 <strong>在Hadoop2.x时 代，增加 了Yarn。Yarn只负责资 源 的 调 度 ，MapReduce 只负责运算。Hadoop3.x在组成上没有变化。</strong></p>
+<p><img src="/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/image-20210302184307303.png" alt="image-20210302184307303"></p>
+<h3 id="1-4-1-HDFS-架构概述"><a href="#1-4-1-HDFS-架构概述" class="headerlink" title="1.4.1 HDFS 架构概述"></a>1.4.1 HDFS 架构概述</h3><p>Hadoop Distributed File System，简称 HDFS，是一个分布式文件系统。</p>
+<ul>
+<li><p>NameNode（nn）：存储文件的<strong>元数据</strong>，如<strong>文件名，文件目录结构，文件属性</strong>（生成时间、副本数、文件权限），以及每个文件的<strong>块列表</strong>和<strong>块所在的DataNode</strong>等。</p>
+</li>
+<li><p>DataNode(dn)：在本地文件系统存储文件<strong>块数据</strong>，以及块<strong>数据的校验和</strong>。</p>
+</li>
+<li><p>Secondary NameNode(2nn)：<strong>每隔一段时间对NameNode元数据备份</strong></p>
+</li>
+</ul>
+<h3 id="1-4-2-YARN-架构概述"><a href="#1-4-2-YARN-架构概述" class="headerlink" title="1.4.2 YARN 架构概述"></a>1.4.2 YARN 架构概述</h3><p>Yet Another Resource Negotiator 简称 YARN ，另一种资源协调者，是 Hadoop 的资源管理器</p>
+<blockquote>
+<p>1）ResourceManager（RM）：整个集群资源（内存、CPU等）的老大<br>3）ApplicationMaster（AM）：单个任务运行的老大<br>2）NodeManager（N M）：单个节点服务器资源老大<br>4）Container：容器，相当一台独立的服务器，里面封装了任务运行所需要的资源，如<strong>内存、CPU、磁盘、网络</strong>等。<br>说明1：客户端可以有多个<br>说明2：集群上可以运行多个ApplicationMaster<br>说明3：每个NodeManager上可以有多个Container</p>
+</blockquote>
+<h3 id="1-4-3-MapReduce-架构概述"><a href="#1-4-3-MapReduce-架构概述" class="headerlink" title="1.4.3 MapReduce 架构概述"></a>1.4.3 MapReduce 架构概述</h3><blockquote>
+<p>MapReduce 将计算过程分为两个阶段：Map 和 Reduce<br>1）Map 阶段并行处理输入数据<br>2）Reduce 阶段对 Map 结果进行汇总</p>
+</blockquote>
+<h3 id="1-4-4-HDFS、YARN、MapReduce-三者关系"><a href="#1-4-4-HDFS、YARN、MapReduce-三者关系" class="headerlink" title="1.4.4 HDFS、YARN、MapReduce 三者关系"></a>1.4.4 HDFS、YARN、MapReduce 三者关系</h3><p><img src="/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/image-20210302192706325.png" alt="image-20210302193038549"></p>
+<h3 id="1-5-大数据技术生态体系"><a href="#1-5-大数据技术生态体系" class="headerlink" title="1.5 大数据技术生态体系"></a>1.5 大数据技术生态体系</h3><p><img src="/2021/03/02/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/image-20210302193153598.png" alt="image-20210302193153598"></p>
+<p>1）Sqoop：Sqoop 是一款开源的工具，主要用于在 Hadoop、Hive 与传统的数据库（MySQL）<br>间进行数据的传递，可以将一个关系型数据库（例如 ：MySQL，Oracle 等）中的数据导进<br>到 Hadoop 的 HDFS 中，也可以将 HDFS 的数据导进到关系型数据库中。<br>2）Flume：Flume 是一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统，<br>Flume 支持在日志系统中定制各类数据发送方，用于收集数据；<br>3）Kafka：Kafka 是一种高吞吐量的分布式发布订阅消息系统；<br>4）Spark：Spark 是当前最流行的开源大数据内存计算框架。可以基于 Hadoop 上存储的大数<br>据进行计算。<br>5）Flink：Flink 是当前最流行的开源大数据内存计算框架。用于实时计算的场景较多。<br>6）Oozie：Oozie 是一个管理 Hadoop 作业（job）的工作流程调度管理系统。<br>7）Hbase：HBase 是一个分布式的、面向列的开源数据库。HBase 不同于一般的关系数据库，<br>它是一个适合于非结构化数据存储的数据库。<br>8）Hive：Hive 是基于 Hadoop 的一个数据仓库工具，可以将结构化的数据文件映射为一张<br>数据库表，并提供简单的 SQL 查询功能，可以将 SQL 语句转换为 MapReduce 任务进行运<br>行。其优点是学习成本低，可以通过类 SQL 语句快速实现简单的 MapReduce 统计，不必开<br>发专门的 MapReduce 应用，十分适合数据仓库的统计分析。<br>9）ZooKeeper：它是一个针对大型分布式系统的可靠协调系统，提供的功能包括：配置维护、<br>名字服务、分布式同步、组服务等。</p>
+<h2 id="二、-Hadoop-运行环境搭建"><a href="#二、-Hadoop-运行环境搭建" class="headerlink" title="二、 Hadoop 运行环境搭建"></a>二、 Hadoop 运行环境搭建</h2><h3 id="2-1-模板虚拟机环境准备"><a href="#2-1-模板虚拟机环境准备" class="headerlink" title="2.1 模板虚拟机环境准备"></a>2.1 模板虚拟机环境准备</h3><p>0）安装模板虚拟机，IP 地址 192.168.10.100、主机名称 hadoop100、内存 4G、硬盘 50G</p>
+<p>1）hadoop100 虚拟机配置要求如下（本文 Linux 系统全部以 CentOS-7.5-x86-1804 为例） </p>
+<blockquote>
+<p>（1）使用 yum 安装需要虚拟机可以正常上网，yum 安装前可以先测试下虚拟机联网情<br>况</p>
+<p>（2）安装 epel-release</p>
+<p>注：Extra Packages for Enterprise Linux 是为“红帽系”的操作系统提供额外的软件包，</p>
+<p>适用于 RHEL、CentOS 和 Scientific Linux。相当于是一个软件仓库，大多数 rpm 包在官方</p>
+<p>repository 中是找不到的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# yum install -y epel-release</span><br></pre></td></tr></table></figure>
+
+<p>（3）注意：如果 Linux 安装的是最小系统版，还需要安装如下工具；如果安装的是 Linux<br>桌面标准版，不需要执行如下操作</p>
+<p>net-tool：工具包集合，包含 ifconfig 等命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# yum install -y net-tools </span><br></pre></td></tr></table></figure>
+
+<p> vim：编辑器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# yum install -y vim</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>2）关闭防火墙，关闭防火墙开机自启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# systemctl stop firewalld</span><br><span class="line">[root@hadoop100 ~]# systemctl disable firewalld.service</span><br></pre></td></tr></table></figure>
+
+<p>3）创建 atguigu 用户，并修改 atguigu 用户的密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# useradd atguigu</span><br><span class="line">[root@hadoop100 ~]# passwd atguigu</span><br></pre></td></tr></table></figure>
+
+<p>4）配置 atguigu 用户具有 root 权限，方便后期加 sudo 执行 root 权限的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# vim &#x2F;etc&#x2F;sudoers</span><br></pre></td></tr></table></figure>
+
+<p>修改/etc/sudoers 文件，在%wheel 这行下面添加一行，如下所示：</p>
+<p>修改/etc/sudoers 文件，在%wheel 这行下面添加一行，如下所示：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">## Allow root <span class="keyword">to</span> run any commands anywhere</span><br><span class="line">root ALL=(ALL) ALL</span><br><span class="line"></span><br><span class="line">## Allows people in group wheel <span class="keyword">to</span> run <span class="keyword">all</span> commands</span><br><span class="line">%wheel ALL=(ALL) ALL</span><br><span class="line"></span><br><span class="line">atguigu ALL=(ALL) NOPASSWD:ALL</span><br><span class="line">注意：atguigu 这一行不要直接放到 root 行下面，因为所有用户都属于 wheel 组，你先</span><br><span class="line">配置了 atguigu 具有免密功能，但是程序执行到%wheel 行时，该功能又被覆盖回需要</span><br><span class="line">密码。所以 atguigu 要放到%wheel 这行下面。</span><br></pre></td></tr></table></figure>
+
+<p>5）在/opt 目录下创建文件夹，并修改所属主和所属组</p>
+<blockquote>
+<p>（1）在/opt 目录下创建 module、software 文件夹<br>[root@hadoop100 ~]# mkdir /opt/module<br>[root@hadoop100 ~]# mkdir /opt/software<br>（2）修改 module、software 文件夹的所有者和所属组均为 atguigu 用户<br>[root@hadoop100 ~]# chown atguigu:atguigu /opt/module<br>[root@hadoop100 ~]# chown atguigu:atguigu /opt/software<br>（3）查看 module、software 文件夹的所有者和所属组<br>[root@hadoop100 ~]# cd /opt/<br>[root@hadoop100 opt]# ll<br>总用量 12<br>drwxr-xr-x. 2 atguigu atguigu 4096 5 月 28 17:18 module<br>drwxr-xr-x. 2 root root 4096 9 月 7 2017 rh<br>drwxr-xr-x. 2 atguigu atguigu 4096 5 月 28 17:18 software</p>
+</blockquote>
+<p>6）卸载虚拟机自带的 JDK</p>
+<p>注意：如果你的虚拟机是最小化安装不需要执行这一步。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# rpm -qa | grep -i java | xargs -n1 rpm -e </span><br><span class="line"></span><br><span class="line">--nodeps</span><br><span class="line">➢ rpm -qa：查询所安装的所有 rpm 软件包</span><br><span class="line">➢ grep -i：忽略大小写</span><br><span class="line">➢ xargs -n1：表示每次只传递一个参数</span><br><span class="line">➢ rpm -e –nodeps：强制卸载软件</span><br></pre></td></tr></table></figure>
+
+<p>7）重启虚拟机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop100 ~]# reboot</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-克隆虚拟机"><a href="#2-2-克隆虚拟机" class="headerlink" title="2.2 克隆虚拟机"></a>2.2 克隆虚拟机</h3><blockquote>
+<p>1）利用模板机 hadoop100，克隆三台虚拟机：hadoop102 hadoop103 hadoop104<br>注意：克隆时，要先关闭 hadoop100<br>2）修改克隆机 IP，以下以 hadoop102 举例说明<br>（1）修改克隆虚拟机的静态 IP<br>[root@hadoop100 ~]# vim /etc/sysconfig/network-scripts/ifcfgens33<br>改成<br>DEVICE=ens33<br>TYPE=Ethernet</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ONBOOT&#x3D;yes</span><br><span class="line">BOOTPROTO&#x3D;static</span><br><span class="line">NAME&#x3D;&quot;ens33&quot;</span><br><span class="line">IPADDR&#x3D;192.168.10.102</span><br><span class="line">PREFIX&#x3D;24</span><br><span class="line">GATEWAY&#x3D;192.168.10.2</span><br><span class="line">DNS1&#x3D;192.168.10.2</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-在-hadoop102-安装-JDK"><a href="#2-3-在-hadoop102-安装-JDK" class="headerlink" title="2.3 在 hadoop102 安装 JDK"></a>2.3 在 hadoop102 安装 JDK</h3><p>1）卸载现有 JDK<br>注意：安装 JDK 前，一定确保提前删除了虚拟机自带的 JDK。详细步骤见问文档 3.1 节<br>中卸载 JDK 步骤。<br>2）用 XShell 传输工具将 JDK 导入到 opt 目录下面的 software 文件夹下面</p>
+<p>3）在 Linux 系统下的 opt 目录中查看软件包是否导入成功<br>[atguigu@hadoop102 ~]$ ls /opt/software/<br>看到如下结果：<br>jdk-8u212-linux-x64.tar.gz<br>4）解压 JDK 到/opt/module 目录下<br>[atguigu@hadoop102 software]$ tar -zxvf jdk-8u212-linuxx64.tar.gz -C /opt/module/<br>5）配置 JDK 环境变量</p>
+<blockquote>
+<p>（1）新建/etc/profile.d/my_env.sh 文件<br>[atguigu@hadoop102 ~]$ sudo vim /etc/profile.d/my_env.sh<br>添加如下内容<br>#JAVA_HOME<br>export JAVA_HOME=/opt/module/jdk1.8.0_212<br>export PATH=$PATH:$JAVA_HOME/bin</p>
+<p>（2）保存后退出<br>:wq<br>（3）source 一下/etc/profile 文件，让新的环境变量 PATH 生效<br>[atguigu@hadoop102 ~]$ source /etc/profile</p>
+</blockquote>
+<p>6）测试 JDK 是否安装成功<br>[atguigu@hadoop102 ~]$ java -version<br>如果能看到以下结果，则代表 Java 安装成功。<br>java version “1.8.0_212”</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/23/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/ActiveMQ/" rel="prev" title="ActiveMQ">
+      <i class="fa fa-chevron-left"></i> ActiveMQ
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式-原型模式">
+      设计模式-原型模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Hadoop入门"><span class="nav-number">1.</span> <span class="nav-text">一、Hadoop入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Hadoop-是什么"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Hadoop 是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Hadoop-三大发行版本"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Hadoop 三大发行版本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Apache-Hadoop"><span class="nav-number">1.2.1.</span> <span class="nav-text">Apache Hadoop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cloudera-Hadoop"><span class="nav-number">1.2.2.</span> <span class="nav-text">Cloudera Hadoop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hortonworks-Hadoop"><span class="nav-number">1.2.3.</span> <span class="nav-text">Hortonworks Hadoop</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Hadoop-优势"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 Hadoop 优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Hadoop-组成"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 Hadoop 组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-HDFS-架构概述"><span class="nav-number">1.5.</span> <span class="nav-text">1.4.1 HDFS 架构概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-YARN-架构概述"><span class="nav-number">1.6.</span> <span class="nav-text">1.4.2 YARN 架构概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-3-MapReduce-架构概述"><span class="nav-number">1.7.</span> <span class="nav-text">1.4.3 MapReduce 架构概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-4-HDFS、YARN、MapReduce-三者关系"><span class="nav-number">1.8.</span> <span class="nav-text">1.4.4 HDFS、YARN、MapReduce 三者关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-大数据技术生态体系"><span class="nav-number">1.9.</span> <span class="nav-text">1.5 大数据技术生态体系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、-Hadoop-运行环境搭建"><span class="nav-number">2.</span> <span class="nav-text">二、 Hadoop 运行环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-模板虚拟机环境准备"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 模板虚拟机环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-克隆虚拟机"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 克隆虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-在-hadoop102-安装-JDK"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 在 hadoop102 安装 JDK</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="naive"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">naive</p>
+  <div class="site-description" itemprop="description">选择有时候比努力更重要</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-07 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">naive</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!--崩溃欺骗-->
+<script type="text/javascript" src="\js\FunnyTitle.js"></script>

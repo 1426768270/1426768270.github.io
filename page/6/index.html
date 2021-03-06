@@ -197,6 +197,665 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/24/java%E5%9F%BA%E7%A1%80/java%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/24/java%E5%9F%BA%E7%A1%80/java%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">java基础</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-24 21:34:26" itemprop="dateCreated datePublished" datetime="2020-07-24T21:34:26+08:00">2020-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-25 08:56:36" itemprop="dateModified" datetime="2020-07-25T08:56:36+08:00">2020-07-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-JDK-和-JRE-有什么区别？"><a href="#1-JDK-和-JRE-有什么区别？" class="headerlink" title="1.JDK 和 JRE 有什么区别？"></a>1.JDK 和 JRE 有什么区别？</h2><ul>
+<li>JDK：Java Development Kit 的简称，Java 开发工具包，提供了 Java 的开发环境和运行环境。</li>
+<li>JRE：Java Runtime Environment 的简称，Java 运行环境，为 Java 的运行提供了所需环境。</li>
+</ul>
+<p>具体来说 JDK 其实包含了 JRE，同时还包含了编译 Java 源码的编译器 Javac，还包含了很多 Java 程序调试和分析的工具。简单来说：如果你需要运行 Java 程序，只需安装 JRE 就可以了，如果你需要编写 Java 程序，需要安装 JDK。</p>
+<h2 id="2-和-equals-的区别是什么？"><a href="#2-和-equals-的区别是什么？" class="headerlink" title="2.== 和 equals 的区别是什么？"></a>2.== 和 equals 的区别是什么？</h2><p>==：</p>
+<p>对于基本类型和引用类型 == 的作用效果是不同的，如下所示：</p>
+<ul>
+<li>基本类型：比较的是值是否相同；</li>
+<li>引用类型：比较的是引用是否相同；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String x = <span class="string">"string"</span>;</span><br><span class="line">String y = <span class="string">"string"</span>;</span><br><span class="line">String z = <span class="keyword">new</span> String(<span class="string">"string"</span>);</span><br><span class="line">System.out.println(x==y); <span class="comment">// true</span></span><br><span class="line">System.out.println(x==z); <span class="comment">// false</span></span><br><span class="line">System.out.println(x.equals(y)); <span class="comment">// true</span></span><br><span class="line">System.out.println(x.equals(z)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>因为 x 和 y 指向的是同一个引用，所以 == 也是 true，而 new String()方法则重写开辟了内存空间，所以 == 结果为 false，而 equals 比较的一直是值，所以结果都为 true。</p>
+<p>equals：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/24/java%E5%9F%BA%E7%A1%80/java%E5%9F%BA%E7%A1%80/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/24/leetcode/leetcode%E6%A0%88%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/24/leetcode/leetcode%E6%A0%88%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">leetcode-栈队列</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-24 10:39:56 / 修改时间：11:36:07" itemprop="dateCreated datePublished" datetime="2020-07-24T10:39:56+08:00">2020-07-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-用栈实现队列"><a href="#1-用栈实现队列" class="headerlink" title="1. 用栈实现队列"></a>1. 用栈实现队列</h1><p>使用栈实现队列的下列操作：</p>
+<p>push(x) – 将一个元素放入队列的尾部。<br>pop() – 从队列首部移除元素。<br>peek() – 返回队列首部的元素。<br>empty() – 返回队列是否为空。</p>
+<p><a href="https://leetcode-cn.com/problems/implement-queue-using-stacks" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-queue-using-stacks</a></p>
+<p>栈的顺序为后进先出，而队列的顺序为先进先出。使用两个栈实现队列，一个元素需要经过两个栈才能出队列，在经过第一个栈时元素顺序被反转，经过第二个栈时再次被反转，此时就是先进先出顺序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.lq.leetcode.stack;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Stack;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyQueue</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; in = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; out = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Push element x to the back of queue. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        in.push(x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Removes the element from in front of queue and returns that element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        in2out();</span><br><span class="line">        <span class="keyword">return</span> out.pop();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">in2out</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (out.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">while</span> (!in.isEmpty())&#123;</span><br><span class="line">                out.push(in.pop());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Get the front element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        in2out();</span><br><span class="line">        <span class="keyword">return</span> out.peek();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Returns whether the queue is empty. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> in.isEmpty() &amp;&amp; out.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-用队列实现栈"><a href="#2-用队列实现栈" class="headerlink" title="2. 用队列实现栈"></a>2. 用队列实现栈</h1><p>225</p>
+<p>在将一个元素 x 插入队列时，为了维护原来的后进先出顺序，需要让 x 插入队列首部。而队列的默认插入顺序是队列尾部，因此在将 x 插入队列尾部之后，需要让除了 x 之外的所有元素出队列，再入队列。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyStack</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Queue&lt;Integer&gt; queue;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyStack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Push element x onto stack. */</span></span><br><span class="line">    <span class="comment">//每次将插入的数据重新插入</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        queue.add(x);</span><br><span class="line">        <span class="keyword">int</span> size = queue.size();</span><br><span class="line">        <span class="keyword">while</span> (size--&gt;<span class="number">1</span>)&#123;</span><br><span class="line">            queue.add(queue.poll());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Removes the element on top of the stack and returns that element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> queue.poll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Get the top element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> queue.peek();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Returns whether the stack is empty. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> queue.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/24/leetcode/leetcode%E6%A0%88%E9%98%9F%E5%88%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-22 21:56:26" itemprop="dateCreated datePublished" datetime="2020-07-22T21:56:26+08:00">2020-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-30 16:24:42" itemprop="dateModified" datetime="2020-07-30T16:24:42+08:00">2020-07-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="线性结构和非线性结构"><a href="#线性结构和非线性结构" class="headerlink" title="线性结构和非线性结构"></a>线性结构和非线性结构</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/21/leetcode/leetcode%E9%93%BE%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/21/leetcode/leetcode%E9%93%BE%E8%A1%A8/" class="post-title-link" itemprop="url">leetcode-链表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-21 21:56:26" itemprop="dateCreated datePublished" datetime="2020-07-21T21:56:26+08:00">2020-07-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-24 10:39:46" itemprop="dateModified" datetime="2020-07-24T10:39:46+08:00">2020-07-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-归并两个有序的链表"><a href="#1-归并两个有序的链表" class="headerlink" title="1.归并两个有序的链表"></a>1.归并两个有序的链表</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/21/leetcode/leetcode%E9%93%BE%E8%A1%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-单例模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-21 20:38:32 / 修改时间：21:49:24" itemprop="dateCreated datePublished" datetime="2020-07-21T20:38:32+08:00">2020-07-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-20 23:05:37" itemprop="dateCreated datePublished" datetime="2020-07-20T23:05:37+08:00">2020-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-21 21:51:23" itemprop="dateModified" datetime="2020-07-21T21:51:23+08:00">2020-07-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><p>面向对象（Object Oriented)） -&gt;功能模块[设计模式+算法（数据结构] -&gt;框架(使用多种设计模式) -&gt;架构[服务器集群]</p>
+<p>代码重用性、可扩展性，可读性、可靠性、高内聚低耦合</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/19/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6(2)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/19/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6(2)/" class="post-title-link" itemprop="url">jvm(8)--垃圾回收2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-19 09:47:39" itemprop="dateCreated datePublished" datetime="2020-07-19T09:47:39+08:00">2020-07-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-20 11:27:17" itemprop="dateModified" datetime="2020-07-20T11:27:17+08:00">2020-07-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="垃圾回收相关概念"><a href="#垃圾回收相关概念" class="headerlink" title="垃圾回收相关概念"></a>垃圾回收相关概念</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/19/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6(2)/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="naive">
+      <meta itemprop="description" content="选择有时候比努力更重要">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="焱燚">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" class="post-title-link" itemprop="url">jvm(7)--垃圾回收</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-18 15:33:58" itemprop="dateCreated datePublished" datetime="2020-07-18T15:33:58+08:00">2020-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-19 09:48:00" itemprop="dateModified" datetime="2020-07-19T09:48:00+08:00">2020-07-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="垃圾回收概述"><a href="#垃圾回收概述" class="headerlink" title="垃圾回收概述"></a>垃圾回收概述</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/18/java%E5%9F%BA%E7%A1%80/jvm-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/17/java%E5%9F%BA%E7%A1%80/jvm-String/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -349,738 +1008,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/16/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86(3)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86(3)/" class="post-title-link" itemprop="url">jvm(4)--方法区</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-16 18:59:13" itemprop="dateCreated datePublished" datetime="2020-07-16T18:59:13+08:00">2020-07-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-17 15:58:34" itemprop="dateModified" datetime="2020-07-17T15:58:34+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/2020/07/16/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86(3)/%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB.png" alt="线程共享"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/16/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86(3)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/16/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86(2)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/16/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86(2)/" class="post-title-link" itemprop="url">jvm(3)--堆</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-07-16 11:53:13 / 修改时间：19:03:01" itemprop="dateCreated datePublished" datetime="2020-07-16T11:53:13+08:00">2020-07-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="本地方法接口"><a href="#本地方法接口" class="headerlink" title="本地方法接口"></a>本地方法接口</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/16/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86(2)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/15/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/15/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86/" class="post-title-link" itemprop="url">jvm(2)--栈</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-15 13:57:15" itemprop="dateCreated datePublished" datetime="2020-07-15T13:57:15+08:00">2020-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-17 14:50:46" itemprop="dateModified" datetime="2020-07-17T14:50:46+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/2020/07/15/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86/java%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png" alt="java体系结构"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/15/java%E5%9F%BA%E7%A1%80/jvm-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(4)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(4)/" class="post-title-link" itemprop="url">多线程（4）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-07-15 00:40:19 / 修改时间：00:40:21" itemprop="dateCreated datePublished" datetime="2020-07-15T00:40:19+08:00">2020-07-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="集合类不安全"><a href="#集合类不安全" class="headerlink" title="集合类不安全"></a>集合类不安全</h2><h4 id="List-不安全"><a href="#List-不安全" class="headerlink" title="List 不安全"></a>List 不安全</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(4)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(3)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(3)/" class="post-title-link" itemprop="url">多线程（3）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-15 00:40:06" itemprop="dateCreated datePublished" datetime="2020-07-15T00:40:06+08:00">2020-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-07 18:08:14" itemprop="dateModified" datetime="2020-08-07T18:08:14+08:00">2020-08-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h2><h4 id="reentrantlock"><a href="#reentrantlock" class="headerlink" title="reentrantlock"></a>reentrantlock</h4><p>使用reentrantlock可以完成sync的功能</p>
-<p>CAS锁</p>
-<p>需要注意的是，必须要必须要必须要<strong>手动释放锁</strong>（重要的事情说三遍）</p>
-<p>使用syn锁定的话如果遇到异常，jvm会自动释放锁，但是lock必须手动释放锁，因此经常在finally中进行锁的释放</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(3)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/" class="post-title-link" itemprop="url">多线程（2）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-15 00:39:47" itemprop="dateCreated datePublished" datetime="2020-07-15T00:39:47+08:00">2020-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-09 19:03:56" itemprop="dateModified" datetime="2020-08-09T19:03:56+08:00">2020-08-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h1><h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><p>是可重入锁</p>
-<p>synchronized是jdk提供的jvm层面的同步机制。<br><strong>它解决的是多线程之间访问共享资源的同步问题,它保证了<br>在被它修饰的方法或代码块同一时间只有一个线程执行。</strong></p>
-<p><strong>sync(Object) 不能实验String常量 Integer Long</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/15/java%E5%9F%BA%E7%A1%80/java%E5%A4%9A%E7%BA%BF%E7%A8%8B(2)/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/12/java%E5%9F%BA%E7%A1%80/GC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/12/java%E5%9F%BA%E7%A1%80/GC/" class="post-title-link" itemprop="url">GC</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-07-12 15:28:15 / 修改时间：15:43:57" itemprop="dateCreated datePublished" datetime="2020-07-12T15:28:15+08:00">2020-07-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><a href="#gc">GC</a><ul>
-<li><a href="#判断对象存活的方法">判断对象存活的方法</a><ul>
-<li><a href="#引用计数法缺点">引用计数法缺点</a></li>
-<li><a href="#什么是gc-root-">什么是GC Root ?</a></li>
-</ul>
-</li>
-<li><a href="#垃圾回收算法">垃圾回收算法</a><ul>
-<li><a href="#复制算法copying">复制算法(Copying)</a></li>
-<li><a href="#标记-清除算法mark-sweep">标记-清除算法(Mark-Sweep)</a></li>
-<li><a href="#标记-整理算法mark-compact">标记-整理算法(Mark-Compact)</a></li>
-<li><a href="#分代收集算法">分代收集算法</a></li>
-<li><a href="#内存分配与垃圾回收策略">内存分配与垃圾回收策略</a></li>
-<li><a href="#一次gc的过程">一次GC的过程</a></li>
-<li><a href="#动态年龄阈值">动态年龄阈值</a></li>
-</ul>
-</li>
-<li><a href="#垃圾回收器">垃圾回收器</a><ul>
-<li><a href="#serial串行收集器">Serial串行收集器</a></li>
-<li><a href="#serial-old-串行收集器老年代版本">Serial Old 串行收集器(老年代版本)</a></li>
-<li><a href="#parallel-scavenge-并行多线程收集器">Parallel Scavenge 并行多线程收集器</a></li>
-<li><a href="#parallel-old-并行收集器老年代版本">Parallel Old 并行收集器(老年代版本)</a></li>
-<li><a href="#parnew-多线程收集器">ParNew 多线程收集器</a></li>
-<li><a href="#cms-并发标记清除收集器">CMS 并发标记清除收集器</a></li>
-<li><a href="#cms收集器回收过程">CMS收集器回收过程</a></li>
-<li><a href="#g1-收集器">G1 收集器</a></li>
-<li><a href="#g1回收器的特点">G1回收器的特点</a></li>
-<li><a href="#g1收集器回收过程">G1收集器回收过程</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/12/java%E5%9F%BA%E7%A1%80/GC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/12/java%E5%9F%BA%E7%A1%80/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="naive">
-      <meta itemprop="description" content="选择有时候比努力更重要">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="焱燚">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/12/java%E5%9F%BA%E7%A1%80/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">多线程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-12 15:27:18" itemprop="dateCreated datePublished" datetime="2020-07-12T15:27:18+08:00">2020-07-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-19 14:54:00" itemprop="dateModified" datetime="2020-07-19T14:54:00+08:00">2020-07-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-
-<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><h4 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h4><p><strong>进程与线程最主要的区别是它们是操作系统管理资源的不同方式的体现。</strong><br>准确来说进程与线程属于衍生关系。<br>进程是操作系统执行程序的一次过程,在这个过程中可能会产生多个线程。</p>
-<blockquote>
-<p>比如在使用QQ时，有窗口线程，<br>文字发送的线程，语音输入的线程，可能不是很恰当，但是就是这个意思。</p>
-</blockquote>
-<p><strong>由于系统在线程之间的切换比在进程之间的切换更高效率，所以线程也被成为轻量级进程。</strong></p>
-<h4 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h4><ol>
-<li><p>并发: <strong>多个程序可以同时运行的现象</strong>，更细化的是多进程可以同时运行或者多指令可以同时运行。多个线程任务被一个cpu轮流执行。<br><strong>并发强调的是计算机应用程序有处理多个任务的能力。并发的”同时”是经过上下文快速切换，使得看上去多个进程同时都在运行的现象，是一种OS欺骗用户的现象</strong>。</p>
-<img src="/2020/07/12/java%E5%9F%BA%E7%A1%80/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/Blog\source\_posts\java多线程\并发.png" alt="image-20200719145125356" style="zoom:50%;">
-</li>
-<li><p>并行:多个线程被多个cpu同时执行。这里也并不是只允许多个cpu处理多任务，一个cpu也是可以的，<br>只要cpu能在同一时刻处理多任务。<strong>并行的”同时”是同一时刻可以多个进程在运行(处于running)</strong></p>
-<p><strong>并行强调的是计算机应用程序拥有同时处理多任务的能力。</strong></p>
-<img src="/2020/07/12/java%E5%9F%BA%E7%A1%80/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/Blog\source\_posts\java多线程\并行.png" alt="image-20200719145208852" style="zoom:50%;">
-
-</li>
-</ol>
-<h4 id="并发和并行对比"><a href="#并发和并行对比" class="headerlink" title="并发和并行对比"></a>并发和并行对比</h4><p>并发，指的是多个事情<strong>，在同一时间段内同时发生了。</strong></p>
-<p>并行，指的是多个事情，<strong>在同一时间点上同时发生了。</strong></p>
-<p><strong>并发的多个任务之间是互相抢占资源的。并行的多个任务之间是不互相抢占资源的。</strong></p>
-<p>只有在多CPU或者一个CPU多核的情况中，才会发生并行。</p>
-<p>否则，看似同时发生的事情，其实都是并发执行的。</p>
-<h4 id="多线程的利弊"><a href="#多线程的利弊" class="headerlink" title="多线程的利弊"></a>多线程的利弊</h4><ul>
-<li><p>利:</p>
-<ul>
-<li><p>线程可以比作轻量级的进程，cpu在线程之间的切换比在进程之间的切换，耗费的资源要少的多。</p>
-</li>
-<li><p>现在是多核cpu时代，意味着多个线程可以被多个cpu同时运行(并行)，如果可以利用好多线程，那么可以编写出高并发的程序。</p>
-</li>
-</ul>
-</li>
-<li><p>弊:</p>
-<ul>
-<li>虽然线程带来的好处很多，但是并发编程并不容易，如果控制不好线程，那么就可能造成死锁，资源闲置，内存泄露等问题。</li>
-</ul>
-</li>
-</ul>
-<h4 id="什么是上下文切换"><a href="#什么是上下文切换" class="headerlink" title="什么是上下文切换?"></a>什么是上下文切换?</h4><p>cpu是采用时间片的轮转制度，在多个线程之间来回切换运行的。<br>当cpu切换到另一个线程的时候，它会先保存当前线程执行的状态，<br>以便在下次切换回来执行时，可以重新加载状态，继续运行。<br><strong>从保存线程的状态再到重新加载回线程的状态的这个过程就叫做上下文切换。</strong></p>
-<h4 id="线程的优先级"><a href="#线程的优先级" class="headerlink" title="线程的优先级"></a>线程的优先级</h4><p>在Java中可以通过Thread类的setPriority方法来设置线程的优先级，<br>虽然可以通过这样的方式来设置线程的优先级，但是线程执行的先后顺序并不依赖与线程的优先级。<br>换句话说就是，<strong>线程的优先级不保证线程执行的顺序。</strong></p>
-<h4 id="线程的几种状态"><a href="#线程的几种状态" class="headerlink" title="线程的几种状态"></a>线程的几种状态</h4><p>见:jdk Thread类源码中的state枚举类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NEW,RUNNABLE,BLOCKED,WAITING,TIMED_WAITING,TERMINATED</span><br></pre></td></tr></table></figure>
-
-<h4 id="sleep方法和wait方法的区别"><a href="#sleep方法和wait方法的区别" class="headerlink" title="sleep方法和wait方法的区别"></a>sleep方法和wait方法的区别</h4><ol>
-<li><p>sleep方法是Thread类的方法；而wait方法是Object类的方法。</p>
-</li>
-<li><p>sleep方法会<strong>使当前线程让出cpu的调度资源</strong>，从而让其他线程有获得被执行的机会，</p>
-</li>
-</ol>
-<p><strong>但是并不会让当前线程释放锁对象。</strong><br>而wait方法是<strong>让当前线程释放锁并进入wait状态，</strong><br>不参与获取锁的争夺，从而让其他等待资源的线程有机会获取锁，<br>只有当其他线程调用notify或notifyAll方法是，被wait的线程才能重新与其他线程一起争夺资源。</p>
-<h4 id="stop-suspend-resume等方法为什么会被遗弃"><a href="#stop-suspend-resume等方法为什么会被遗弃" class="headerlink" title="stop,suspend,resume等方法为什么会被遗弃"></a>stop,suspend,resume等方法为什么会被遗弃</h4><ul>
-<li><p>stop: stop方法被弃用很好理解，因为stop方法是强行终止线程的执行，<br>不管线程的run方法是否执行完，资源是否释放完，它都会终止线程的运行，并释放锁。<br>显然，这在设计上就不合理。  </p>
-</li>
-<li><p>suspend和resume: suspend方法用于阻塞一个线程,但并不释放锁，<br>而resume方法的作用只是为了恢复被suspend的线程。<br>假设A，B线程都争抢同一把锁，A线程成功的获得了锁，<br>然后被suspend阻塞了，却并没有释放锁，它需要其他线程来唤醒，<br>但此时B线程需要获得这把锁才能唤醒A，所以此时就陷入了死锁。</p>
-</li>
-</ul>
-<h4 id="interrupt-interrupted-isInterrupted方法区别"><a href="#interrupt-interrupted-isInterrupted方法区别" class="headerlink" title="interrupt,interrupted,isInterrupted方法区别"></a>interrupt,interrupted,isInterrupted方法区别</h4><ul>
-<li><p>interrupt: 这个方法并不是中断当前线程，而是给当前线程设置一个中断状态。</p>
-</li>
-<li><p>isInterrupted: 当线程调用interrupt方法后，线程就有了一个中断状态，<br>而使用isInterrupted方法就可以检测到线程的中断状态。</p>
-</li>
-<li><p>interrupted: 这个方法用于清除interrupt方法设置的中断状态。<br>如果一个线程之前调用了interrupt方法设置了中断状态，<br>那么interrupted方法就可以清除这个中断状态。          </p>
-</li>
-</ul>
-<h4 id="join方法"><a href="#join方法" class="headerlink" title="join方法"></a>join方法</h4><p>join方法的作用是让指定线程加入到当前线程中执行。</p>
-<p>假如在main方法里面创建一个线程A执行，并调用A的join方法，<br>那么当前线程就是main，指定的A线程就会在main之前执行，<br>等A执行完后，才会继续执行main。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public static void main(String[] args) throws Exception</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    Thread a &#x3D; new Thread(()-&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(1);</span><br><span class="line">            </span><br><span class="line">        &#125;catch (Exception e)&#123;&#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;thread join&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    a.start();</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;a会在main线程之前执行</span><br><span class="line">    a.join();</span><br><span class="line"></span><br><span class="line">    System.out.println(&quot;main&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>join方法的底层是wait方法，调用A线程(子线程)的join方法实际上是让main线程wait，<br>等A线程执行完后，才能继续执行后面的代码。</strong></p>
-<h4 id="yield方法"><a href="#yield方法" class="headerlink" title="yield方法"></a>yield方法</h4><p>yield属于Thread的静态方法，<br>它的作用是让当前线程让出cpu调度资源。</p>
-<p>yield方法其实就和线程的优先级一样，你虽然指定了，<br>但是最后的结果不由得你说了算，<br><strong>即使调用了yield方法，最后仍然可能是这个线程先执行，<br>只不过说别的线程可能先执行的机会稍大一些。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1148,20 +1079,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
