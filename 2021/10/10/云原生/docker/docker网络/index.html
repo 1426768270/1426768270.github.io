@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>docker网络 | naive的博客</title><meta name="keywords" content="容器云,docker"><meta name="author" content="naive"><meta name="copyright" content="naive"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Docker安装时会自动在 host 上创建三个网络，none、host、bridge我们可用docker network ls命令查看。 一、Docker网络架构Docker在1.9版本中引入了一整套的docker network子命令和跨主机网络支持。这允许用户可以根据他们应用的拓扑结构创建虚拟网络并将容器接人其所对应的网络。其实，早在Docker1.7版本中，网络部分代码就已经被抽离并单独成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker网络">
+<meta property="og:url" content="http://yoursite.com/2021/10/10/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="naive的博客">
+<meta property="og:description" content="Docker安装时会自动在 host 上创建三个网络，none、host、bridge我们可用docker network ls命令查看。 一、Docker网络架构Docker在1.9版本中引入了一整套的docker network子命令和跨主机网络支持。这允许用户可以根据他们应用的拓扑结构创建虚拟网络并将容器接人其所对应的网络。其实，早在Docker1.7版本中，网络部分代码就已经被抽离并单独成">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/img/photo-1465156799763-2c087c332922.jpg">
+<meta property="article:published_time" content="2021-10-10T12:14:47.000Z">
+<meta property="article:modified_time" content="2021-10-12T15:18:09.801Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="容器云">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/img/photo-1465156799763-2c087c332922.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2021/10/10/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E7%BD%91%E7%BB%9C/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'docker网络',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-10-12 23:18:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="naive的博客" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">98</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/./img/photo-1465156799763-2c087c332922.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">naive的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">docker网络</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-10T12:14:47.000Z" title="发表于 2021-10-10 20:14:47">2021-10-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-12T15:18:09.801Z" title="更新于 2021-10-12 23:18:09">2021-10-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="docker网络"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Docker安装时会自动在 host 上创建三个网络，none、host、bridge我们可用docker network ls命令查看。</p>
+<h2 id="一、Docker网络架构"><a href="#一、Docker网络架构" class="headerlink" title="一、Docker网络架构"></a>一、Docker网络架构</h2><p>Docker在1.9版本中引入了一整套的<code>docker network</code>子命令和跨主机网络支持。这允许用户可以根据他们应用的拓扑结构创建虚拟网络并将容器接人其所对应的网络。其实，早在Docker1.7版本中，网络部分代码就已经被抽离并单独成为了Docker的网络库，即<code>libnetwork</code>。在此之后，容器的网络模式也被抽象变成了统一接口的驱动。</p>
+<p>为了标准化网络驱动的开发步骤和支持多种网络驱动，Docker公司在libnetwork中使用了<strong>CNM ( Container Network Model )</strong>。CNM定义了构建容器虚拟化网络的模型，同时还提供了可以用于开发多种网络驱动的标准化接口和组件。</p>
+<p>libnetwork和Docker daemon和各个网络驱动关系：</p>
+<img src="/2021/10/10/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E7%BD%91%E7%BB%9C/Docker网络虚拟化架构.png" alt="image-20211010223218172" style="zoom:67%;">
+
+<p>Docker daemon通过调用<strong>libnetwork对外提供的API</strong>完成网络的创建和管理等功能。libnetwork中则使用了<strong>CNM</strong>来完成网络功能的提供。而CNM中主要有<strong>沙盒( sandbox )、端点（ endpoint）和网络( network)</strong>这3种组件。libnetwork中内置的5种驱动则为libnetwork提供了不同类型的网络服务。下面分别对CNM中的3个核心组件和libnetwork中的5种内置驱动进行介绍。</p>
+<p><strong>CNM的核心组件</strong>：</p>
+<ul>
+<li><strong>沙盒</strong>：一个沙盒包含了<strong>一个容器网络栈的信息</strong>。沙盒可以对<strong>容器的接口、路由和DNS设置等进行管理</strong>。沙盒的实现可以是Linux network namespace 、FreeBSD Jail或者类似的机制。一个沙盒可以有多个端点和多个网络。</li>
+<li><strong>端点:</strong>一个端点可以加入一个沙盒和一个网络。端点的实现可以是<code>veth pair</code> , <code>Open vSwitch</code>内部端口或者相似的设备。一个端点只可以属于一个网络并且只属于一个沙盒。</li>
+<li><strong>网络</strong>:一个网络是<strong>一组可以直接互相联通的端点</strong>。网络的实现可以是Linux bridge、VLAN。一个网络包含多个端点。</li>
+</ul>
+<p><strong>5种内置驱动</strong>：</p>
+<ul>
+<li><strong>bridge驱动</strong>。Docker的默认设置，这个驱动，libnetwork将创建出来的Docker容器连接到Docker网桥上作为最常规的模式, bridge模式已经可以满足Docker容器最基本的使用需求了。然而其与外界通信使用<strong>NAT</strong>,增加了通信的复杂性,在复杂场景下使用会有诸多限制。</li>
+<li><strong>host驱动</strong>。libnetwork将不为Docker容器创建网络协议栈，即<strong>不会创建独立的network namespace</strong>。Docker容器中的进程处于宿主机的网络环境中，相当于Docker容器和宿主机共用同一个network namespace,使用宿主机的网卡、IP和端口等信息。但是，容器其他方面还是和宿主机隔离的。host模式很好地解决了容器与外界通信的地址转换问题，可以直接使用宿主机的IP进行通信，<strong>不存在虚拟化网络带来的额外性能负担</strong>。但是host驱动也<strong>降低了容器与容器之间、容器与宿主机之间网络层面的隔离性，引起网络资源的竞争与冲突</strong>。因此可以认为host驱动适用于对于容器集群规模不大的场景。</li>
+<li><strong>overlay驱动</strong>。此驱动采用IETF标准的VXLAN方式，并且是VXLAN中被普遍认为最适合大规模的云计算虚拟化环境的SDN controller模式。在使用的过程中，需要一个额外的配置存储服务，例如Consul、etcd或ZooKeeper。还需要在启动Docker daemon的的时候额外添加参数来指定所使用的配置存储服务地址。</li>
+<li><strong>remote驱动</strong>。这个驱动实际上并未做真正的网络服务实现，而是调用了<strong>用户自行实现的网络驱动插件</strong>，使libnetwork实现了驱动的可插件化，更好地满足了用户的多种需求。用户只要根据libnetwork提供的协议标准，实现其所要求的各个接口并向Docker daemon进行注册。</li>
+<li><strong>null驱动</strong>。使用这种驱动的时候，Docker容器拥有自己的network namespace，但是并不为容器进行任何网络配置。也就是说，这个容器除了network namespace自带的<strong>loopback网卡</strong>外，没有其他任何网卡、IP、路由等信息，需要用户为Docker容器添加网卡、配置IP等。这种模式如果不进行特定的配置是无法正常使用的，但是优点也非常明显，它给了用户最大的自由度来自定义容器的网络环境。</li>
+</ul>
+<h2 id="二、bridge驱动"><a href="#二、bridge驱动" class="headerlink" title="二、bridge驱动"></a>二、bridge驱动</h2><h3 id="docker0网桥"><a href="#docker0网桥" class="headerlink" title="docker0网桥"></a>docker0网桥</h3><p>当Host在安装完docker之后，宿主机上通过ifconfig就会发现有一块docker0的网卡，宿主机上也会在内核路由表上添加一条到达相应网络的静态路由。</p>
+<p>使用docker创建出的容器，可以看到它有2块网卡<strong>lo和eth0</strong>。lo的回环网卡，<code>eth0</code>是容器与外界通信的网卡，他的IP与宿主机上网桥docker0在同一个网段。</p>
+<p>在控制台查看宿主机时，会发现有一块<code>veth</code>网卡，例如<code>veth043f86</code>,而<code>veth pair</code>成对出现，用来连接2个network namespace，所以另外一个就是<code>eth0</code>。容器的eth0与宿主机docker0相连，而veth也是与宿主机相连，<strong>docker0就是一个网桥</strong>。</p>
+<img src="/2021/10/10/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E7%BD%91%E7%BB%9C/Docker网络bridge模式.png" alt="image-20211010225439264" style="zoom:67%;">
+
+<p>Docker bridge模式创建了<code>docker0</code>网桥，并以<code>veth pair</code>连接容器网络，容器中数据通过docker0网桥转发到<code>eth0</code>网卡中。</p>
+<p>这里网桥的概念等同于交换机，为连在其上的设备转发数据帧。网桥上的<strong>veth网卡设备相当于交换机上的端口</strong>，可以将多个容器或虚拟机连接在其上，这些端口工作在二层，所以是不需要配置IP信息的。docker0网桥就为连在其上的容器转发数据帧,使得同一台宿主机上的Docker容器之间可以相互通信。读者应该注意到docker0既然是二层设备，其上怎么也配置了IP呢?docker0是普通的Linux网桥，它是可以在上面配置IP的，可以认为其内部<strong>有一个可以用于配置IP信息的网卡接口</strong>。在Docker的桥接网络模式中，docker0的IP地址作为连于之上的容器的默认网关地址存在。<br>在Linux中，可以使用<code>brctl</code>命令查看和管理网桥（需要安装bridge-utils软件包）如查看本机上的Linux网桥以及其上的端口:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  brctl show</span><br></pre></td></tr></table></figure>
+
+<p>dockero网桥是在<strong>Docker daemon启动时自动创建的</strong>，其IP默认为172.17.0.1/16，之后创建的Docker容器都会在dockero子网的范围内选取一个未占用的IP使用，并连接到dockero网桥上。</p>
+<h3 id="iptables规则"><a href="#iptables规则" class="headerlink" title="iptables规则"></a>iptables规则</h3><p>Docker安装完成后，将默认在宿主机系统上增加一些iptables规则，以用于Docker容器和容器之间以及和外界的通信，可以使用<code>iptables-save</code>命令查看。其中nat表上的POSTROUTING链有这么一条规则:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-APOSTROUTING -s 172.17.0.0/16 ! -o dockero -j MASQUERADE</span><br></pre></td></tr></table></figure>
+
+<p>这条规则关系着Docker容器和外界的通信，含义是将源地址为172.17.0.0/16的数据包（即Docker容器发出的数据)，当不是从dockero网卡发出时做<strong>SNAT</strong>(源地址转换，将IP包的源地址替换为相应网卡的地址)。这样一来，从Docker容器访问外网的流量，在外部看来就是从宿主机上发出的，外部感觉不到Docker容器的存在。</p>
+<p>Docker的forward规则默认允许<strong>所有的外部IP访问容器</strong>，可以通过在filter的DOCKER链上添加规则来对外部的IP访问做出限制，如只允许源IP为8.8.8.8的数据包访问容器，需要添加如下规则:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I DOCKER -i docker0 ! -s 8.8.8.8 -j DROP</span><br></pre></td></tr></table></figure>
+
+<p>Docker容器之间互相通信也受到iptables规则现在。同一宿主机上Docker容器默认连在docker0网桥上，同属一个子网，同时Docker daemon会在filter的FORWARD链中添加一条ACCEPT规则(–icc=true)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-A FORWARD -i docker0 -o docker0 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p>当Docker daemon启动参数–icc（是否允许容器互相通信）设置为false，规则就会设置为DROP，通信被禁止，想让2个容器通信就需要在docker run时使用–link选项。</p>
+<p>在Docker容器和外界通信的过程中，还涉及了数据包在多个网卡间的转发(如从dockero网卡到宿主机etho的转发)这需要内核将ip-forward功能打开,即将ip_forward系统参数设为1。Dockerdaemon启动的时候默认会将其设为1 ( –ip-forward=true )，也可以通过以下命令手动设置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$  <span class="built_in">echo</span> 1 &gt; / proc/sys/net/ipv4/ip_forward</span><br><span class="line">$  cat /proclsys/net/ipv4/ip_forward</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>Docker daemon启动参数：</p>
+<ul>
+<li><code>--iptables</code>:是否允许Docker daemon<strong>设置宿主机的iptables规则</strong>,默认为true。</li>
+<li><code>--icc</code>:是否允许Docker容器间相互通信，默认为true。true或false改变的是FORWARD链中相应iptables规则的策略(ACCEPT、DROP)。由于操作的是iptables规则，所以需要<code>--iptables=true</code>才能生效。<br><code>--ip-forward</code>:是否将ip_forward参数设为<strong>1</strong>，默认为true，用于打开Linux内核的ip<strong>数据包转发功能</strong>。</li>
+</ul>
+<h3 id="Docker容器的DNS和主机名"><a href="#Docker容器的DNS和主机名" class="headerlink" title="Docker容器的DNS和主机名"></a>Docker容器的DNS和主机名</h3><p>同一个Docker镜像可以启动很多个Docker容器，它们的主机名并不一样，也即是说主<strong>机名并非是被写入镜像中的</strong>。实际上容器中/etc目录下有3个文件是容器<strong>启动后被虚拟文件覆盖掉</strong>的，分别是<code>/etc/hostname</code>、<code>/etc/hosts</code>、<code>/etc/resolv.conf</code>，通过在容器中运行mount命令可以查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$$ mount</span><br><span class="line">/devldisk/by-uuid/1fec...ebdf on /etc/hostname <span class="built_in">type</span> ext4...</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/hosts <span class="built_in">type</span> ext4 ...</span><br><span class="line">/dev/disk/by-uuid/1fec...ebdf on /etc/resolv.conf <span class="built_in">type</span> ext4 ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样能解决主机名的问题，同时也能让DNS及时更新(改变resolv.conf )。通过Docker提供的参数进行相关设置，参数配置方式如下。</p>
+<ul>
+<li><code>-h HOSTNAME</code> 或者<code>--hostname=HOSTNAME</code>:设置容器的主机名，此名称会写在<code>/etc/hostname</code>和<code>/etc/hosts</code>文件中，也会在容器的bash提示符中看到。但是在外部，容器的主机名是无法查看的，不会出现在其他容器的hosts文件中，即使使用docker ps命令也查看不到。此参数是<strong>docker run命令的参数</strong>，而非Docker daemon的启动参数。</li>
+<li><code>--dns=IP_ADDRESS...</code>:为容器配置DNS，写在<code>/etc/resolv.conf</code>中。该参数既可以在Dockerdaemon启动的时候设置也可以在docker run时设置，默认为8.8.8.8和8.8.4.4。</li>
+</ul>
+<p>这3个文件不会被docker commit保存，重启容器会导致修改失效。</p>
+<h2 id="三、Docker网络配置原理"><a href="#三、Docker网络配置原理" class="headerlink" title="三、Docker网络配置原理"></a>三、Docker网络配置原理</h2><p>Docker1.6之前，Docker网络分为2个部分：<code>Docker daemon</code>的网络配置和<code>libcontainer</code>网络配置。Docker daemon的网络指daemon启动时，在主机系统上所做的网络设置，可以<strong>被所有Docker容器所使用</strong>;libcontainer的网络配置则<strong>针对具体的容器</strong>，是在使用docker run命令启动容器时，根据传入的参数为容器做的网络配置工作。</p>
+<p>Docker1.7之后将所有网络相关代码抽离，整合为单独的库<code>libnetwork</code>,通过插件形式允许用户自己根据自己需求实现自己的network driver。</p>
+<h3 id="Docker-daemon网络配置原理"><a href="#Docker-daemon网络配置原理" class="headerlink" title="Docker daemon网络配置原理"></a>Docker daemon网络配置原理</h3><h4 id="1-网络相关的参数"><a href="#1-网络相关的参数" class="headerlink" title="1.网络相关的参数"></a>1.网络相关的参数</h4><p>Docker daemon启动时，都会初始化自己的网络环境，为Docker容器提供网络通信服务。所有网络相关参数配置在bridgeConfig中：</p>
+<ul>
+<li><code>EnableIptables</code>:默认值为true，对应于Docker daemon启动时的–iptables参数，作用为是否允许Docker daemon在宿主机上<strong>添加iptables规则</strong>。</li>
+<li><code>EnableIpMasq</code>:默认为true，对应于Docker daemon启动时的–ip-masq参数，作用为是否为Docker容器<strong>通往外界的包做SNAT</strong>，此变量即控制是否添加那条规则。</li>
+<li><code>DefaultIp</code>:对应–ip参数，默认值为“0.0.0.0”。这个变量的作用为:当启动容器做端口映射时，将<strong>DefaultIp作为默认使用的IP地址</strong>。</li>
+<li>EnableIpForward 、 Iface ,IP 、 FixedCIDR, InterContainerCommunication分别对应–ip-forward、–bridge、–bip、 –fixed-cidr、–icc。</li>
+</ul>
+<h4 id="2-初始化过程"><a href="#2-初始化过程" class="headerlink" title="2.初始化过程"></a>2.初始化过程</h4><h5 id="网络参数校验"><a href="#网络参数校验" class="headerlink" title="网络参数校验"></a>网络参数校验</h5><p>解析参数，并赋予相应的变量。检查互斥配置。</p>
+<h5 id="是否初始化bridge驱动"><a href="#是否初始化bridge驱动" class="headerlink" title="是否初始化bridge驱动"></a>是否初始化bridge驱动</h5><p>参数校验完成后，接着判断Iface和disableNetworkBridge的值是否相同，Iface保存的是<strong>网桥名称</strong>，disableNetworkBridge是一个<strong>字符串常量</strong>，值为none。因此，若用户通过传过来的参数将Iface设为none，则config.DisableBridge变量为true，否则为false。</p>
+<p>接下来会调用libnetwork.New()生成网络控制器controller，这个控制器主要用于<strong>创建和管理Network</strong>。然后会通过null驱动和host驱动来进行默认的网络创建。</p>
+<p>最后会<strong>根据DisableBridge的值来决定bridge驱动是否进行初始化</strong>。若DisableNetwork为false,则运行initBridgeDriver函数。initBridgeDriver函数就是完成默认的bridge驱动的初始化任务。</p>
+<h5 id="处理网桥参数"><a href="#处理网桥参数" class="headerlink" title="处理网桥参数"></a>处理网桥参数</h5><p>已经知道Docker网桥默认为docker0，也可以通过–bridge参数指定自定义的网桥。处理用户自定义网桥的流程分为如下两步。</p>
+<p>(1)将用户指定的网桥名称传入Iface，若Iface不为空，则将其传赋值给bridgeName。如果Iface为空，则将bridgeName指定为DefaultNetworkBridge。DefaultNetworkBridge是一个字符串常量，为docker0，即表示当用户<strong>没有传入网桥参数时，启用默认网桥docker0。</strong></p>
+<p>(2)首先，寻找Docker网桥名是否在宿主机上有对应的显卡，如果存在则返回其IP等信息，否则则<strong>从系统预定义的IP列表中分配一个可用IP</strong>。如果用户没有使用–bip来指定Docker网桥的IP地址，那么上面得到的IP会被<strong>写入ipamV4Conf结构体</strong>中，此结构体用于保存关于Docker网桥上有关IPV4的相关信息，如果用户进行了指定则会将指定的IP信息写入ipamV4Conf结构体中。接下来,如果FixedCIDR参数不为空，则将用户传入的网络范围写入到ipamV4Conf结构体中。如果默认的网关不为空,则将其信息写人到ipamV4Conf结构体中。然后,如果FixedCIDRv6,则将用户指定的IPV6网络范围和相关的IPV6配置信息写入ipamV6Conf中。最后使用上述信息作为参数调用controller.NewNetwork()函数，并指定bridge驱动来创建Docker网桥。</p>
+<h5 id="创建网桥设置队列"><a href="#创建网桥设置队列" class="headerlink" title="创建网桥设置队列"></a>创建网桥设置队列</h5><p>当需要Docker daemon创建网络时，则调用<code>controller.NewNetwork()</code>函数来通过<code>libnetwork</code>完成创建，实现过程的主要步骤:</p>
+<ol>
+<li>使用IP管理器的<strong>默认驱动创建IP管理器</strong>，并使用IP管理器从其自身维护的IP池中<strong>获取参数中指定的IP地址段</strong>。</li>
+<li>在确保新的网络设置和已经存在的网络不冲突之后，<strong>创建与这个驱动（即bridge驱动)相符的配置结构体network。</strong>接下来根据配置中的网桥名寻找对应的网桥。如果网桥不存在，则将创建网桥的步骤加入设置队列。</li>
+<li>定义关于<strong>网络隔离的iptables规则设置的函数</strong>，在接下来的步骤中加入到设置队列中，以确保不同网络之间相互隔离。</li>
+<li>将IPV4配置到网桥上、IPV6配置、IPV6转发、开启本地回环接口的地址路由、开启iptables、IPV4和IPV6的网关信息配置、网络隔离的iptables规则设置和网桥网络过滤等步骤加入到设置队列中。</li>
+<li>最后，运行设置队列中的所有步骤，主要<strong>通过netlink进行系统调</strong>用来完成Docker网桥的创建和配置工作。</li>
+</ol>
+<h5 id="更新相关配置信息"><a href="#更新相关配置信息" class="headerlink" title="更新相关配置信息"></a>更新相关配置信息</h5><p>完成上述操作后，libnetwork会将各种相关配置信息存储到Docker的LibKv数据仓库中，以备后续的查找和使用。</p>
+<h3 id="libcontainer网络配置原理"><a href="#libcontainer网络配置原理" class="headerlink" title="libcontainer网络配置原理"></a>libcontainer网络配置原理</h3><p>Docker容器的网络就是在<strong>创建特定容器</strong>的时候，<strong>根据传入的参数为容器配置特定的网络环境</strong>，主要内容包括为容器配置网卡、IP、路由、DNS等一系列任务。Docker容器一般使用<code>docker run</code>命令来创建，其关于网络方面的参数有<code>--net</code>、<code>--dns</code>等。–net是一个非常重要的参数，用于指定容器的网络模式。</p>
+<h4 id="1-命令行参数阶段"><a href="#1-命令行参数阶段" class="headerlink" title="1.命令行参数阶段"></a>1.命令行参数阶段</h4><p>docker run命令执行的时候，首先会创建一个DockerCli类型的变量来表示Docker客户端，然后根据具体命令调用相应函数完成请求，如run命令就是调用CmdRun函数完成的。实现功能有：</p>
+<ul>
+<li>解析docker run命令的参数，并存入相应的变量( config、hostConfig、networkingConfig、cmd等）中。</li>
+<li>发送请求给Docker daemon，创建Docker容器对象，完成容器启动前的准备工作。</li>
+<li>发送请求给Docker daemon，启动容器。</li>
+</ul>
+<p>Docker run命令中提供的关于容器配置的参数首先保存在了<code>Config</code> 、<code>HostConfig</code>以及<code>NetworkingConfig</code>这3个结构中。结构体定义都放在在<code>engine-api</code>项目中的types包中，<code>Config</code>保存的是<strong>不依赖于宿主机的信息</strong>，也就是可以迁移的信息，其他与<strong>宿主机关联的信息</strong>都保存在<code>HostConfig</code>中，在Docker将网络模块独立为一个项目后，将<strong>网络参数</strong>部分从原来的配置中抽出为<code>NetworkingConfig</code>。Config中保存有Hostname(容器主机名)、NetworkDisabled(是否关闭容器网络功能）、MacAddress (网卡MAC地址）等;HostConfig保存有Dns(容器的DNS)、NetworkMode(容器的网络模式);NetworkingConfig保存了一组端点参数与所属网络名的map，docker run与docker network connect的网络配置均会保存在该map中。以上配置项都有对应的命令行参数。</p>
+<p>解析完docker run命令行参数以后，Docker客户端利用Docker daemon暴露的API接口，分别将创建容器与启动容器的请求发送至Docker daemon，完成容器的创建和启动。因此<strong>CmdRun函数</strong>除了解析并<strong>组装与网络相关的命令行参数</strong>外，不做网络方面的具体配置，具体的网络配置还是由Docker daemon来完成。</p>
+<h4 id="2-创建容器阶段"><a href="#2-创建容器阶段" class="headerlink" title="2.创建容器阶段"></a>2.创建容器阶段</h4><p>当Docker客户端将创建容器的请求发送给Docker daemon后，Docker daemon开始创建容器,主要完成以下工作。</p>
+<ul>
+<li>校验hostConfig、Config与NetworkingConfig中的参数。</li>
+<li>根据需要调整HostConfig的参数。</li>
+<li>根据传入的容器配置和名称创建对应的容器。</li>
+</ul>
+<p>容器创建的<strong>最终返回一个Container对象</strong>，Container对象就是容器的数据结构表示，其中有-个名为<code>NetworkSettings</code>的属性，描述了容器的具体网络信息，其结构主要为：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bridge</td>
+<td>容器所连接到的网桥</td>
+</tr>
+<tr>
+<td>SandboxID</td>
+<td>容器对应Sandbox的ID</td>
+</tr>
+<tr>
+<td>HairpinMode</td>
+<td>是否开启hairpin模式</td>
+</tr>
+<tr>
+<td>Ports</td>
+<td>容器映射的端口号</td>
+</tr>
+<tr>
+<td>SandboxKey</td>
+<td>Sandbox对应network namespace文件的路径</td>
+</tr>
+<tr>
+<td>Networks</td>
+<td>保存了容器端点配置与所属网络名的map</td>
+</tr>
+<tr>
+<td>IsAnonymousEndpoint</td>
+<td>容器是否未指定名字name</td>
+</tr>
+</tbody></table>
+<p>除了IsAnonymousEndpoint，都是在启动阶段才能完全确定。</p>
+<h4 id="3-启动容器阶段"><a href="#3-启动容器阶段" class="headerlink" title="3.启动容器阶段"></a>3.启动容器阶段</h4><p>容器创建完成之后, Docker客户端会发送启动容器请求。daemon首先获取到需要启动的容器,然后调用容器的Start函数去真正启动容器，其中与网络相关的主要：</p>
+<ul>
+<li><code>initializeNetwork</code>:初始化Container对象中与网络相关的属性;</li>
+<li><code>populateCommand</code>:填充Docker Container内部需要执行的命令，Command中含有进程启动命令，还含有容器环境的配置信息，也包括网络配置;</li>
+<li><code>container.waitForStart</code>:实现Docker Container内部进程的启动，进程启动之后，为进程创建网络环境等。</li>
+</ul>
+<h4 id="4-execdriver网络执行流程"><a href="#4-execdriver网络执行流程" class="headerlink" title="4.execdriver网络执行流程"></a>4.execdriver网络执行流程</h4><p><code>execdriver</code>是Docker daemon的执行驱动，用来启动容器内部进程的执行。<br>这里主要是配置表示命名空间的<code>namespaces</code>属性，<code>namespaces</code>列出了当启动容器进程时需要新创建的命名空间。network namespace的配置是通过调用<code>execdriver</code>的<code>createNetwork</code>函数实现的。该函数根据Docker容器的不同网络模式执行不同的动作，流程如下。</p>
+<ol>
+<li>根据execdriver.Command对象中的Network属性判断出采用不同的方式配置网络。</li>
+<li>若Network.ContainerID不为空，则为container模式，则首先在处于活动状态的容器列表中查找被引用的容器，接着找到被引用容器中进程的network namespace路径。假如被引用容器的第一个进程在主机中的PID为12345，则network namespace的路径为/proc/12345/ns/net。然后将该路径放入到libcontainer.Config.Namespaces中。</li>
+<li>若Network.NamespacePath不为空，对应host模式，则将Network.NamespacePath写入libcontainer.Config.Namespaces中。</li>
+<li>其他情况下，表示目前暂时无法获得network namespace，则为libcontianer设置PreStart钩子函数，主要工作是遍历execdriver提供的preStart钩子函数并执行。前面daemon中调用Run函数时已经将setNetworkNamespaceKey函数封装为PreStart钩子函数了。</li>
+</ol>
+<p>createNetwork函数执行完后，就已经把network namespace信息或者能够配置network<br>namespace的钩子函数<strong>全部记录到libcontainer里</strong>了。然后容器就开始执行，所以接着进入libcontainer中继续跟踪容器的网络。</p>
+<h4 id="5-libcontainer网络执行流程"><a href="#5-libcontainer网络执行流程" class="headerlink" title="5.libcontainer网络执行流程"></a>5.libcontainer网络执行流程</h4><p>在libnetwork被分离出来前，Docker网络的内核态配置是由libcontianer完成的，但在Docker容器启动的调用流程下，libcontainer只是<strong>负责触发libcontianer.Config .Hooks中的Prestart钩子函数来完成容器网络的底层配置</strong>，具体触发的地方位于<code>libcontainer/process_linux.go</code>文件中的<code>initProcess.start</code>方法中，在容器的init进程启动时调用。虽然随后的<code>createNetworkInterfaces</code>函数仍然存在并被调用了，但由于该函数是通过遍历<code>libcontainer.Config.Networks</code>数组内定义好的网络信息来配置网络的，而前面execdriver并未填充该数组,所以Docker容器启动流程下并不会在libcontainer中创建网络环境。暂时保留这部分只是为了兼容一些遗留代码。</p>
+<p>这里讲解一下容器启动前触发的<code>Prestart</code>钩子函数<code>setNetworkNamespaceKey</code>，虽然该函数真正定义的地方是在<code>daemon/container_operations_unix.go</code>。 <code>setNetworkNamespaceKey</code>的主要工作是<strong>获取network namespace并与容器对应的sandbox关联</strong>起来。首先<strong>通过容器pid获取容器networknamespace文件的位置—/proc/[pid]/ns/net</strong>，再<strong>通过容器ID获取其对应的sandbox</strong>，最后<strong>调用sandbox的SetKey完成底层网络的创建</strong>。</p>
+<h4 id="6-libnetwork实现内核态网络配置"><a href="#6-libnetwork实现内核态网络配置" class="headerlink" title="6.libnetwork实现内核态网络配置"></a>6.libnetwork实现内核态网络配置</h4><p>libnetwork对内核态网络的配置包括<strong>启动容器</strong>和<strong>libcontainer网络执行流程</strong>两个阶段。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%B9%E5%99%A8%E4%BA%91/">容器云</a><a class="post-meta__tags" href="/tags/docker/">docker</a></div><div class="post_share"><div class="social-share" data-image="/./img/photo-1465156799763-2c087c332922.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/10/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E5%92%8C%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/"><img class="prev-cover" src="/./img/photo-1465156799763-2c087c332922.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">docker资源限制和底层技术</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/07/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E5%9F%BA%E7%A1%80/"><img class="next-cover" src="/./img/photo-1626277787644-47d530591292.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">docker基础</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/10/07/云原生/docker/docker基础/" title="docker基础"><img class="cover" src="/./img/photo-1626277787644-47d530591292.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-07</div><div class="title">docker基础</div></div></a></div><div><a href="/2021/10/16/云原生/docker/docker日志和监控/" title="docker日志和监控"><img class="cover" src="/./img/photo-1626811407568-2f41c53fff99.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">docker日志和监控</div></div></a></div><div><a href="/2021/10/10/云原生/docker/docker资源限制和底层技术/" title="docker资源限制和底层技术"><img class="cover" src="/./img/photo-1465156799763-2c087c332922.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-10</div><div class="title">docker资源限制和底层技术</div></div></a></div><div><a href="/2021/10/16/云原生/docker/docker数据卷/" title="docker数据卷"><img class="cover" src="/./img/photo-1465188162913-8fb5709d6d57.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">docker数据卷</div></div></a></div><div><a href="/2021/10/13/云原生/docker/docker镜像/" title="docker镜像"><img class="cover" src="/./img/photo-1626427832435-d6c500cc2686.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">docker镜像</div></div></a></div><div><a href="/2021/10/07/云原生/云原生/" title="云原生"><img class="cover" src="/./img/photo-1626277787644-47d530591292.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-07</div><div class="title">云原生</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Docker%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">一、Docker网络架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81bridge%E9%A9%B1%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">二、bridge驱动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker0%E7%BD%91%E6%A1%A5"><span class="toc-number">2.1.</span> <span class="toc-text">docker0网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iptables%E8%A7%84%E5%88%99"><span class="toc-number">2.2.</span> <span class="toc-text">iptables规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%E5%AE%B9%E5%99%A8%E7%9A%84DNS%E5%92%8C%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-number">2.3.</span> <span class="toc-text">Docker容器的DNS和主机名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Docker%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">三、Docker网络配置原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-daemon%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">Docker daemon网络配置原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">3.1.1.</span> <span class="toc-text">1.网络相关的参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">2.初始化过程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">网络参数校验</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%98%AF%E5%90%A6%E5%88%9D%E5%A7%8B%E5%8C%96bridge%E9%A9%B1%E5%8A%A8"><span class="toc-number">3.1.2.2.</span> <span class="toc-text">是否初始化bridge驱动</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E7%BD%91%E6%A1%A5%E5%8F%82%E6%95%B0"><span class="toc-number">3.1.2.3.</span> <span class="toc-text">处理网桥参数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%BD%91%E6%A1%A5%E8%AE%BE%E7%BD%AE%E9%98%9F%E5%88%97"><span class="toc-number">3.1.2.4.</span> <span class="toc-text">创建网桥设置队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">3.1.2.5.</span> <span class="toc-text">更新相关配置信息</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#libcontainer%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">libcontainer网络配置原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E9%98%B6%E6%AE%B5"><span class="toc-number">3.2.1.</span> <span class="toc-text">1.命令行参数阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8%E9%98%B6%E6%AE%B5"><span class="toc-number">3.2.2.</span> <span class="toc-text">2.创建容器阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8%E9%98%B6%E6%AE%B5"><span class="toc-number">3.2.3.</span> <span class="toc-text">3.启动容器阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-execdriver%E7%BD%91%E7%BB%9C%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.2.4.</span> <span class="toc-text">4.execdriver网络执行流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-libcontainer%E7%BD%91%E7%BB%9C%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.2.5.</span> <span class="toc-text">5.libcontainer网络执行流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-libnetwork%E5%AE%9E%E7%8E%B0%E5%86%85%E6%A0%B8%E6%80%81%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.6.</span> <span class="toc-text">6.libnetwork实现内核态网络配置</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By naive</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

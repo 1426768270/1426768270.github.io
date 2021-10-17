@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>docker数据卷 | naive的博客</title><meta name="keywords" content="容器云,docker"><meta name="author" content="naive"><meta name="copyright" content="naive"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、docker数据卷Docker镜像是由一系列的只读层组合而来的,当启动一个容器时, Docker加载镜像的所有只读层，并在最上层加入一个读写层。这个设计使得Docker可以提高镜像构建、存储和分发的效率，节省了时间和存储空间，然而也存在如下问题。  容器中的文件在宿主机上存在形式复杂，不能在宿主机上很方便地对容器中的文件进行访问。 多个容器间的数据无法共享。 删除容器时，容器的数据丢失。  d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker数据卷">
+<meta property="og:url" content="http://yoursite.com/2021/10/16/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E6%95%B0%E6%8D%AE%E5%8D%B7/index.html">
+<meta property="og:site_name" content="naive的博客">
+<meta property="og:description" content="一、docker数据卷Docker镜像是由一系列的只读层组合而来的,当启动一个容器时, Docker加载镜像的所有只读层，并在最上层加入一个读写层。这个设计使得Docker可以提高镜像构建、存储和分发的效率，节省了时间和存储空间，然而也存在如下问题。  容器中的文件在宿主机上存在形式复杂，不能在宿主机上很方便地对容器中的文件进行访问。 多个容器间的数据无法共享。 删除容器时，容器的数据丢失。  d">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/img/photo-1465188162913-8fb5709d6d57.jpg">
+<meta property="article:published_time" content="2021-10-16T07:24:22.000Z">
+<meta property="article:modified_time" content="2021-10-16T14:58:49.165Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="容器云">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/img/photo-1465188162913-8fb5709d6d57.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2021/10/16/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E6%95%B0%E6%8D%AE%E5%8D%B7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'docker数据卷',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-10-16 22:58:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="naive的博客" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">98</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/./img/photo-1465188162913-8fb5709d6d57.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">naive的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">docker数据卷</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-16T07:24:22.000Z" title="发表于 2021-10-16 15:24:22">2021-10-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-10-16T14:58:49.165Z" title="更新于 2021-10-16 22:58:49">2021-10-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="docker数据卷"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="一、docker数据卷"><a href="#一、docker数据卷" class="headerlink" title="一、docker数据卷"></a>一、docker数据卷</h2><p>Docker镜像是由一系列的只读层组合而来的,当启动一个容器时, Docker加载镜像的所有只读层，并在最上层加入一个读写层。这个设计使得Docker可以提高镜像构建、存储和分发的效率，节省了时间和存储空间，然而也存在如下问题。</p>
+<ul>
+<li>容器中的文件在宿主机上存在形式复杂，不能在宿主机上很方便地对容器中的文件进行访问。</li>
+<li>多个容器间的数据无法共享。</li>
+<li>删除容器时，容器的数据丢失。</li>
+</ul>
+<p>docker引入了数据集（volume）来解决这些问题。volume是存在于一个或多个容器中特点文件或文件夹，这个目录独立于联合文件系统的形式在宿主机存在，并为数据的共享与持久化提供便利：</p>
+<ul>
+<li>volume在容器<strong>创建时就会初始化</strong>，在容器运行时就可以使用其中的文件。</li>
+<li>volume能在不同的容器之间<strong>共享和重用</strong>。</li>
+<li>对volume中数据的<strong>操作会马上生效</strong>。</li>
+<li>对volume中数据的操作<strong>不会影响到镜像本身</strong>。</li>
+<li>volume的生存周期独立于容器的生存周期，即使删除容器，volume仍然会存在，没有任何容器使用的volume也不会被Docker删除。</li>
+</ul>
+<p>Docker提供了<code>volumedriver</code>接口,通过实现该接口,可以为Docker容器提供不同的volume存储支持。当前官方默认实现了local这种volumedriver，它使用宿主机的文件系统为Docker容器提供volume。</p>
+<h2 id="二、数据卷使用方式"><a href="#二、数据卷使用方式" class="headerlink" title="二、数据卷使用方式"></a>二、数据卷使用方式</h2><p>添加volume，类似于Linux的mount操作。用户将一个文件夹作为volume挂载到容器上，可以方便地添加数据到容器，供其中的进程使用。</p>
+<p>docker1.9引入了<code>docker volume</code>。通过这个命令创建、查看、删除。</p>
+<h3 id="1-创建volume"><a href="#1-创建volume" class="headerlink" title="1.创建volume"></a>1.创建volume</h3><p>用户可以使用<code>docker volume create</code>创建一个volume</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create --name vol</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Docker当前并未对volume的大小提供配额管理，用户在创建volume时也无法指定volume的大小。在用户使用Docker创建volume时，由于采用的是默认的local volumedriver，所以volume的文件系统默认使用宿主机的文件系统，如果用户需要创建其他文件系统的volume，则需要使用其他的volumedriver。</p>
+</blockquote>
+<p>创建容器时。可以使用-v为容器添加volume</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run -d -v /data ubuntu /bin/bash</span><br><span class="line">$ sudo docker run -d -v vol_simple: /data ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>Docker在创建volume的时候会在宿主机<code>/var/lib/docker/volume/</code>中创建一个以volume ID为名的目录，并将volume中的内容存储在名为_data的目录下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> docker volume inspect vol_simple</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;Name&quot;</span> : <span class="string">&quot;vol_simple&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Driver&quot;</span>: <span class="string">&quot;local&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Mountpoint&quot;</span> : <span class="string">&quot;/var/lib/docker/volumes/vol_simplel_data&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-挂载volume"><a href="#2-挂载volume" class="headerlink" title="2.挂载volume"></a>2.挂载volume</h3><p>用户可以将自行创建或者由Docker创建的volume挂载到容器中,也可以将宿主机上的目录或者文件作为volume挂载到容器中。下面分别介绍这两种挂载方式。</p>
+<p>用户可以使用如下命令创建volume，并将其创建的volume挂载到容器中的/data目录下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume create --name vol_simple</span><br><span class="line">docker run -d -v vol_simple: /data ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>如果用户不执行第一条命令而直接执行第二条命令的话，Docker会代替用户来创建一个名为vol_simple的volume，并将其挂载到容器中的/data目录下。</p>
+<p>用户也可以使用如下命令创建一个<strong>随机ID的volume</strong>，并将其挂载到/data目录下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v /data ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>以上命令都是将自行创建或者由Docker创建的volume挂载到容器中。Docker同时也允许我们将宿主机上的目录挂载到容器中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /host/dir:/container/dir ubuntu /bin/bash</span><br><span class="line">docker run -it --name vol_file -v /host/file:/container/file ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p><code>/host/dir</code>文件夹中所有文件都可以在容器的<code>/container/dir</code>文件夹下被访问，并且容器中文件夹下内容会被隐藏。也可以用挂载单个文件，文件夹使用<strong>绝对路径</strong>。</p>
+<p>可以使用<code>:ro</code>指定该volume为只读。可以在volume挂载时使用Z和z来指定该volume是否可以共享。Docker中默认的是<code>z</code>，即<strong>共享该volume</strong>。用户也可以在挂载时使用Z来标注该volume为私有数据卷。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#私有</span></span><br><span class="line">docker run -it --name vol_unshared -v /host/dir:/container/dir:Z ubuntu /bin/bash</span><br><span class="line"><span class="comment">#只读</span></span><br><span class="line">docker run -it --name vol_read_only -v /host/dir:/container/dir:ro ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>使用多个<code>-v</code>标签为容器添加多个volume</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name vol_mult -v /data1 -v /data2 -v /host/dir:/container/dir ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Dockerfile添加volume"><a href="#3-Dockerfile添加volume" class="headerlink" title="3.Dockerfile添加volume"></a>3.Dockerfile添加volume</h3><p> 使用<code>VOLUME</code>指令向容器添加volume。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">VOLUME</span><span class="bash"> /data</span></span><br><span class="line"><span class="keyword">vOLUME</span><span class="bash"> [ <span class="string">&quot;/data1&quot;</span>, <span class="string">&quot;/data2&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>在使用docker build命令生成镜像并且以该镜像启动容器时会挂载一个volume到/data。与上文中vol_simple例子类似，如果镜像中存在/data文件夹,<strong>这个文件夹中的内容将全部被复制到宿主机中对应的文件夹中</strong>，并且根据容器中的文件设置合适的权限和所有者。</p>
+<p>需要注意的是,在Dockerfile中使用VOLUME指令之后的代码,如果尝试对这个volume进行修改，这些修改都不会生效。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在创建volume后，尝试在其中添加一些初始化的文件并改变文件所有权W。</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> useradd foo</span></span><br><span class="line"><span class="keyword">VOLUME</span><span class="bash"> /data</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> touch /data/file</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> chown -R foo:foo /data</span></span><br></pre></td></tr></table></figure>
+
+<p>创建镜像并启动容器后，该容器中存在用户foo，并且能看到在/data挂载的volume，但是/data文件夹内并没有文件file，更别说file的所有者并没有被改变为foo。这是由于Dockerfile中除了FROM指令的每一行都是<strong>基于上一行生成的临时镜像运行一个容器</strong>，执行一条指令并执行类似<code>docker commit</code>的命令得到一个新的镜像，这条类似docker commit的命令<strong>不会对挂载的volume进行保存</strong>。所以上面的Dockerfile最后两行执行时，都会<strong>在一个临时的容器上挂载/data</strong>，并对这个临时的volume进行操作，但是这一行指令执行并提交后，这个临时的volume没有被保存，我们通过最后生成的镜像创建的容器所挂载的volume是没有操作过的。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#对volume初始化改变所有这</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> useradd foo</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /data &amp;&amp; touch /data/file</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> chown -R foo:foo ldata</span></span><br><span class="line"><span class="keyword">VOLUME</span><span class="bash"> /data</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#与RUN指令在镜像构建过程中执行不同，CND指令和ENTRVPOINT指令是在容器启动时执行，使用如下Dockerfile也可以达到对volume初始化的目的。</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> useradd foo</span></span><br><span class="line"><span class="keyword">VOLUME</span><span class="bash"> /data</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> touch /data/file &amp;&amp; chown -R foo:foo /data</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-共享volume"><a href="#4-共享volume" class="headerlink" title="4.共享volume"></a>4.共享volume</h3><p>在使用<code>docker run或</code>docker create<code>创建新容器时，可以使用</code>–volumes-from`标签使得容器与已有的容器共享volume。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#新创建的容器vol_use与之前创建的容器vol_simple共享volume，这个volume目的目录也是/data。如果被共享的容器有多个volume(如上文中出现的vol_mult )，新容器也将有多个volume,并且其挂载的目的目录也与vol_mult中的相同。</span></span><br><span class="line">docker run --rm -it --name vol_use --volumes-from vol_simple ubuntu /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用用多个--volumes-from标签，使得容器与多个已有容器共享volume。</span></span><br><span class="line">docker run --rm -it --name vol_use_mult --volumes-from vol_1 --volumes-from vol_2 ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>一个容器挂载了一个volume，即使这个容器停止运行，<strong>该volume仍然存在</strong>，其他容器也可以使用–volumes-from与这个容器共享volume。如果有一些数据，比如配置文件、数据文件等，要在多个容器之间共享，一种常见的做法是创建一个数据容器，其他的容器与之共享volume。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run --name vol_data -v /data ubuntu <span class="built_in">echo</span> <span class="string">&quot;This is a data-only container&quot;</span></span><br><span class="line">docker run -it --name vol_share1 --volumes-from vol_data ubuntu /bin/bash</span><br><span class="line">docker run -it --name vol_share2 --volumes-from vol_data ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>首先创建了一个挂载了volume的数据容器<code>vol_data</code>，这个容器仅仅输出了一条提示后就停止运行以避免浪费资源。接下来的两个容器<code>vol_share1</code>和<code>vol_sharez</code>与这个数据容器共享这个volume。这样就<strong>将两个需要共享数据的容器进行了较好的解耦</strong>，避免了容器之间因为共享数据而产生相互依赖。</p>
+<h3 id="5-删除volume"><a href="#5-删除volume" class="headerlink" title="5.删除volume"></a>5.删除volume</h3><p>如果创建容器时从容器中挂载了volume，在<code>/var/lib/docker/volumes</code>下会生成与volume对应的目录，使用<code>docker rm</code>删除容器并<strong>不会删除与volume对应的目录</strong>，这些目录会占据不必要的存储空间，即使可以手动删除，因为有些随机生成的目录名称是无意义的随机字符串，要知道它们是否与未被删除的容器对应也十分麻烦。所以在删除容器时需要对容器的volume妥善处理。在删除容器时一并删除volume有以下3种方法。</p>
+<ul>
+<li>使用<code>docker volume rm &lt;volume_name&gt;</code>删除volume。</li>
+<li>使用<code>docker rm -v &lt;container_name&gt;</code>删除容器。</li>
+<li>在运行容器时使用<code>docker run --rm</code>，<code>--rm</code>标签<strong>会在容器停止运行时删除容器以及容器所挂载的volume。</strong></li>
+</ul>
+<blockquote>
+<p>在使用docker volume rm删除volume时，只有当<strong>没有任何容器使用该volume</strong>的时候，该volume才能成功删除。另外两种方法只会对挂载在该容器上的<strong>未命名的volume进行删除</strong>，而会对用户指定名字的volume进行保留。</p>
+<p>如果volume是在创建容器时从宿主机中挂载的,无论对容器进行任何操作都不会导致其在宿主机中被删除，如果不需要这些文件，只能手动删除它们。</p>
+</blockquote>
+<h3 id="6-备份、恢复或迁移volume"><a href="#6-备份、恢复或迁移volume" class="headerlink" title="6.备份、恢复或迁移volume"></a>6.备份、恢复或迁移volume</h3><p>一个方法是使用docker inspect命令查找到/data在宿主机上对应的文件夹位置，然后复制其中的内容或是使用tar进行打包;同样地，如果需要恢复某个volume中的数据，可以查找到volume对应的文件夹，将数据复制进这个文件夹或是使用tar从存档文件中恢复。这些做法可行但并不值得推荐。</p>
+<p>推荐一个用<code>--volumes-from</code>实现的volume的备份与恢复方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#vol_simple容器包含了我们希望备份的一个volume，这行命令启动了另外一个临时的容器，这个容器挂载了两个volume，第一个volume来自于vol_simple容器的共享，也就是需要备份的volume，第二个volume将宿主机的当前目录挂载到容器的/backup下。容器运行后将要备份的内容(l/data文件夹）备份到/backup/data.tar，然后删除容器，备份后的data.tar就留在了当前目录。</span></span><br><span class="line"></span><br><span class="line">docker run --rm --volumes-from vol_simple -v $(<span class="built_in">pwd</span>):/backup ubuntu tar cvf /backup/data.tar /data</span><br></pre></td></tr></table></figure>
+
+<p>恢复volume可以使用以下方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#首先运行了一个新容器作为数据恢复的目标。第二行指令启动了一个临时容器，这个容器挂载了两个volume，第一个volume与要恢复的volume共享，第二个volume将宿主机的当前目录挂载到容器的/backup下。由于之前备份的data.tar在当前目录下,那么它在容器中的/backup也能访问到，容器启动后将这个存档文件中的/data恢复到根目录下，然后删除容器，恢复后的数据就在vol_bck的volume中了。</span></span><br><span class="line"></span><br><span class="line">docker run -it --name vol_bck -v /data ubuntu /bin/bash</span><br><span class="line">docker run --rm --volumes-from vol_bck -v $(<span class="built_in">pwd</span>): /backup ubuntu tar xvf /backup/data.tar -C /</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、数据卷原理"><a href="#三、数据卷原理" class="headerlink" title="三、数据卷原理"></a>三、数据卷原理</h2><p>Docker的volume的本质是容器中一个特殊的目录。在容器的创建过程中，Docker会将宿主机上的<strong>指定目录(一个以volume ID为名称的目录，或者指定的宿主机目录)挂载到容器中指定的目录上</strong>，这里使用的挂载方法是<strong>绑定挂载( bind mount )</strong>，故挂载完成后的宿主机目录和容器内的目标目录表现一致。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用户执行docker run -v /data busybox /bin/sh指定容器里的/data目录为一个volume,实际上相当于在创建容器的过程中在容器里执行如下代码:</span></span><br><span class="line"><span class="comment">#将宿主机上的volume_id目录绑定挂载到rootfs中指定的挂载点/data上</span></span><br><span class="line">mount(“/var/lib/docker/volumes/volume_id/_data”, “rootfs/data”, “none”, NS_BIND，NULL)</span><br><span class="line"><span class="comment">#而如果用户执行的是docker run -v /var/log:/data busybox /bin/sh的话，则实际对应了:</span></span><br><span class="line"><span class="comment">#将宿主机上的/var/log目录绑定挂载到rootfs中指定的挂载点/data上</span></span><br><span class="line">mount( <span class="string">&quot;/var/log”, “rootfs/data”, “none”, MS_BIND，NULL)</span></span><br></pre></td></tr></table></figure>
+
+<p>在处理完所有的mount操作之后（真正需要Docker容器挂载的除了volume目录还包括rootfs，init-layer里的内容，/proc设备等)，Docker只需要通过<code>chdir</code>和<code>pivot_root</code>切换进程的根目录到<code>rootfs</code>中，这样容器内部进程就只能看见以<code>rootfs</code>为根的文件内容以及被mount到rootfs之下的各项目录了。例如，下面的data目录就是生成出来的volume挂载点了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@in_the_container:/ ls</span><br><span class="line">bin boot data dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usrvar</span><br></pre></td></tr></table></figure>
+
+<p>Docker daemon在为容器挂载目录的过程中着重处理的事情就是<strong>是如何组装出合适的mount指令</strong>，而在源码中，挂载点这个结构体中则包含了组装mount命令所有需要的信息。</p>
+<h4 id="1-创建volume-1"><a href="#1-创建volume-1" class="headerlink" title="1.创建volume"></a>1.创建volume</h4><p>volume的来源只有两种，即用户通过<strong>命令行指定的绑定挂载</strong>和从其他容器共享。<br>Docker首先需要根据用户指定的volume类型，判断并新建对应的挂载点。Docker在创建volume的过程中主要进行了如下操作。</p>
+<p>volume的创建依照容器启动的过程可以分为两个阶段。第一阶段为容器创建阶段，Docker<strong>根据两种不同的volume来源组装挂载点列表</strong>。第二阶段为容器启动阶段，<strong>libcontainer使用组装好的挂载点列表进行mount操作</strong>，完成volume的创建。</p>
+<p>Docker会负责维护一个<strong>本地的volume列表</strong>，该列表中存储了所有本地有名字的volume，列表的键为volume的名字，值为volume的存储路径和驱动名称。如果用户指定了volume的名字，那么Docker会在volume列表中查找<strong>是否已经有对应的volume</strong>。若Docker没有在volume列表中找到对应的volume，Docker<strong>会创建一个以此名字命名的volume</strong>，并将该volume加入到Docker维护的volume列表中，然后创建一个新的挂载点。如果找到了对应的volume，则将其中的信息复制到新创建的挂载点中（主要信息为volume的源地址)。</p>
+<p>Docker为每一个容器都维护着如下所示的挂载点组成的列表,在这个挂载点中填写上述宿主机上源目录路径、容器内挂载位置、读写权限等信息。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MountPoint <span class="keyword">struct</span> &#123;</span><br><span class="line">	Source			<span class="keyword">string</span>	<span class="comment">//源目录</span></span><br><span class="line">	Destination		<span class="keyword">string</span>	<span class="comment">//目的目录</span></span><br><span class="line">    Rw				<span class="keyword">bool</span>	<span class="comment">//是否可写</span></span><br><span class="line">	Name			<span class="keyword">string</span> 	<span class="comment">// volume的名字</span></span><br><span class="line">    Driver			<span class="keyword">string</span>	<span class="comment">// volume driver的名字</span></span><br><span class="line">	Volume			Volume	<span class="comment">//该挂载点所对应的本地volume信息</span></span><br><span class="line">	Mode			<span class="keyword">string</span>	<span class="comment">//挂载的模式</span></span><br><span class="line">	Propagation		<span class="keyword">string</span>	<span class="comment">//挂载的拓展选项</span></span><br><span class="line">	Named			<span class="keyword">bool</span>	<span class="comment">//该挂载点是否被命名</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于共享的volume，Docker从输入参数中解析出<strong>volume容器ID</strong>是否可读”两个变量。接着根据容器ID查找到对应的容器对象Container，然后根据该对象中volumes数组复制并创建新的挂载点,并加入到上面提到的挂载点列表中。</p>
+<p>不同参数所感的主要字段</p>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>-v vol_simple:/containerdir</th>
+<th>-v /containerdir</th>
+<th>-v /hostdir:/containerdir:ro</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Source</td>
+<td>/var/lib/docker/volumes/vol_simple/_data</td>
+<td>/var/lib/docker/volumes/随机ID/_data</td>
+<td>/hostdir</td>
+</tr>
+<tr>
+<td>Destination</td>
+<td>/containerdir</td>
+<td>/containerdir</td>
+<td>/containerdir</td>
+</tr>
+<tr>
+<td>Rw</td>
+<td>true</td>
+<td>true</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>vol_simple</td>
+<td>随机ID</td>
+<td>nill</td>
+</tr>
+<tr>
+<td>Named</td>
+<td>true</td>
+<td>true</td>
+<td>true</td>
+</tr>
+</tbody></table>
+<h4 id="2-删除volume"><a href="#2-删除volume" class="headerlink" title="2.删除volume"></a>2.删除volume</h4><ul>
+<li>使用<code>docker volume rm</code>删除volume时，Docker首先会检查<strong>是否还有容器在使用这个volume</strong>，如果这个volume还被其他容器所使用,则返回错误信息,并终止删除。如果没有容器在使用这个volume,那么Docker会将这个volume在宿主机上<strong>对应的目录删除</strong>，并删除其维护的本地volume列表中的相关信息。</li>
+<li>使用<code>docker run --rm</code>和<code>docker rm -v</code>进行volume删除时，其volume的删除过程与第一种类似，不过需要注意的是，这种<strong>删除的方式会过滤掉挂载点中Named字段为true的volume</strong>，也就是说这种方式<strong>并不会对命名的volume进行删除</strong>。</li>
+</ul>
+<h4 id="3-volume相关配置文件"><a href="#3-volume相关配置文件" class="headerlink" title="3.volume相关配置文件"></a>3.volume相关配置文件</h4><p>Docker的每个容器在<code>/var/lib/docker/containers</code>文件夹下有一个以容器ID命名的子文件夹，这个子文件夹中的<code>config.json</code>文件是这个容器的配置文件，可以从中看到这个容器所使用的<code>volumeID</code>以及它们的可写情况。如果你要查看volume的具体信息，你可以在<code>/var/lib/docker/volumes</code>文件夹下找与volume ID或者volume名字命名的子文件夹，这个子文件夹中的<code>_data</code>目录存储了该volume中的所有内容。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%B9%E5%99%A8%E4%BA%91/">容器云</a><a class="post-meta__tags" href="/tags/docker/">docker</a></div><div class="post_share"><div class="social-share" data-image="/./img/photo-1465188162913-8fb5709d6d57.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/10/16/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E6%97%A5%E5%BF%97%E5%92%8C%E7%9B%91%E6%8E%A7/"><img class="prev-cover" src="/./img/photo-1626811407568-2f41c53fff99.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">docker日志和监控</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/13/%E4%BA%91%E5%8E%9F%E7%94%9F/docker/docker%E9%95%9C%E5%83%8F/"><img class="next-cover" src="/./img/photo-1626427832435-d6c500cc2686.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">docker镜像</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/10/07/云原生/docker/docker基础/" title="docker基础"><img class="cover" src="/./img/photo-1626277787644-47d530591292.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-07</div><div class="title">docker基础</div></div></a></div><div><a href="/2021/10/16/云原生/docker/docker日志和监控/" title="docker日志和监控"><img class="cover" src="/./img/photo-1626811407568-2f41c53fff99.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">docker日志和监控</div></div></a></div><div><a href="/2021/10/10/云原生/docker/docker资源限制和底层技术/" title="docker资源限制和底层技术"><img class="cover" src="/./img/photo-1465156799763-2c087c332922.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-10</div><div class="title">docker资源限制和底层技术</div></div></a></div><div><a href="/2021/10/10/云原生/docker/docker网络/" title="docker网络"><img class="cover" src="/./img/photo-1465156799763-2c087c332922.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-10</div><div class="title">docker网络</div></div></a></div><div><a href="/2021/10/13/云原生/docker/docker镜像/" title="docker镜像"><img class="cover" src="/./img/photo-1626427832435-d6c500cc2686.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">docker镜像</div></div></a></div><div><a href="/2021/10/07/云原生/云原生/" title="云原生"><img class="cover" src="/./img/photo-1626277787644-47d530591292.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-07</div><div class="title">云原生</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81docker%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-number">1.</span> <span class="toc-text">一、docker数据卷</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E5%8D%B7%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">二、数据卷使用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BAvolume"><span class="toc-number">2.1.</span> <span class="toc-text">1.创建volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8C%82%E8%BD%BDvolume"><span class="toc-number">2.2.</span> <span class="toc-text">2.挂载volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Dockerfile%E6%B7%BB%E5%8A%A0volume"><span class="toc-number">2.3.</span> <span class="toc-text">3.Dockerfile添加volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%85%B1%E4%BA%ABvolume"><span class="toc-number">2.4.</span> <span class="toc-text">4.共享volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%A0%E9%99%A4volume"><span class="toc-number">2.5.</span> <span class="toc-text">5.删除volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%A4%87%E4%BB%BD%E3%80%81%E6%81%A2%E5%A4%8D%E6%88%96%E8%BF%81%E7%A7%BBvolume"><span class="toc-number">2.6.</span> <span class="toc-text">6.备份、恢复或迁移volume</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%8D%B7%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">三、数据卷原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BAvolume-1"><span class="toc-number">3.0.1.</span> <span class="toc-text">1.创建volume</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%A0%E9%99%A4volume"><span class="toc-number">3.0.2.</span> <span class="toc-text">2.删除volume</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-volume%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.0.3.</span> <span class="toc-text">3.volume相关配置文件</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By naive</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
