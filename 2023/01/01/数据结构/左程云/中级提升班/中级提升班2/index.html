@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>中级提升班2 | naive的博客</title><meta name="keywords" content="左程云"><meta name="author" content="naive"><meta name="copyright" content="naive"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="题目一 差值为k的去重数字对给定一一个数组arr,，求差值为k的去重数字对。 给一个数组3,2,5,7,0,0 差值为2的有(0,2),(3,5),(5,7)  (leetcode532 数组中的 k-diff 数对)  解 使用hash表将数据放入，遍历hash表，找到当前数+k的数是否存在 12345678910111213public List&lt;List&lt;Integer&gt;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="中级提升班2">
+<meta property="og:url" content="http://yoursite.com/2023/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD2/index.html">
+<meta property="og:site_name" content="naive的博客">
+<meta property="og:description" content="题目一 差值为k的去重数字对给定一一个数组arr,，求差值为k的去重数字对。 给一个数组3,2,5,7,0,0 差值为2的有(0,2),(3,5),(5,7)  (leetcode532 数组中的 k-diff 数对)  解 使用hash表将数据放入，遍历hash表，找到当前数+k的数是否存在 12345678910111213public List&lt;List&lt;Integer&gt;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/img/photo-1627819376920-9faac124cf13.jpg">
+<meta property="article:published_time" content="2023-01-01T05:02:55.000Z">
+<meta property="article:modified_time" content="2023-01-02T10:47:36.997Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="左程云">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/img/photo-1627819376920-9faac124cf13.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2023/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '中级提升班2',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-02 18:47:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="naive的博客" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">174</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/./img/photo-1627819376920-9faac124cf13.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">naive的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">中级提升班2</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-01T05:02:55.000Z" title="发表于 2023-01-01 13:02:55">2023-01-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-02T10:47:36.997Z" title="更新于 2023-01-02 18:47:36">2023-01-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="中级提升班2"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="题目一-差值为k的去重数字对"><a href="#题目一-差值为k的去重数字对" class="headerlink" title="题目一 差值为k的去重数字对"></a>题目一 差值为k的去重数字对</h2><p>给定一一个数组arr,，求差值为k的去重数字对。</p>
+<p>给一个数组3,2,5,7,0,0 差值为2的有(0,2),(3,5),(5,7)</p>
+<blockquote>
+<p>(<code>leetcode532</code> 数组中的 k-diff 数对)</p>
+</blockquote>
+<p>解</p>
+<p>使用hash表将数据放入，遍历hash表，找到当前数+k的数是否存在</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; findPairs(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k) &#123;</span><br><span class="line">    HashSet&lt;Integer&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num: nums)&#123;</span><br><span class="line">        set.add(num);</span><br><span class="line">    &#125;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Integer num : set)&#123;</span><br><span class="line">        <span class="keyword">if</span> (set.contains(num + k))&#123;</span><br><span class="line">            res.add(Arrays.asList(num, num + k));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>leetcode532的解法还需要处理k=0的情况</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findPairs</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    HashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num: nums)&#123;</span><br><span class="line">        map.put(num, map.get(num) != <span class="keyword">null</span> ? map.get(num) + <span class="number">1</span> : <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Integer num : map.keySet())&#123;</span><br><span class="line">        <span class="keyword">if</span> (map.containsKey(num + k))&#123;</span><br><span class="line">            <span class="keyword">if</span> (k == <span class="number">0</span> &amp;&amp; map.get(num) == <span class="number">1</span>)&#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            res ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目二-magic操作"><a href="#题目二-magic操作" class="headerlink" title="题目二 magic操作"></a>题目二 magic操作</h2><p>给一个包含n个整数元素的集合a，一个包含m个整数元素的集合b。</p>
+<p>定义magic操作为，从一个集合中取出一个元素，放到另一个集合里，且操作过后每个集合的平均值都大于操作前。</p>
+<p>注意以下两点:</p>
+<ol>
+<li><p>不可以把一个集合的元素取空，这样就没有平均值了</p>
+</li>
+<li><p>值为x的元素从集合b取出放入集合a，但集合a中已经有值为x的元素，则a的平均值不变(因为集合元素不会重复)，b的平均值可能会改变( 因为x被取出了)</p>
+</li>
+</ol>
+<p>问最多可以进行多少次magic操作?</p>
+<p><strong>解</strong></p>
+<p>2个集合的平均值的这几种情况</p>
+<ol>
+<li><p>平均值一样都为n，</p>
+<ol>
+<li><p><code>&lt;n</code>的数，a平均值会上升，b平均值会下降;</p>
+</li>
+<li><p><code>=n</code>的数，a平均值和b平均值不变；</p>
+</li>
+<li><p><code>&gt;n</code>的数，a平均值会下降，b平均值会上升；</p>
+<p>总结相等是不能进行magic操作。</p>
+</li>
+</ol>
+</li>
+<li><p>平均值不一样分别为A，B ,A&lt;B</p>
+<ol>
+<li><p>从小集合a向大集合b放</p>
+<ol>
+<li><code>&lt;A</code>的，a平均值上升，b平均值下降；</li>
+<li><code>=A</code>的，a平均值不变，b平均值下降；</li>
+<li><code>&gt;A</code>的，a平均值下降；</li>
+</ol>
+<p>不能进行magic操作。</p>
+</li>
+<li><p>从小集合b向大集合a放</p>
+<ol>
+<li><code>&lt;B || &gt;A</code>的,两个平均值上升；</li>
+<li><code>=B</code>, b的平均值不变；</li>
+<li><code>&gt;B</code> ,b平均值下降；</li>
+</ol>
+<p>只能放置b集合中<code>&lt;B || &gt;A</code>的数</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>根据分析，只能从集合b中找到<code>&lt;B || &gt;A</code>的数放入到集合a中，并且是在集合a中不存在的数。</p>
+<p>那么进行多少次magic操作，就要按照一定的顺序进行放置，只能找到b集合中复合条件的数，将其按从小到大排列，依次放入a集合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// arr1无重复值，arr2无重复值，arr1和arr2肯定有数字</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">maxOps</span><span class="params">(<span class="keyword">int</span>[] arr1, <span class="keyword">int</span>[] arr2)</span></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> sum1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : arr1)&#123;</span><br><span class="line">        sum1 +=num;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">double</span> sum2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : arr2)&#123;</span><br><span class="line">        sum2 +=num;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">double</span> avg1 = avg(sum1, arr1.length);</span><br><span class="line">    <span class="keyword">double</span> avg2 = avg(sum2, arr2.length);</span><br><span class="line">    <span class="keyword">if</span> ( avg1==avg2 )&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 平均值不想动</span></span><br><span class="line">    <span class="keyword">int</span>[] arrMore = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span>[] arrLess = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">double</span> sumMore =<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">double</span> sumLess =<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (avg1 &gt; avg2)&#123;</span><br><span class="line">        arrMore = arr1;</span><br><span class="line">        sumMore = sum1;</span><br><span class="line">        arrLess = arr2;</span><br><span class="line">        sumLess = sum2;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        arrMore = arr2;</span><br><span class="line">        sumMore = sum2;</span><br><span class="line">        arrLess = arr1;</span><br><span class="line">        sumLess = sum1;</span><br><span class="line">    &#125;</span><br><span class="line">    Arrays.sort(arrMore);</span><br><span class="line">    HashSet&lt;Integer&gt; setLess = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    <span class="comment">// 判断是否存在的set</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num:arrLess)&#123;</span><br><span class="line">        setLess.add(num);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 记录个数</span></span><br><span class="line">    <span class="keyword">int</span> moreSize = arrMore.length;</span><br><span class="line">    <span class="keyword">int</span> lessSize = arrLess.length;</span><br><span class="line">    <span class="keyword">int</span> ops = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arrMore.length; i++)&#123;</span><br><span class="line">        <span class="keyword">double</span> cur = (<span class="keyword">double</span>) arrMore[i];</span><br><span class="line">        <span class="keyword">if</span> (cur &lt; avg(sumMore, moreSize) &amp;&amp; cur &gt;avg(sumLess, lessSize) &amp;&amp; !setLess.contains(arrMore[i]))&#123;</span><br><span class="line">            sumMore -=cur;</span><br><span class="line">            moreSize --;</span><br><span class="line">            sumLess += cur;</span><br><span class="line">            lessSize ++;</span><br><span class="line">            setLess.add(arrMore[i]);</span><br><span class="line">            ops++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ops;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">avg</span><span class="params">(<span class="keyword">double</span> sum, <span class="keyword">int</span> size)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> sum / (<span class="keyword">double</span>) (size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目三-字符串转化"><a href="#题目三-字符串转化" class="headerlink" title="题目三 字符串转化"></a>题目三 字符串转化</h2><p>将给定的数转换为字符串，原则如下: 1对应a,2对应b，…26对应z，例如12258可以转换为”abbeh”，”aveh”，”abyh”， “Ibeh” and “Iyh”， 个数为5，编写一个函数，给出可以转换的不同字符串的个数。</p>
+<blockquote>
+<p>（<code>leetcode91</code>解码方法）</p>
+</blockquote>
+<p>解法</p>
+<p>这是一个依次获取结果的动态规划问题，有一下几种情况</p>
+<ol>
+<li><code>[i] == &#39;0&#39;</code>,这种情况没有办法进行转换 <code>dp[i] = 0</code></li>
+<li><code>[i] == 1</code>, 这种情况有可能是2位数也有可能是2位数 <code>dp[i] = dp[i+1] + dp[i+2]</code></li>
+<li><code>[i] == 2</code>,这种情况一定有<code>dp[i+1]</code>,有没有<code>dp[i+2]</code>需要判断<code>[i+1]&lt;=6</code></li>
+<li><code>[i]</code>为其他值<code>dp[i] = dp[i+1]</code></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">decodeStr</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> n = s.length();</span><br><span class="line">    <span class="keyword">int</span>[] dp = <span class="keyword">new</span> <span class="keyword">int</span>[n + <span class="number">1</span>];</span><br><span class="line">    dp[n] = <span class="number">1</span>;</span><br><span class="line">    dp[n - <span class="number">1</span>] = s.charAt(n - <span class="number">1</span>) == <span class="string">&#x27;0&#x27;</span> ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s.charAt(i) != <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">            dp[i] = dp[i + <span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> ((s.charAt(i) - <span class="string">&#x27;0&#x27;</span>) * <span class="number">10</span> + s.charAt(i + <span class="number">1</span>) - <span class="string">&#x27;0&#x27;</span> &lt; <span class="number">27</span>) &#123;</span><br><span class="line">                dp[i] += dp[i + <span class="number">2</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="题目四-合法的括号匹配序列"><a href="#题目四-合法的括号匹配序列" class="headerlink" title="题目四 合法的括号匹配序列"></a>题目四 合法的括号匹配序列</h2><p>一个合法的括号匹配序列有以下定义:</p>
+<ol>
+<li>空串<code>&quot;&quot;</code>是一个合法的括号匹配序列</li>
+<li>如果<code>&quot;X&quot;</code>和<code>&quot;Y&quot;</code>都是合法的括号匹配序列, “XY”也是一个合法的括号匹配序列</li>
+<li>如果”X”是一个合法的括号匹配序列，那么”(X)”也是一个合法的括号匹配序列</li>
+<li>每个合法的括号序列都可以由以上规则生成。</li>
+</ol>
+<p>例如: <code>&quot;&quot;</code>, <code>&quot;()&quot;</code>,<code>&quot;() ()&quot;</code>, <code>&quot;((()))&quot;</code>都是合法的括号序列</p>
+<p>对于一个合法的括号序列我们又有以下定义它的深度:</p>
+<ol>
+<li>空串””的深度是0</li>
+<li>如果字符串”X”的深度是x,字符串”Y”的深度是y,那么字符串”XY”的深度为max(x,y) </li>
+<li>如果”X” 的深度是x,那么字符串” (X) “的深度是x+1</li>
+</ol>
+<p>例如: “<code>() () ()</code>“的深度是1, “<code>((()))</code>“的深度是3。牛牛现在给你一个合法的括号序列,需要你计算出其深度。</p>
+<blockquote>
+<p><code>leetcode1614</code> 括号的最大嵌套深度</p>
+</blockquote>
+<p><strong>解</strong></p>
+<p>定义一个变量count的，遍历字符串，遇到左括号count++,遇到右括号count–,count达到的最大值就是其最大深度</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxDepth</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span>[] chr = s.toCharArray();</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> maxCount =<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i =<span class="number">0</span>;i&lt;s.length();i++)&#123;</span><br><span class="line">        <span class="keyword">if</span> (chr[i] == <span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">            count++;</span><br><span class="line">            maxCount = Math.max(maxCount, count);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (chr[i] == <span class="string">&#x27;)&#x27;</span>)&#123;</span><br><span class="line">            count--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> maxCount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="要求得到最长的有效子串-动态规划"><a href="#要求得到最长的有效子串-动态规划" class="headerlink" title="要求得到最长的有效子串 动态规划"></a>要求得到<strong>最长的有效子串</strong> 动态规划</h3><p>题目与上一道类似，只是要求得到<strong>最长的有效子串</strong>动态规划</p>
+<blockquote>
+<p>leetcode32 最长有效括号</p>
+</blockquote>
+<p><strong>解法</strong></p>
+<p>dp[i]表示子串必须以i位置结尾，最长的有效子串是多大</p>
+<p>求整个字符串的有效括号，就求一每个位置i为结尾，求当前最长的有效长度，有以下情况：</p>
+<ol>
+<li><code>i=&#39;(&#39;</code>, <code>dp[i]=0</code>,因为以(结尾，必不可能是有效的</li>
+<li><code>i=&#39;)&#39;</code>,这是需要获取<code>dp[i-1]</code>位置上最长有效距离，并且获取这一段前的字符记为P是否为(如果是<code>dp[i-1]+2</code>,并且获取<code>dp[P-1]</code>位置上的最长有效距离，因为中间断开了，前面可能还有一段距离，并且不需要继续向前获取，因为在dp[P-1]位置上已经向前获取过了。</li>
+</ol>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(()</span><span class="comment">()</span>)<span class="comment">()</span><span class="comment">()</span></span><br><span class="line"><span class="number">0123456789</span></span><br><span class="line"><span class="number">002046080</span></span><br><span class="line">求最后一位时前面是<span class="comment">( 所有+2，并且+8 因为前面这一位已经把前面最大的计算过了 </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="题目五-对栈里面数据进行排序"><a href="#题目五-对栈里面数据进行排序" class="headerlink" title="题目五 对栈里面数据进行排序"></a>题目五 对栈里面数据进行排序</h2><p>请编写一个程序，对一个栈里的整型数据，按升序进行排序( 即排序前，栈里的数据是无序的，排序后最大元素位于栈顶)，要求最多只能使用一个额外的栈存放临时数据，但不得将元素复制到别的数据结构中。</p>
+<p>解</p>
+<p>使用另外的一个栈，在这个栈中让数据保持从小到大，栈顶为最小，从数据栈中弹出一个元素，如果比排序栈中栈顶元素小直接放入，否则排序栈一直弹出元素到数据栈中，知道可以把数据放入。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Stack&lt;Integer&gt; <span class="title">sortStack</span><span class="params">(Stack&lt;Integer&gt; stack)</span></span>&#123;</span><br><span class="line">    Stack&lt;Integer&gt; helpStack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">    <span class="keyword">while</span> (!stack.isEmpty())&#123;</span><br><span class="line">        Integer pop = stack.pop();</span><br><span class="line">        <span class="keyword">while</span> (!helpStack.isEmpty() &amp;&amp; pop &lt; helpStack.peek())&#123;</span><br><span class="line">            stack.push(helpStack.pop());</span><br><span class="line">        &#125;</span><br><span class="line">        helpStack.push(pop);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> helpStack;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目六-涂色的最少方案"><a href="#题目六-涂色的最少方案" class="headerlink" title="题目六 涂色的最少方案"></a>题目六 涂色的最少方案</h2><p>牛牛有一些排成一行的正方形。每个正方形已经被染成红色或者绿色。牛牛现在可以选择任意一个正方形然后用这两种颜色的任意一种进行染色,这个正方形的颜色将会被覆盖。牛牛的目标是在完成染色之后，<strong>每个红色R都比每个绿色G距离最左侧近</strong>。牛牛想知道他最少需要涂染几个正方形。<br>如样例所示: s = RGRGR<br>我们涂染之后变成RRRGG满足要求了，涂染的个数为2,没有比这个更好的涂染方案。</p>
+<h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>从左向右遍历数组，L范围[0，N]。 L左侧全变为R，L右侧全变为G</p>
+<ol>
+<li>L == 0 ，统计<code>[0，N-1]</code>上一共有多少个R全部染成G。</li>
+<li>L == N，统计<code>[0，N-1]</code>上一共有多少个G全部染成R。</li>
+<li>统计<code>arr[0,L]</code>有多少个G，全部染成R + 统计<code>arr[L+1,N-1]</code>有多少个G，全部染成R</li>
+</ol>
+<p>3个情况下变化最少的情况就是我们所需要的结果。</p>
+<p>时间复杂度<code>O(n*n)</code></p>
+<h3 id="解法二-预处理"><a href="#解法二-预处理" class="headerlink" title="解法二-预处理"></a>解法二-预处理</h3><p>在每次遍历时都需要统计多少个G，多少个R，这时我们可以引入两个辅助数组保存这个结果,arr1这个数组保存着 <code>0-i</code>范围上有几个R，arr2保存着<code>i-n-1</code>上有几个G。这样在遍历时直接去数组中获取答案即可，时间复杂度为<code>O(n)</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RGRGR -&gt; RRRGG</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">minPaint</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">char</span>[] chs = s.toCharArray();</span><br><span class="line">    <span class="keyword">int</span>[] right = <span class="keyword">new</span> <span class="keyword">int</span>[chs.length];</span><br><span class="line">    right[chs.length - <span class="number">1</span>] = chs[chs.length - <span class="number">1</span>] == <span class="string">&#x27;R&#x27;</span> ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 辅助数组的计算</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = chs.length - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        right[i] = right[i + <span class="number">1</span>] + (chs[i] == <span class="string">&#x27;R&#x27;</span> ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 初始为 把数组全变为G的代价</span></span><br><span class="line">    <span class="keyword">int</span> res = right[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; chs.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        left += chs[i] == <span class="string">&#x27;G&#x27;</span> ? <span class="number">1</span> : <span class="number">0</span>; <span class="comment">// 计算左侧几个G染成R</span></span><br><span class="line">        <span class="comment">// 左侧的变为R的个数 + 右侧变为G的个数</span></span><br><span class="line">        res = Math.min(res, left + right[i + <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 把数组全部变为R的代价 统计数组有几个G</span></span><br><span class="line">    res = Math.min(res, left + (chs[chs.length - <span class="number">1</span>] == <span class="string">&#x27;G&#x27;</span> ? <span class="number">1</span> : <span class="number">0</span>));</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目七-二叉树的最大权值"><a href="#题目七-二叉树的最大权值" class="headerlink" title="题目七 二叉树的最大权值"></a>题目七 二叉树的最大权值</h2><p>二叉树每个结点都有一-个int型权值，给定一棵二叉树，要求计算出从根结点到叶结点的所有路径中，权值和最大的值为多少。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局变量</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> maxSum = Integer.MIN_VALUE;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">maxPath</span><span class="params">(TreeNode head)</span> </span>&#123;</span><br><span class="line">    p(head, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> maxSum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">p</span><span class="params">(TreeNode x, <span class="keyword">int</span> pre)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x.left == <span class="keyword">null</span> &amp;&amp; x.right == <span class="keyword">null</span>) &#123;</span><br><span class="line">        maxSum = Math.max(maxSum, pre + x.val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (x.left != <span class="keyword">null</span>)&#123;</span><br><span class="line">        p(x.left, pre+x.val);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (x.right != <span class="keyword">null</span>)&#123;</span><br><span class="line">        p(x.right, pre+x.val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A6%E7%A8%8B%E4%BA%91/">左程云</a></div><div class="post_share"><div class="social-share" data-image="/./img/photo-1627819376920-9faac124cf13.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/02/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD3/"><img class="prev-cover" src="/./img/photo-1626811407568-2f41c53fff99.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">中级提升班3</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/31/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD1/"><img class="next-cover" src="/./img/photo-1625777719130-0a8e07086117.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">中级提升班1</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/01/23/数据结构/左程云/中级提升班下/中级提升班下1/" title="中级提升班下1"><img class="cover" src="/./img/photo-1628009193228-076ab63d655a.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-23</div><div class="title">中级提升班下1</div></div></a></div><div><a href="/2022/12/31/数据结构/左程云/中级提升班/中级提升班1/" title="中级提升班1"><img class="cover" src="/./img/photo-1625777719130-0a8e07086117.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-31</div><div class="title">中级提升班1</div></div></a></div><div><a href="/2023/01/04/数据结构/左程云/中级提升班/中级提升班4/" title="中级提升班4"><img class="cover" src="/./img/photo-1628009193228-076ab63d655a.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-04</div><div class="title">中级提升班4</div></div></a></div><div><a href="/2023/01/07/数据结构/左程云/中级提升班/中级提升班5/" title="中级提升班5"><img class="cover" src="/./img/photo-1465188162913-8fb5709d6d57.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">中级提升班5</div></div></a></div><div><a href="/2023/01/08/数据结构/左程云/中级提升班/中级提升班6/" title="中级提升班6"><img class="cover" src="/./img/photo-1465156799763-2c087c332922.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="title">中级提升班6</div></div></a></div><div><a href="/2023/01/17/数据结构/左程云/中级提升班/中级提升班7/" title="中级提升班7"><img class="cover" src="/./img/photo-1443891238287-325a8fddd0f7.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-17</div><div class="title">中级提升班7</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%B8%80-%E5%B7%AE%E5%80%BC%E4%B8%BAk%E7%9A%84%E5%8E%BB%E9%87%8D%E6%95%B0%E5%AD%97%E5%AF%B9"><span class="toc-number">1.</span> <span class="toc-text">题目一 差值为k的去重数字对</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%BA%8C-magic%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">题目二 magic操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%B8%89-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">题目三 字符串转化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%9B%9B-%E5%90%88%E6%B3%95%E7%9A%84%E6%8B%AC%E5%8F%B7%E5%8C%B9%E9%85%8D%E5%BA%8F%E5%88%97"><span class="toc-number">4.</span> <span class="toc-text">题目四 合法的括号匹配序列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%81%E6%B1%82%E5%BE%97%E5%88%B0%E6%9C%80%E9%95%BF%E7%9A%84%E6%9C%89%E6%95%88%E5%AD%90%E4%B8%B2-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-number">4.1.</span> <span class="toc-text">要求得到最长的有效子串 动态规划</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%BA%94-%E5%AF%B9%E6%A0%88%E9%87%8C%E9%9D%A2%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="toc-number">5.</span> <span class="toc-text">题目五 对栈里面数据进行排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%85%AD-%E6%B6%82%E8%89%B2%E7%9A%84%E6%9C%80%E5%B0%91%E6%96%B9%E6%A1%88"><span class="toc-number">6.</span> <span class="toc-text">题目六 涂色的最少方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80"><span class="toc-number">6.1.</span> <span class="toc-text">解法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C-%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">6.2.</span> <span class="toc-text">解法二-预处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E4%B8%83-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%9D%83%E5%80%BC"><span class="toc-number">7.</span> <span class="toc-text">题目七 二叉树的最大权值</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By naive</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

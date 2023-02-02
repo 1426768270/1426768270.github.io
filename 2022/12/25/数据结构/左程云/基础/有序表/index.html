@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>有序表 | naive的博客</title><meta name="keywords" content="左程云"><meta name="author" content="naive"><meta name="copyright" content="naive"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="有序表是一种查找时间复杂度为O(logn)的算法，实现有序表的情况有红黑树、AVL树、SB树、跳表。 前3个都属于平衡搜索二叉树系列BST 如果我们有一个搜索二叉树，如何能让他的增删改查就尽量快一些。一般默认搜索二叉树没有重复节点，因为我们可以通过增数据项存重述节点的信息。就是一个节点的信息多一些，也不重要。在搜索二叉树中进行操作增删改查的操作，但是因为不平衡，所以我们是不能保证时间复杂度。一旦不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有序表">
+<meta property="og:url" content="http://yoursite.com/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/index.html">
+<meta property="og:site_name" content="naive的博客">
+<meta property="og:description" content="有序表是一种查找时间复杂度为O(logn)的算法，实现有序表的情况有红黑树、AVL树、SB树、跳表。 前3个都属于平衡搜索二叉树系列BST 如果我们有一个搜索二叉树，如何能让他的增删改查就尽量快一些。一般默认搜索二叉树没有重复节点，因为我们可以通过增数据项存重述节点的信息。就是一个节点的信息多一些，也不重要。在搜索二叉树中进行操作增删改查的操作，但是因为不平衡，所以我们是不能保证时间复杂度。一旦不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/img/photo-1442522772768-9032b6d10e3e.jpg">
+<meta property="article:published_time" content="2022-12-25T14:39:07.000Z">
+<meta property="article:modified_time" content="2022-12-31T07:41:19.630Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="左程云">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/img/photo-1442522772768-9032b6d10e3e.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '有序表',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-31 15:41:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="naive的博客" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">174</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/./img/photo-1442522772768-9032b6d10e3e.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">naive的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">有序表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-25T14:39:07.000Z" title="发表于 2022-12-25 22:39:07">2022-12-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-12-31T07:41:19.630Z" title="更新于 2022-12-31 15:41:19">2022-12-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="有序表"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>有序表是一种查找时间复杂度为<code>O(logn)</code>的算法，实现有序表的情况有红黑树、AVL树、SB树、跳表。</p>
+<p>前3个都属于平衡搜索二叉树系列BST</p>
+<p>如果我们有一个搜索二叉树，如何能让他的增删改查就尽量快一些。一般默认搜索二叉树没有重复节点，因为我们可以通过增数据项存重述节点的信息。就是一个节点的信息多一些，也不重要。在搜索二叉树中进行操作增删改查的操作，但是因为不平衡，所以我们是<strong>不能保证时间复杂度</strong>。一旦不平衡，我们的时间复杂度可能就是<code>O(N)</code>。所以我们要保证平衡性。</p>
+<h2 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h2><p>AVL树：是最最严格的平衡树，它每一个节点，左右子树<strong>高度差不超过一</strong><br>为了满足这个操作，需要引入两个操作：左旋+右旋。旋转表示的是头结点往哪边倒。</p>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91.png" alt="在这里插入图片描述"></p>
+<p>AVL树实现的是怎么用左旋和右旋的操作；红黑树也是实现左旋和右旋，并且有自己关于平衡的定义；SB树同样也有自己平衡的操作。</p>
+<h3 id="AVL树是怎么发现自己不平衡的？"><a href="#AVL树是怎么发现自己不平衡的？" class="headerlink" title="AVL树是怎么发现自己不平衡的？"></a>AVL树是怎么发现自己不平衡的？</h3><p>AVL数的增删改查与搜索二叉树相同，只是在增加节点后，<strong>会从当前增加的节点开始向上查找是否有平衡性</strong>；对于删除来说，是从替换节点（一个节点删除必然有节点替换这个节点）开始查找是否有平衡性。</p>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/AVL%E6%A3%80%E6%9F%A5%E4%B8%8D%E5%B9%B3%E8%A1%A1.png" alt="image-20221226213740304"></p>
+<p>对于插入节点1来说，就从插入节点1开始向上查看每个节点是否平衡；对于删除节点5来说，会从它的替换节点6的上一个节点7开始查看每个节点是否不平衡</p>
+<h3 id="平衡性被破坏的情况"><a href="#平衡性被破坏的情况" class="headerlink" title="平衡性被破坏的情况"></a>平衡性被破坏的情况</h3><p> AVL树有<strong>4 种类别进行固定化程序的操作</strong>。</p>
+<h4 id="LL右单旋"><a href="#LL右单旋" class="headerlink" title="LL右单旋"></a>LL右单旋</h4><p>LL的意思是向左子树（L）的左孩子（L）中插入新节点后导致不平衡，这种情况下需要右旋操作，而不是说LL的意思是右旋，后面的也是一样。我们需要对节点y进行平衡的维护。</p>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/AVL%E6%A0%91LL%E5%8F%B3%E5%8D%95%E6%97%8B.png" alt="img"></p>
+<h4 id="RR左单旋"><a href="#RR左单旋" class="headerlink" title="RR左单旋"></a>RR左单旋</h4><p>我们需要对节点y进行平衡的维护。</p>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/AVL%E6%A0%91RR%E5%B7%A6%E5%8D%95%E6%97%8B.png" alt></p>
+<h4 id="LR先左旋后右旋"><a href="#LR先左旋后右旋" class="headerlink" title="LR先左旋后右旋"></a>LR先左旋后右旋</h4><p>节点插入左子树（L）的右子树（R）中</p>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/AVL%E6%A0%91LR%E5%85%88%E5%B7%A6%E6%97%8B%E5%90%8E%E5%8F%B3%E9%80%89.png" alt="在这里插入图片描述"></p>
+<p><strong>第三个图中x和z反了，失误</strong></p>
+<h4 id="RL先右旋后左旋"><a href="#RL先右旋后左旋" class="headerlink" title="RL先右旋后左旋"></a>RL先右旋后左旋</h4><p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/AVL%E6%A0%91RL%E5%85%88%E5%8F%B3%E6%97%8B%E5%90%8E%E5%B7%A6%E6%97%8B.png" alt="在这里插入图片描述"></p>
+<p><strong>第二个图中y的左孩子为T1，第三个图中x和z反了，孩子也错了，应该是从左至右T1，T2，T3，T4，失误。。。</strong></p>
+<p>（红黑树和SB树）与AVL树的区别只在于和AVL的节点平衡性判定标准不一样，别的都一样。处理平衡的方式也是左右旋。</p>
+<p>AVL数维持的是高度信息，红黑树维持的是自己关于平衡的信息，SB树维持的是有多少个节点的信息。平衡树在更新时保证把信息更新对。</p>
+<h2 id="SB树"><a href="#SB树" class="headerlink" title="SB树"></a>SB树</h2><h3 id="平衡标准"><a href="#平衡标准" class="headerlink" title="平衡标准"></a>平衡标准</h3><p>每棵子树的节点个数，不小于其兄弟的子树的节点个数<br>既每棵叔叔树的节点个数，不小于其任何侄子树的节点个数</p>
+<img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/SB树平衡条件.png" alt="image-20221226221607909" style="zoom:80%;">
+
+<p><code>[B] &gt;= max&#123;[F],[G]&#125;</code>, <code>[C]&gt;=max&#123;[D],[E]&#125;</code></p>
+<p>Size-Balance树也是有四种不平衡情况：<br>LL，LR，RL，RR</p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><h3 id="平衡标准-1"><a href="#平衡标准-1" class="headerlink" title="平衡标准"></a>平衡标准</h3><ol>
+<li>每个节点都是红色，或黑色。</li>
+<li>根节点是黑色。</li>
+<li>每个叶子节点(最底层的空区域，没有数据)是黑色。</li>
+<li>如果一个节点是红色，它儿子节点都是黑色（红节点不能相邻）。</li>
+<li>对每个节点，从该节点到子孙节点的所有路径上包含相同数目的黑节点。</li>
+</ol>
+<p>从头到底的路径最长的路径是红黑节点交替的路径，从头到底的路径最短的路径是只有黑节点，而到达底部黑色节点相同，那么这2条路径的差距就是2倍。红黑树要表达的是路径关系。</p>
+<h2 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h2><ol>
+<li>跳表，又叫做跳跃表、跳跃列表，在有序链表的基础上增加了“跳跃”的功能</li>
+<li>跳表在原来的有序链表上加上了多级索引，通过索引来快速查找；可以支持快速的删除、插入和查找操作。</li>
+<li>跳表实际上是一种增加了<strong>前向指针</strong>的链表，是一种随机化的数据结构</li>
+<li>Redis中 的 <code>SortedSet</code>、<code>LevelDB</code> 中的 <code>MemTable</code> 都用到了跳表</li>
+<li>对比平衡树, 跳表的实现和维护会更加简单, 跳表的搜索、删除、添加的平均时间复杂度是 <code>O(logn)</code></li>
+</ol>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/%E8%B7%B3%E8%A1%A8.png" alt="在这里插入图片描述"></p>
+<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><h4 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h4><ol>
+<li>从顶层链表的首元素开始，从左往右搜索，直至找到一个大于或等于目标的元素，或者到达当前层链表的尾部</li>
+<li>如果该元素等于目标元素，则表明该元素已被找到</li>
+<li>如果该元素大于目标元素或已到达链表的尾部，则退回到当前层的前一个元素，然后转入下一层进行搜索</li>
+</ol>
+<h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/%E8%B7%B3%E8%A1%A8%E6%8F%92%E5%85%A5.png" alt="在这里插入图片描述"></p>
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><p>在跳表中删除某个结点时，如果这个结点在索引中也出现了，我们<strong>除了要删除原始链表中的结点，还要删除索引中的</strong>。因为单链表中的删除操作需要拿到删除结点的前驱结点，然后再通过指针操作完成删除。所以在查找要删除的结点的时候，一定要获取前驱结点（双向链表除外）。因此跳表的删除操作时间复杂度即为O(logn)。</p>
+<h4 id="索引动态更新"><a href="#索引动态更新" class="headerlink" title="索引动态更新"></a>索引动态更新</h4><p>当我们不断地往跳表中插入数据时，我们如果不更新索引，就有可能出现某2个索引节点之间的数据非常多的情况，在极端情况下，跳表还会退化成单链表</p>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/%E8%B7%B3%E8%A1%A8%E7%B4%A2%E5%BC%95.png" alt="在这里插入图片描述"></p>
+<p>跳表是通过<strong>随机函数</strong>来维护“平衡性”。</p>
+<p>当我们在跳表中插入数据的时候，我们通过选择同时将这个数据<strong>插入到部分索引层中</strong>，如何选择索引层，可以通过一个随机函数来决定这个节点插入到哪几级索引中，比如随机生成了k，那么就将这个索引加入到，第一级到第k级索引中。</p>
+<p><img src="/2022/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9C%89%E5%BA%8F%E8%A1%A8/%E8%B7%B3%E8%A1%A8%E7%B4%A2%E5%BC%95%E5%B1%82.png" alt="在这里插入图片描述"></p>
+<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><ol>
+<li>跳表由很多层结构组成，level是通过一定的概率随机产生的；</li>
+<li>每一层都是一个有序的链表，默认是升序 ；</li>
+<li>最底层(Level 1)的链表包含所有元素；</li>
+<li>如果一个元素出现在Level i 的链表中，则它在Level i 之下的链表也都会出现；</li>
+<li>每个节点包含两个指针，一个指向同一链表中的下一个元素，一个指向下面一层的元素。</li>
+</ol>
+<p>参考</p>
+<p>[详细图文——AVL树][<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_25343557/article/details/89110319]">https://blog.csdn.net/qq_25343557/article/details/89110319]</a></p>
+<p>[跳表（Skip List）][<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45480785/article/details/116293416]">https://blog.csdn.net/weixin_45480785/article/details/116293416]</a></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A6%E7%A8%8B%E4%BA%91/">左程云</a></div><div class="post_share"><div class="social-share" data-image="/./img/photo-1442522772768-9032b6d10e3e.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/31/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD/%E4%B8%AD%E7%BA%A7%E6%8F%90%E5%8D%87%E7%8F%AD1/"><img class="prev-cover" src="/./img/photo-1625777719130-0a8e07086117.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">中级提升班1</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%B7%A6%E7%A8%8B%E4%BA%91/%E5%9F%BA%E7%A1%80/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"><img class="next-cover" src="/./img/photo-1442522772768-9032b6d10e3e.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">暴力递归到动态规划</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/01/01/数据结构/左程云/中级提升班/中级提升班2/" title="中级提升班2"><img class="cover" src="/./img/photo-1627819376920-9faac124cf13.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="title">中级提升班2</div></div></a></div><div><a href="/2023/01/23/数据结构/左程云/中级提升班下/中级提升班下1/" title="中级提升班下1"><img class="cover" src="/./img/photo-1628009193228-076ab63d655a.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-23</div><div class="title">中级提升班下1</div></div></a></div><div><a href="/2022/12/31/数据结构/左程云/中级提升班/中级提升班1/" title="中级提升班1"><img class="cover" src="/./img/photo-1625777719130-0a8e07086117.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-31</div><div class="title">中级提升班1</div></div></a></div><div><a href="/2023/01/04/数据结构/左程云/中级提升班/中级提升班4/" title="中级提升班4"><img class="cover" src="/./img/photo-1628009193228-076ab63d655a.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-04</div><div class="title">中级提升班4</div></div></a></div><div><a href="/2023/01/07/数据结构/左程云/中级提升班/中级提升班5/" title="中级提升班5"><img class="cover" src="/./img/photo-1465188162913-8fb5709d6d57.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-07</div><div class="title">中级提升班5</div></div></a></div><div><a href="/2023/01/08/数据结构/左程云/中级提升班/中级提升班6/" title="中级提升班6"><img class="cover" src="/./img/photo-1465156799763-2c087c332922.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="title">中级提升班6</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AVL%E6%A0%91"><span class="toc-number">1.</span> <span class="toc-text">AVL树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AVL%E6%A0%91%E6%98%AF%E6%80%8E%E4%B9%88%E5%8F%91%E7%8E%B0%E8%87%AA%E5%B7%B1%E4%B8%8D%E5%B9%B3%E8%A1%A1%E7%9A%84%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">AVL树是怎么发现自己不平衡的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%A1%E6%80%A7%E8%A2%AB%E7%A0%B4%E5%9D%8F%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">1.2.</span> <span class="toc-text">平衡性被破坏的情况</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LL%E5%8F%B3%E5%8D%95%E6%97%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">LL右单旋</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RR%E5%B7%A6%E5%8D%95%E6%97%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">RR左单旋</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LR%E5%85%88%E5%B7%A6%E6%97%8B%E5%90%8E%E5%8F%B3%E6%97%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">LR先左旋后右旋</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RL%E5%85%88%E5%8F%B3%E6%97%8B%E5%90%8E%E5%B7%A6%E6%97%8B"><span class="toc-number">1.2.4.</span> <span class="toc-text">RL先右旋后左旋</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SB%E6%A0%91"><span class="toc-number">2.</span> <span class="toc-text">SB树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%A1%E6%A0%87%E5%87%86"><span class="toc-number">2.1.</span> <span class="toc-text">平衡标准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="toc-number">3.</span> <span class="toc-text">红黑树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%A1%E6%A0%87%E5%87%86-1"><span class="toc-number">3.1.</span> <span class="toc-text">平衡标准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%B3%E8%A1%A8"><span class="toc-number">4.</span> <span class="toc-text">跳表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="toc-number">4.1.</span> <span class="toc-text">增删改查</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2"><span class="toc-number">4.1.1.</span> <span class="toc-text">搜索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-number">4.1.2.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">4.1.3.</span> <span class="toc-text">删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0"><span class="toc-number">4.1.4.</span> <span class="toc-text">索引动态更新</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-number">4.2.</span> <span class="toc-text">性质</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By naive</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
